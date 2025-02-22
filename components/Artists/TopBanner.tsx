@@ -1,8 +1,13 @@
-import assest from "@/json/assest";
 import { Box, Container, Typography } from "@mui/material";
 import Image from "next/image";
 
-export const TopBanner = () => {
+type ArtistProps = {
+  name: string;
+  desc: string;
+  img: string;
+};
+
+export const TopBanner = ({ name, desc, img }: ArtistProps) => {
   return (
     <Box
       position="relative"
@@ -23,18 +28,13 @@ export const TopBanner = () => {
         height="100%"
         zIndex={1}
       >
-        <Image
-          src={assest?.singerBanner}
-          alt="Music Banner"
-          layout="fill"
-          objectFit="cover"
-        />
+        <Image src={img} alt="Music Banner" layout="fill" objectFit="cover" />
       </Box>
 
       {/* Content */}
       <Container maxWidth="md" sx={{ position: "relative", zIndex: 10 }}>
         <Typography variant="h3" fontWeight="bold" fontSize={30}>
-          Arijit Singh
+          {name}
         </Typography>
         <Typography
           variant="body1"
@@ -42,8 +42,7 @@ export const TopBanner = () => {
           mt={2}
           sx={{ maxWidth: "500px" }}
         >
-          On our website, you can access an amazing collection of popular and
-          new songs. Stream your favorite tracks in high quality.
+          {desc}
         </Typography>
       </Container>
     </Box>

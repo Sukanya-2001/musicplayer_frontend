@@ -1,22 +1,19 @@
 import { Album } from "@/components/HomeSec/Album";
 import { Artists } from "@/components/HomeSec/Artists";
 import Banner from "@/components/HomeSec/Banner";
-import { MayLike } from "@/components/HomeSec/MayLike";
-import { NewRelease } from "@/components/HomeSec/NewRelease";
-import { Trending } from "@/components/HomeSec/Trending";
-import { Weekly } from "@/components/HomeSec/Weekly";
 import ResponsiveDrawer from "@/components/ResponsiveDrawer/ResponsiveDrawer";
+import { SongComp } from "@/components/SongComp/SongComp";
 
 export default function Home() {
   return (
     <ResponsiveDrawer>
       <Banner />
-      <Weekly />
-      <NewRelease />
-      <Trending />
+      <SongComp title="Weekly Top" subTitle="Songs" />
+      <SongComp title="New Release" subTitle="Songs" />
+      <SongComp title="Trending" subTitle="Songs" />
       <Artists />
       <Album />
-      <MayLike />
+      <SongComp title="You also may" subTitle="Like" />
     </ResponsiveDrawer>
   );
 }

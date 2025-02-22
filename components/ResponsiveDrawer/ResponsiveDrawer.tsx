@@ -17,6 +17,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import * as React from "react";
 
 const drawerWidth = 240;
@@ -28,9 +29,11 @@ interface Props {
 
 export default function ResponsiveDrawer(props: Props) {
   const sideFirstItems = [
-    { name: "Home", route: "/#", icon: <InboxIcon /> },
-    { name: "Albums", route: "javascript:void(0)", icon: <InboxIcon /> },
-    { name: "Artist", route: "javascript:void(0)", icon: <InboxIcon /> }
+    { name: "Home", route: "/", icon: <InboxIcon /> },
+    { name: "Albums", route: "/songs", icon: <InboxIcon /> },
+    { name: "Artist", route: "javascript:void(0)", icon: <InboxIcon /> },
+    { name: "Discover", route: "/discover", icon: <InboxIcon /> },
+    { name: "More", route: "/language", icon: <InboxIcon /> }
   ];
 
   const sideSecondItems = [
@@ -43,8 +46,12 @@ export default function ResponsiveDrawer(props: Props) {
   ];
 
   const { children } = props;
+  const route = useRouter();
+  
+  // const currentUrl = typeof window !== "undefined" ? window.location.href : "";
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
+  
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -79,7 +86,7 @@ export default function ResponsiveDrawer(props: Props) {
       <List>
         {sideFirstItems.map((text) => (
           <ListItem key={text?.name} disablePadding>
-            <ListItemButton href={text?.route}>
+            <ListItemButton onClick={() => route.push(`${text?.route}`)}>
               <ListItemIcon>{text?.icon}</ListItemIcon>
               <ListItemText primary={text?.name} />
             </ListItemButton>

@@ -90,10 +90,10 @@ export const Album = () => {
             alignItems="center"
           >
             <IconButton
-              sx={{ color: "white", display: "flex", flexDirection: "column" }}
+              sx={{ color: "rgb(255 14 188)", display: "flex", flexDirection: "column" }}
             >
               <AddIcon fontSize="large" />
-              <Typography variant="body2">View All</Typography>
+              <Typography variant="body2" sx={{color:"rgb(255 14 188)"}}>View All</Typography>
             </IconButton>
           </Grid2>
         </Grid2>

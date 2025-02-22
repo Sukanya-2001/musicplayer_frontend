@@ -1,5 +1,5 @@
-import { MayLike } from "@/components/HomeSec/MayLike";
 import ResponsiveDrawer from "@/components/ResponsiveDrawer/ResponsiveDrawer";
+import { SongComp } from "@/components/SongComp/SongComp";
 import { SongsSec } from "@/components/Songs/SongsSec";
 import { TopSec } from "@/components/Songs/TopSec";
 
@@ -8,7 +8,7 @@ const songs = () => {
     <ResponsiveDrawer>
       <TopSec />
       <SongsSec />
-      <MayLike />
+      <SongComp title="You also may" subTitle="Like" />
     </ResponsiveDrawer>
   );
 };

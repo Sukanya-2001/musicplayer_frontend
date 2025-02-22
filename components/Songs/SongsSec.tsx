@@ -56,13 +56,25 @@ export const SongsSec = () => {
   };
 
   return (
+    <Box>
+      <Typography
+        variant="body1"
+        fontWeight="bold"
+        sx={{ fontSize: "25px", padding: "30px", marginTop:"25px" }}
+      >
+        Songs by{" "}
+        <Box component="span" color="rgb(255 14 188)">
+          Arijit Singh
+        </Box>{" "}
+      </Typography>
     <Box
       sx={{
-        margin: { xs: "10px", md: "20px", lg: "50px" },
+        margin: { xs: "0 10px 0 10px", md: "0 20px 0 20px", lg: "0 50px 0 50px" },
         backgroundColor: "#1e1e1e",
         borderRadius: "12px"
       }}
     >
+      
       {songs.map((song: Isongs, index: number) => (
         <Grid
           container
@@ -129,6 +141,7 @@ export const SongsSec = () => {
         selectedSong={selectedSong!}
         handleClose={handleClose}
       />
+    </Box>
     </Box>
   );
 };

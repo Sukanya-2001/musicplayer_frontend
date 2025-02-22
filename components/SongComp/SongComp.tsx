@@ -9,6 +9,7 @@ import {
   IconButton,
   Typography
 } from "@mui/material";
+import { useRouter } from "next/router";
 
 const songs = [
   {
@@ -29,17 +30,24 @@ const songs = [
     img: assest?.music
   }
 ];
-export const Weekly = () => {
+
+type SongProps = {
+  title: string;
+  subTitle: string;
+};
+export const SongComp = ({ title, subTitle }: SongProps) => {
+  const router = useRouter();
+
   return (
     <Box>
       <Typography
         variant="body1"
         fontWeight="bold"
-        sx={{ fontSize: "25px", padding: "30px", marginTop:"25px" }}
+        sx={{ fontSize: "25px", padding: "30px" }}
       >
-        Weekly Top{" "}
+        {title}{" "}
         <Box component="span" color="rgb(255 14 188)">
-          Songs
+          {subTitle}
         </Box>{" "}
       </Typography>
       <Box sx={{ padding: "10px 5px 10px 5px" }}>
@@ -61,7 +69,18 @@ export const Weekly = () => {
                   alt={song.title}
                 />
                 <CardContent>
-                  <Typography variant="body1" fontWeight="bold" sx={{ fontSize: { xs: "0.875rem", sm: "1rem", md: "1.125rem", lg: "1.25rem" } }}>
+                  <Typography
+                    variant="body1"
+                    fontWeight="bold"
+                    sx={{
+                      fontSize: {
+                        xs: "0.875rem",
+                        sm: "1rem",
+                        md: "1.125rem",
+                        lg: "1.25rem"
+                      }
+                    }}
+                  >
                     {song.title}
                   </Typography>
                   <Typography variant="body2" color="gray">
@@ -78,10 +97,17 @@ export const Weekly = () => {
             alignItems="center"
           >
             <IconButton
-              sx={{ color: "white", display: "flex", flexDirection: "column" }}
+              onClick={() => router.push("/songs")}
+              sx={{
+                color: "rgb(255 14 188)",
+                display: "flex",
+                flexDirection: "column"
+              }}
             >
               <AddIcon fontSize="large" />
-              <Typography variant="body2">View All</Typography>
+              <Typography variant="body2" sx={{ color: "rgb(255 14 188)" }}>
+                View All
+              </Typography>
             </IconButton>
           </Grid2>
         </Grid2>

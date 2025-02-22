@@ -1,7 +1,6 @@
 import assest from "@/json/assest";
 import Footer from "@/layout/Footer/Footer";
 import Header from "@/layout/Header/Header";
-import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import AppBar from "@mui/material/AppBar";
@@ -35,11 +34,15 @@ export default function ResponsiveDrawer(props: Props) {
   ];
 
   const sideSecondItems = [
-    { name: "Recently Added", route: "javascript:void(0)", icon: <InboxIcon /> },
+    {
+      name: "Recently Added",
+      route: "javascript:void(0)",
+      icon: <InboxIcon />
+    },
     { name: "Most Played", route: "javascript:void(0)", icon: <InboxIcon /> }
   ];
 
-  const { window, children } = props;
+  const { children } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
 
@@ -83,7 +86,7 @@ export default function ResponsiveDrawer(props: Props) {
           </ListItem>
         ))}
       </List>
-      <Divider sx={{ borderColor: "rgb(90, 87, 89)" }}/>
+      <Divider sx={{ borderColor: "rgb(90, 87, 89)" }} />
       <List>
         {sideSecondItems.map((text) => (
           <ListItem key={text?.name} disablePadding>
@@ -102,10 +105,20 @@ export default function ResponsiveDrawer(props: Props) {
       <CssBaseline />
       <AppBar
         position="fixed"
-        sx={{ width: { sm: `calc(100% - ${drawerWidth}px)` }, ml: { sm: `${drawerWidth}px` }, backgroundColor: "black" }}
+        sx={{
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          ml: { sm: `${drawerWidth}px` },
+          backgroundColor: "black"
+        }}
       >
         <Toolbar>
-          <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={handleDrawerToggle} sx={{ mr: 2, display: { sm: "none" } }}>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: "none" } }}
+          >
             <MenuIcon />
           </IconButton>
           <Box sx={{ marginLeft: "auto" }}>
@@ -113,7 +126,11 @@ export default function ResponsiveDrawer(props: Props) {
           </Box>
         </Toolbar>
       </AppBar>
-      <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="mailbox folders">
+      <Box
+        component="nav"
+        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        aria-label="mailbox folders"
+      >
         <Drawer
           variant="temporary"
           open={mobileOpen}
@@ -146,9 +163,12 @@ export default function ResponsiveDrawer(props: Props) {
           {drawer}
         </Drawer>
       </Box>
-      <Box component="main" sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+      >
         <Toolbar />
-        <Box sx={{marginTop: "30px"}}>{children}</Box>
+        <Box sx={{ marginTop: "30px" }}>{children}</Box>
         <Footer />
       </Box>
     </Box>

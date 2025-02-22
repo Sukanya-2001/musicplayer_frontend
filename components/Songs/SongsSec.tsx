@@ -1,26 +1,16 @@
 import assest from "@/json/assest";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import {
-  Box,
-  Grid,
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Popover,
-  Typography
-} from "@mui/material";
+import { Box, Grid, IconButton, Typography } from "@mui/material";
 import Image from "next/image";
 import { useState } from "react";
 import { SongsPopover } from "../Popover/SongsPopover";
 
-export type Isongs= {
-    img: string;
-    title: string;
-    desc: string;
-    time: string;
-}
+export type Isongs = {
+  img: string;
+  title: string;
+  desc: string;
+  time: string;
+};
 
 const songs: Isongs[] = [
   {
@@ -51,7 +41,9 @@ const songs: Isongs[] = [
 
 export const SongsSec = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedSong, setSelectedSong] = useState<Isongs | undefined>(undefined);
+  const [selectedSong, setSelectedSong] = useState<Isongs | undefined>(
+    undefined
+  );
 
   const handleOpen = (event: any, song: Isongs) => {
     setAnchorEl(event.currentTarget);
@@ -132,7 +124,11 @@ export const SongsSec = () => {
       ))}
 
       {/* Popover for Options */}
-      <SongsPopover anchorEl={anchorEl} selectedSong={selectedSong!} handleClose={handleClose}/>
+      <SongsPopover
+        anchorEl={anchorEl}
+        selectedSong={selectedSong!}
+        handleClose={handleClose}
+      />
     </Box>
   );
 };

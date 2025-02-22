@@ -6,7 +6,6 @@ export const TopBanner = () => {
   return (
     <Box
       position="relative"
-    //   width="100%"
       height={{ xs: 200, md: 400 }}
       display="flex"
       alignItems="center"

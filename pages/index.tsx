@@ -6,11 +6,8 @@ import { NewRelease } from "@/components/HomeSec/NewRelease";
 import { Trending } from "@/components/HomeSec/Trending";
 import { Weekly } from "@/components/HomeSec/Weekly";
 import ResponsiveDrawer from "@/components/ResponsiveDrawer/ResponsiveDrawer";
-import toast from "react-hot-toast";
 
 export default function Home() {
-  const notify = () => toast("Here is your toast.");
-
   return (
     <ResponsiveDrawer>
       <Banner />

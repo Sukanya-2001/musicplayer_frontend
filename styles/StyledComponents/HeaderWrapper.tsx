@@ -27,7 +27,7 @@ export const HeaderWrap = styled(Box)`
   }
 
   .headerContainer {
-    background-color: transparent !important;
+     background-color: transparent !important;
     padding: 20px 0;
     transition: all 0.4s;
   }

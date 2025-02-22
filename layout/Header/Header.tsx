@@ -1,11 +1,14 @@
 /* eslint-disable no-console */
 
-import MenuIcon from "@mui/icons-material/Menu";
+import { useAppDispatch } from "@/hooks/redux/useAppDispatch";
+import { useAppSelector } from "@/hooks/redux/useAppSelector";
+import { logout } from "@/reduxtoolkit/slices/userSlice";
+import { HeaderWrap } from "@/styles/StyledComponents/HeaderWrapper";
+import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -13,16 +16,9 @@ import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Container } from "@mui/system";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import * as React from "react";
-import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
-import { HeaderWrap } from "@/styles/StyledComponents/HeaderWrapper";
-import { logout } from "@/reduxtoolkit/slices/userSlice";
-import assest from "@/json/assest";
-import { useAppSelector } from "@/hooks/redux/useAppSelector";
-import { useAppDispatch } from "@/hooks/redux/useAppDispatch";
 
 // const CustomButton = dynamic(() => import("@/ui/Buttons/CustomButton"));
 
@@ -31,19 +27,15 @@ const drawerWidth = 240;
 export default function Header() {
   const navItems = [
     {
-      name: "Clinical studies",
-      route: "javascript:void(0)"
-    },
-    {
-      name: "The science",
-      route: "javascript:void(0)"
-    },
-    {
-      name: "Shop",
+      name: "About",
       route: "javascript:void(0)"
     },
     {
       name: "Contact us",
+      route: "javascript:void(0)"
+    },
+    {
+      name: "Premium",
       route: "javascript:void(0)"
     }
   ];
@@ -110,7 +102,7 @@ export default function Header() {
       >
         <Container fixed>
           <Toolbar>
-            <IconButton
+            {/* <IconButton
               color="inherit"
               aria-label="open drawer"
               edge="start"
@@ -118,15 +110,29 @@ export default function Header() {
               sx={{ mr: 2, display: { sm: "none" } }}
             >
               <MenuIcon />
-            </IconButton>
-            <Link href="/" className="headerLogo">
+            </IconButton> */}
+            {/* <Link href="/" className="headerLogo">
               <Image src={assest.logo_img} width={250} height={38} alt="Logo" />
-            </Link>
+            </Link> */}
+            <Box
+              sx={{ display: { xs: "none", md: "block" } }}
+              className="navbar"
+            >
+              {navItems.map((item) => (
+                <Link
+                  href={item?.route}
+                  key={item?.route}
+                  className={router.pathname === item.route ? "active" : ""}
+                  style={{ color: "white" }}
+                >
+                  {/* <CustomButton type="button" variant="text"> */}
+                  {item?.name}
+                  {/* </CustomButton> */}
+                </Link>
+              ))}
+            </Box>
             {isLoggedIn ? (
-              <Box
-                sx={{ display: { xs: "none", sm: "block" } }}
-                className="navbar"
-              >
+              <Box className="hdr_rgt">
                 <CustomButtonPrimary
                   onClick={handleLogout}
                   type="button"
@@ -136,42 +142,33 @@ export default function Header() {
                   <span>Logout</span>
                 </CustomButtonPrimary>
 
+                {/* <CustomButtonPrimary
+                    type="button"
+                    variant="contained"
+                    color="primary"
+                  >
+                    <span>{userData?.email}</span>
+                  </CustomButtonPrimary> */}
+              </Box>
+            ) : (
+              <Box className="hdr_rgt">
+                <CustomButtonPrimary
+                  type="button"
+                  variant="outlined"
+                  color="primary"
+                >
+                  Login
+                </CustomButtonPrimary>
                 <CustomButtonPrimary
                   type="button"
                   variant="contained"
                   color="primary"
+                  sx={{ marginLeft: "10px" }}
                 >
-                  <span>{userData?.email}</span>
+                  Sign up
                 </CustomButtonPrimary>
               </Box>
-            ) : (
-              <Box
-                sx={{ display: { xs: "none", sm: "block" } }}
-                className="navbar"
-              >
-                {navItems.map((item) => (
-                  <Link
-                    href={item?.route}
-                    key={item?.route}
-                    className={router.pathname === item.route ? "active" : ""}
-                  >
-                    {/* <CustomButton type="button" variant="text"> */}
-                    {item?.name}
-                    {/* </CustomButton> */}
-                  </Link>
-                ))}
-              </Box>
             )}
-            <Box className="hdr_rgt">
-              <Box className="cart_icon"></Box>
-              <CustomButtonPrimary
-                type="button"
-                variant="contained"
-                color="primary"
-              >
-                <Typography>Login</Typography>
-              </CustomButtonPrimary>
-            </Box>
           </Toolbar>
         </Container>
       </AppBar>

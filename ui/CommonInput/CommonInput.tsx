@@ -12,10 +12,12 @@ const InputWrap = styled(TextField)(({ theme }) => ({
     boxSizing: "border-box",
     fontSize: "16px",
     fontWeight: 400,
-    color: theme.palette.text.primary, // dynamic color from theme
+    color: "white", // White text
+    backgroundColor: "black", // Black background
     borderRadius: "10px",
+    border: "1px solid white", // White border
     padding: "6.5px 16px",
-    boxShadow: "0px 1px 3px 0px rgba(0, 0, 0, 0.06)",
+    boxShadow: "0px 1px 3px 0px rgba(255, 255, 255, 0.06)",
     minWidth: "300px",
     "@media (max-width: 600px)": {
       padding: "5px 10px"
@@ -24,8 +26,10 @@ const InputWrap = styled(TextField)(({ theme }) => ({
     "input, textarea": {
       border: 0,
       paddingLeft: 0,
+      color: "white", // Ensuring input text is white
+      backgroundColor: "transparent",
       "&::placeholder": {
-        color: theme.palette.text.disabled, // dynamic color from theme
+        color: "rgba(255, 255, 255, 0.6)", // Placeholder in dim white
         opacity: 1
       },
       "&:focus": {
@@ -44,12 +48,12 @@ const InputWrap = styled(TextField)(({ theme }) => ({
 
     "&.Mui-error": {
       "input, textarea": {
-        color: theme.palette.error.main // dynamic color for error state
+        color: "white"
       }
     },
 
     ".MuiOutlinedInput-notchedOutline": {
-      display: "none"
+      border: "1px solid white" // White border on focus
     },
 
     "#outlined-adornment-password": {
@@ -65,9 +69,9 @@ const InputWrap = styled(TextField)(({ theme }) => ({
       "&:focus, &:hover": {
         backgroundColor: "transparent"
       },
-      svg: {
+      InputAdornment: {
         fontSize: "20px",
-        color: theme.palette.text.secondary // dynamic color from theme
+        color: "white" // Icon color white for visibility
       }
     }
   }

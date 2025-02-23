@@ -1,8 +1,12 @@
 import assest from "@/json/assest";
 import Footer from "@/layout/Footer/Footer";
 import Header from "@/layout/Header/Header";
+import {
+  sideFirstItems,
+  sideSecondItems,
+  sideThirdItems
+} from "@/lib/static/Demo";
 import MenuIcon from "@mui/icons-material/Menu";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import { createTheme, ThemeProvider } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -48,32 +52,6 @@ export default function ResponsiveDrawer(props: Props) {
       }
     }
   });
-  const sideFirstItems = [
-    { name: "Home", route: "/", icon: <InboxIcon /> },
-    { name: "Albums", route: "/songs", icon: <InboxIcon /> },
-    { name: "Artists", route: "/artists", icon: <InboxIcon /> },
-    { name: "Discover", route: "/discover", icon: <InboxIcon /> },
-    { name: "More", route: "/language", icon: <InboxIcon /> }
-  ];
-
-  const sideSecondItems = [
-    {
-      name: "Recently Added",
-      route: "/recent",
-      icon: <InboxIcon />
-    },
-    { name: "Favourite", route: "/favourite", icon: <InboxIcon /> },
-    { name: "Most Played", route: "/most-played", icon: <InboxIcon /> }
-  ];
-
-  const sideThirdItems = [
-    {
-      name: "My Profile",
-      route: "javascript:void(0)",
-      icon: <InboxIcon />
-    },
-    { name: "Logout", route: "javascript:void(0)", icon: <InboxIcon /> }
-  ];
 
   const { children } = props;
   const route = useRouter();
@@ -108,7 +86,7 @@ export default function ResponsiveDrawer(props: Props) {
           backgroundColor: "#1e1e1e"
         }}
       >
-        <Image src={assest.logo_img} width={180} height={38} alt="Logo" />
+        <Image src={assest.logo_img} width={80} height={28} alt="Logo" />
       </Link>
       <ThemeProvider theme={theme}>
         <List>
@@ -122,7 +100,9 @@ export default function ResponsiveDrawer(props: Props) {
                     : styles.navList
                 }
               >
-                <ListItemIcon>{text?.icon}</ListItemIcon>
+                <ListItemIcon>
+                  <text.icon />
+                </ListItemIcon>
                 <ListItemText primary={text?.name} />
               </ListItemButton>
             </ListItem>
@@ -142,7 +122,9 @@ export default function ResponsiveDrawer(props: Props) {
                     : styles.navList
                 }
               >
-                <ListItemIcon>{text?.icon}</ListItemIcon>
+                <ListItemIcon>
+                  <text.icon />
+                </ListItemIcon>
                 <ListItemText primary={text?.name} />
               </ListItemButton>
             </ListItem>
@@ -162,7 +144,9 @@ export default function ResponsiveDrawer(props: Props) {
                     : styles.navList
                 }
               >
-                <ListItemIcon>{text?.icon}</ListItemIcon>
+                <ListItemIcon>
+                  <text.icon />
+                </ListItemIcon>
                 <ListItemText primary={text?.name} />
               </ListItemButton>
             </ListItem>
@@ -240,7 +224,7 @@ export default function ResponsiveDrawer(props: Props) {
         sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar />
-        <Box sx={{ marginTop: "30px", minHeight:"80vh" }}>{children}</Box>
+        <Box sx={{ marginTop: "30px", minHeight: "80vh" }}>{children}</Box>
         <Footer />
       </Box>
     </Box>

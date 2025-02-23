@@ -4,7 +4,10 @@ import { useAppDispatch } from "@/hooks/redux/useAppDispatch";
 import { useAppSelector } from "@/hooks/redux/useAppSelector";
 import { logout } from "@/reduxtoolkit/slices/userSlice";
 import { HeaderWrap } from "@/styles/StyledComponents/HeaderWrapper";
+import InputFieldCommon from "@/ui/CommonInput/CommonInput";
 import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { InputAdornment } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -114,6 +117,20 @@ export default function Header() {
             {/* <Link href="/" className="headerLogo">
               <Image src={assest.logo_img} width={250} height={38} alt="Logo" />
             </Link> */}
+            <Box>
+              <Box sx={{ display: { xs: "none", sm: "block" } }}>
+                <InputFieldCommon
+                  placeholder="Search a song"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchOutlinedIcon />
+                      </InputAdornment>
+                    )
+                  }}
+                />
+              </Box>
+            </Box>
             <Box
               sx={{ display: { xs: "none", md: "block" } }}
               className="navbar"
@@ -152,16 +169,10 @@ export default function Header() {
               </Box>
             ) : (
               <Box>
-                <CustomButtonPrimary
-                  variant="outlined"
-                  color="primary"
-                >
+                <CustomButtonPrimary variant="outlined" color="primary">
                   Login
                 </CustomButtonPrimary>
-                <CustomButtonPrimary
-                  variant="contained"
-                  color="primary"
-                >
+                <CustomButtonPrimary variant="contained" color="primary">
                   Sign up
                 </CustomButtonPrimary>
               </Box>

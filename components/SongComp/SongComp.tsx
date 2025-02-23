@@ -31,7 +31,7 @@ const songs = [
   }
 ];
 
-type SongProps = {
+export type SongProps = {
   title: string;
   subTitle: string;
 };

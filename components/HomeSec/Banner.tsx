@@ -62,13 +62,6 @@ const Banner: React.FC = () => {
           >
             Discover Now
           </CustomButtonPrimary>
-          <CustomButtonPrimary
-            variant="outlined"
-            color="primary"
-            sx={{ px: 2, py: 1.5 }}
-          >
-            Create Playlist
-          </CustomButtonPrimary>
         </Box>
       </Container>
     </Box>

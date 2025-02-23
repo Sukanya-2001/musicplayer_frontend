@@ -8,7 +8,7 @@ const artistsSongs = () => {
   return (
     <ResponsiveDrawer>
       <TopBanner name="Arijit Singh" desc="On our website, you can access an amazing collection of popular and new songs. Stream your favorite tracks in high quality." img={assest?.singerBanner}/>
-      <SongsSec />
+      <SongsSec title="Songs by" subTitle="Arijit Singh" />
       <SongComp title="You also may" subTitle="Like" />
     </ResponsiveDrawer>
   );

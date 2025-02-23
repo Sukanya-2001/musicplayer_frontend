@@ -1,0 +1,11 @@
+.active {
+    background-color: rgb(255 14 188);
+    color: white !important;
+    font-weight: bold;
+    pointer-events: none;
+  }
+  
+  .navList {
+    background-color: transparent;
+  }
+  

@@ -151,19 +151,16 @@ export default function Header() {
                   </CustomButtonPrimary> */}
               </Box>
             ) : (
-              <Box className="hdr_rgt">
+              <Box>
                 <CustomButtonPrimary
-                  type="button"
                   variant="outlined"
                   color="primary"
                 >
                   Login
                 </CustomButtonPrimary>
                 <CustomButtonPrimary
-                  type="button"
                   variant="contained"
                   color="primary"
-                  sx={{ marginLeft: "10px" }}
                 >
                   Sign up
                 </CustomButtonPrimary>

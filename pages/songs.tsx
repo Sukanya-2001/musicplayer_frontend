@@ -7,7 +7,7 @@ const songs = () => {
   return (
     <ResponsiveDrawer>
       <TopSec />
-      <SongsSec />
+      <SongsSec title="Popular" subTitle="Songs"/>
       <SongComp title="You also may" subTitle="Like" />
     </ResponsiveDrawer>
   );

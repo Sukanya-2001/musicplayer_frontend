@@ -3,6 +3,7 @@ import Footer from "@/layout/Footer/Footer";
 import Header from "@/layout/Header/Header";
 import MenuIcon from "@mui/icons-material/Menu";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
+import { createTheme, ThemeProvider } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -19,6 +20,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import * as React from "react";
+import styles from "../../styles/StyledComponents/sidebarStyles.module.css";
 
 const drawerWidth = 240;
 
@@ -28,10 +30,28 @@ interface Props {
 }
 
 export default function ResponsiveDrawer(props: Props) {
+  const theme = createTheme({
+    components: {
+      MuiListItemText: {
+        styleOverrides: {
+          primary: {
+            color: "white !important"
+          }
+        }
+      },
+      MuiListItemIcon: {
+        styleOverrides: {
+          root: {
+            color: "white !important"
+          }
+        }
+      }
+    }
+  });
   const sideFirstItems = [
     { name: "Home", route: "/", icon: <InboxIcon /> },
     { name: "Albums", route: "/songs", icon: <InboxIcon /> },
-    { name: "Artist", route: "javascript:void(0)", icon: <InboxIcon /> },
+    { name: "Artists", route: "/artists", icon: <InboxIcon /> },
     { name: "Discover", route: "/discover", icon: <InboxIcon /> },
     { name: "More", route: "/language", icon: <InboxIcon /> }
   ];
@@ -39,19 +59,26 @@ export default function ResponsiveDrawer(props: Props) {
   const sideSecondItems = [
     {
       name: "Recently Added",
+      route: "/recent",
+      icon: <InboxIcon />
+    },
+    { name: "Favourite", route: "/favourite", icon: <InboxIcon /> },
+    { name: "Most Played", route: "/most-played", icon: <InboxIcon /> }
+  ];
+
+  const sideThirdItems = [
+    {
+      name: "My Profile",
       route: "javascript:void(0)",
       icon: <InboxIcon />
     },
-    { name: "Most Played", route: "javascript:void(0)", icon: <InboxIcon /> }
+    { name: "Logout", route: "javascript:void(0)", icon: <InboxIcon /> }
   ];
 
   const { children } = props;
   const route = useRouter();
-  
-  // const currentUrl = typeof window !== "undefined" ? window.location.href : "";
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
-  
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -69,7 +96,7 @@ export default function ResponsiveDrawer(props: Props) {
   };
 
   const drawer = (
-    <div style={{ backgroundColor: "#181515", height: "100%" }}>
+    <div style={{ backgroundColor: "#1e1e1e", color: "white", height: "100%" }}>
       <Link
         href="/"
         className="headerLogo"
@@ -78,32 +105,70 @@ export default function ResponsiveDrawer(props: Props) {
           display: "flex",
           alignItems: "center",
           margin: "20px 0 20px 0",
-          backgroundColor: "#181515"
+          backgroundColor: "#1e1e1e"
         }}
       >
         <Image src={assest.logo_img} width={180} height={38} alt="Logo" />
       </Link>
-      <List>
-        {sideFirstItems.map((text) => (
-          <ListItem key={text?.name} disablePadding>
-            <ListItemButton onClick={() => route.push(`${text?.route}`)}>
-              <ListItemIcon>{text?.icon}</ListItemIcon>
-              <ListItemText primary={text?.name} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      <ThemeProvider theme={theme}>
+        <List>
+          {sideFirstItems.map((text) => (
+            <ListItem key={text?.name} disablePadding>
+              <ListItemButton
+                onClick={() => route.push(`${text?.route}`)}
+                className={
+                  route?.pathname === text?.route
+                    ? styles.active
+                    : styles.navList
+                }
+              >
+                <ListItemIcon>{text?.icon}</ListItemIcon>
+                <ListItemText primary={text?.name} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </ThemeProvider>
       <Divider sx={{ borderColor: "rgb(90, 87, 89)" }} />
-      <List>
-        {sideSecondItems.map((text) => (
-          <ListItem key={text?.name} disablePadding>
-            <ListItemButton href={text?.route}>
-              <ListItemIcon>{text?.icon}</ListItemIcon>
-              <ListItemText primary={text?.name} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      <ThemeProvider theme={theme}>
+        <List>
+          {sideSecondItems.map((text) => (
+            <ListItem key={text?.name} disablePadding>
+              <ListItemButton
+                onClick={() => route.push(`${text?.route}`)}
+                className={
+                  route?.pathname === text?.route
+                    ? styles.active
+                    : styles.navList
+                }
+              >
+                <ListItemIcon>{text?.icon}</ListItemIcon>
+                <ListItemText primary={text?.name} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </ThemeProvider>
+      <Divider sx={{ borderColor: "rgb(90, 87, 89)" }} />
+      <ThemeProvider theme={theme}>
+        <List>
+          {sideThirdItems.map((text) => (
+            <ListItem key={text?.name} disablePadding>
+              <ListItemButton
+                onClick={() => route.push(`${text?.route}`)}
+                className={
+                  route?.pathname === text?.route
+                    ? styles.active
+                    : styles.navList
+                }
+              >
+                <ListItemIcon>{text?.icon}</ListItemIcon>
+                <ListItemText primary={text?.name} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </ThemeProvider>
     </div>
   );
 
@@ -175,7 +240,7 @@ export default function ResponsiveDrawer(props: Props) {
         sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar />
-        <Box sx={{ marginTop: "30px" }}>{children}</Box>
+        <Box sx={{ marginTop: "30px", minHeight:"80vh" }}>{children}</Box>
         <Footer />
       </Box>
     </Box>

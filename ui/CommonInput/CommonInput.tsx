@@ -13,7 +13,7 @@ const InputWrap = styled(TextField)(({ theme }) => ({
     border: "1px solid white",
     padding: "1px 16px",
     color: "white",
-    minWidth: "300px",
+    minWidth: "100px",
     "&:hover, &:focus, &:focus-within": {
       backgroundColor: "black !important",
     },
@@ -103,12 +103,12 @@ const InputFieldCommon = forwardRef<HTMLInputElement, InputFieldCommonProps>(
                 onMouseDown={handleMouseDownPassword}
                 disableRipple
               >
-                {showPassword ? <VisibilityIcon style={{ color: "white" }} /> : <VisibilityOffIcon style={{ color: "white" }}/>}
+                {showPassword ? <VisibilityIcon style={{ color: "rgb(255 14 188)" }} /> : <VisibilityOffIcon style={{ color: "rgb(255 14 188)" }}/>}
               </IconButton>
             </InputAdornment>
           ) : (
             <InputAdornment position="end">
-              <IconButton disableRipple style={{ color: "white" }}>{adorMentIcon}</IconButton>
+              <IconButton disableRipple style={{ color: "rgb(255 14 188)" }}>{adorMentIcon}</IconButton>
             </InputAdornment>
           )
         }}

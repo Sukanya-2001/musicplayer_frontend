@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 const ResetNewPassword = () => {
-  
   const router = useRouter();
 
   return (
@@ -61,7 +60,7 @@ const ResetNewPassword = () => {
         <Grid item xs={12} md={6}>
           <Typography variant="body1" color="white" gutterBottom>
             Back to login?{" "}
-            <Link href="/auth/sign-in" style={{ color: "white" }}>
+            <Link href="/auth/sign-in" style={{ color: "rgb(255 14 188)" }}>
               Sign in
             </Link>
           </Typography>

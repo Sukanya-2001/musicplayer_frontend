@@ -93,24 +93,28 @@ const FooterWrap = styled(Box)`
 const Footer = () => {
   const navItems = [
     {
-      name: "home",
+      name: "Home",
       route: "/"
     },
     {
-      name: "About",
-      route: "/about"
+      name: "Albums",
+      route: "/albums"
     },
     {
-      name: "Products",
-      route: "/products"
+      name: "Artists",
+      route: "/artists"
     },
     {
-      name: "Package",
-      route: "/package"
+      name: "About us",
+      route: "/"
     },
     {
-      name: "Contact",
-      route: "/contact"
+      name: "Contact us",
+      route: "/"
+    },
+    {
+      name: "Premium",
+      route: "/"
     }
   ];
   const router = useRouter();
@@ -131,6 +135,7 @@ const Footer = () => {
                     href={item?.route}
                     key={item.name}
                     className={router.pathname === item.route ? "active" : ""}
+                    style={{color:'rgb(255 14 188)'}}
                   >
                     {item?.name}
                   </Link>
@@ -139,7 +144,7 @@ const Footer = () => {
             </List>
 
             <Box className="copy">
-              © 2023 <Link href="/">Career Utility.</Link> All Rights Reserved.
+              © 2025 <Link href="/" style={{color:"rgb(255 14 188)"}}>Music Player.</Link> All Rights Reserved.
             </Box>
           </Box>
         </Container>

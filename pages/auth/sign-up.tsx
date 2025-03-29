@@ -115,7 +115,7 @@ const SignUp = () => {
 
         <Grid item xs={12} md={6}>
           <Typography variant="body1" color="white" gutterBottom>
-            Already have an account? <Link href="/auth/sign-in" style={{color:"white"}}>Sign in</Link>
+            Already have an account? <Link href="/auth/sign-in" style={{color:"rgb(255 14 188)"}}>Sign in</Link>
           </Typography>
         </Grid>
 

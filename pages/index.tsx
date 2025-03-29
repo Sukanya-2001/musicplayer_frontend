@@ -1,3 +1,4 @@
+import Feedback from "@/components/Feedback/Feedback";
 import { Album } from "@/components/HomeSec/Album";
 import { Artists } from "@/components/HomeSec/Artists";
 import Banner from "@/components/HomeSec/Banner";
@@ -14,6 +15,7 @@ export default function Home() {
       <Artists />
       <Album />
       <SongComp title="You also may" subTitle="Like" />
+      <Feedback />
     </ResponsiveDrawer>
   );
 }

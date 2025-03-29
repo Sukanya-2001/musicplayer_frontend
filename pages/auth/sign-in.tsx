@@ -58,14 +58,14 @@ const SignIn = () => {
           <Grid item xs={12} md={6}>
             <Typography variant="body1" color="white" gutterBottom>
               Don't have an account?{" "}
-              <Link href="/auth/sign-up" style={{ color: "white" }}>
+              <Link href="/auth/sign-up" style={{ color: "rgb(255 14 188)" }}>
                 Sign up
               </Link>
             </Typography>
           </Grid>
           <Grid item xs={12} md={6} sx={{ textAlign: "right" }}>
             <Typography variant="body1" color="white" gutterBottom>
-              <Link href="/auth/forgot-password" style={{ color: "white" }}>
+              <Link href="/auth/forgot-password" style={{ color: "rgb(255 14 188)" }}>
                 Forgot Password?
               </Link>
             </Typography>

@@ -31,7 +31,17 @@ export const sideSecondItems: SidebarItem[] = [
   { name: "Most Played", route: "/most-played", icon: PlaylistPlayOutlinedIcon }
 ];
 
-export const sideThirdItems: SidebarItem[] = [
+export const othersItems: SidebarItem[] = [
+  {
+    name: "About us",
+    route: "javascript:void(0)",
+    icon: AccountCircleOutlinedIcon
+  },
+  { name: "Contact us", route: "javascript:void(0)", icon: LogoutOutlinedIcon },
+  { name: "Premium", route: "javascript:void(0)", icon: LogoutOutlinedIcon }
+];
+
+export const authenticationItems: SidebarItem[] = [
   { name: "Favourite", route: "/favourite", icon: FavoriteOutlinedIcon },
   {
     name: "My Profile",
@@ -39,6 +49,14 @@ export const sideThirdItems: SidebarItem[] = [
     icon: AccountCircleOutlinedIcon
   },
   { name: "Logout", route: "javascript:void(0)", icon: LogoutOutlinedIcon }
+];
+
+export const authItems: SidebarItem[] = [
+  {
+    name: "Sign in",
+    route: "javascript:void(0)",
+    icon: AccountCircleOutlinedIcon
+  }
 ];
 
 export const AlbumListData = [

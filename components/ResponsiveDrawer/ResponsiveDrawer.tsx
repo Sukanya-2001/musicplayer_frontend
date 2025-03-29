@@ -1,10 +1,13 @@
+import { useAppSelector } from "@/hooks/redux/useAppSelector";
 import assest from "@/json/assest";
 import Footer from "@/layout/Footer/Footer";
 import Header from "@/layout/Header/Header";
 import {
+  authenticationItems,
+  authItems,
+  othersItems,
   sideFirstItems,
-  sideSecondItems,
-  sideThirdItems
+  sideSecondItems
 } from "@/lib/static/Demo";
 import MenuIcon from "@mui/icons-material/Menu";
 import { createTheme, ThemeProvider } from "@mui/material";
@@ -31,6 +34,7 @@ const drawerWidth = 240;
 interface Props {
   window?: () => Window;
   children: React.ReactNode;
+  noFooter?: boolean;
 }
 
 export default function ResponsiveDrawer(props: Props) {
@@ -53,8 +57,9 @@ export default function ResponsiveDrawer(props: Props) {
     }
   });
 
-  const { children } = props;
+  const { children, noFooter } = props;
   const route = useRouter();
+  const { isLoggedIn } = useAppSelector((s) => s?.userSlice);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
 
@@ -131,28 +136,81 @@ export default function ResponsiveDrawer(props: Props) {
           ))}
         </List>
       </ThemeProvider>
-      <Divider sx={{ borderColor: "rgb(90, 87, 89)" }} />
-      <ThemeProvider theme={theme}>
-        <List>
-          {sideThirdItems.map((text) => (
-            <ListItem key={text?.name} disablePadding>
-              <ListItemButton
-                onClick={() => route.push(`${text?.route}`)}
-                className={
-                  route?.pathname === text?.route
-                    ? styles.active
-                    : styles.navList
-                }
-              >
-                <ListItemIcon>
-                  <text.icon />
-                </ListItemIcon>
-                <ListItemText primary={text?.name} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </ThemeProvider>
+      <Box sx={{ display: { xs: "block", lg: "none" } }}>
+        <Divider sx={{ borderColor: "rgb(90, 87, 89)" }} />
+        <ThemeProvider theme={theme}>
+          <List>
+            {othersItems.map((text) => (
+              <ListItem key={text?.name} disablePadding>
+                <ListItemButton
+                  onClick={() => route.push(`${text?.route}`)}
+                  className={
+                    route?.pathname === text?.route
+                      ? styles.active
+                      : styles.navList
+                  }
+                >
+                  <ListItemIcon>
+                    <text.icon />
+                  </ListItemIcon>
+                  <ListItemText primary={text?.name} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </ThemeProvider>
+      </Box>
+      {isLoggedIn ? (
+        <>
+          <Divider sx={{ borderColor: "rgb(90, 87, 89)" }} />
+          <ThemeProvider theme={theme}>
+            <List>
+              {authenticationItems.map((text) => (
+                <ListItem key={text?.name} disablePadding>
+                  <ListItemButton
+                    onClick={() => route.push(`${text?.route}`)}
+                    className={
+                      route?.pathname === text?.route
+                        ? styles.active
+                        : styles.navList
+                    }
+                  >
+                    <ListItemIcon>
+                      <text.icon />
+                    </ListItemIcon>
+                    <ListItemText primary={text?.name} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </ThemeProvider>
+        </>
+      ) : (
+        <Box sx={{ display: { xs: "block", md: "none" } }}>
+          <Divider sx={{ borderColor: "rgb(90, 87, 89)" }} />
+          <ThemeProvider theme={theme}>
+            <List>
+              {authItems.map((text) => (
+                <ListItem key={text?.name} disablePadding>
+                  <ListItemButton
+                    onClick={() => route.push(`${text?.route}`)}
+                    className={
+                      route?.pathname === text?.route
+                        ? styles.active
+                        : styles.navList
+                    }
+                  >
+                    <ListItemIcon>
+                      <text.icon />
+                    </ListItemIcon>
+                    <ListItemText primary={text?.name} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </ThemeProvider>
+        </Box>
+      )}
     </div>
   );
 
@@ -225,7 +283,7 @@ export default function ResponsiveDrawer(props: Props) {
       >
         <Toolbar />
         <Box sx={{ marginTop: "30px", minHeight: "80vh" }}>{children}</Box>
-        <Footer />
+        {!noFooter && <Footer />}
       </Box>
     </Box>
   );

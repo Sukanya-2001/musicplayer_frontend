@@ -7,75 +7,69 @@ import { styled } from "@mui/system";
 import React, { forwardRef } from "react";
 
 const InputWrap = styled(TextField)(({ theme }) => ({
-  ".MuiInputBase-adornedEnd": {
-    height: "auto",
-    boxSizing: "border-box",
-    fontSize: "16px",
-    fontWeight: 400,
-    color: "white", // White text
-    backgroundColor: "black", // Black background
+  ".MuiInputBase-root": {
+    backgroundColor: "black !important", // Keep the input background black
     borderRadius: "10px",
-    border: "1px solid white", // White border
-    padding: "6.5px 16px",
-    boxShadow: "0px 1px 3px 0px rgba(255, 255, 255, 0.06)",
+    border: "1px solid white",
+    padding: "1px 16px",
+    color: "white",
     minWidth: "300px",
-    "@media (max-width: 600px)": {
-      padding: "5px 10px"
+    "&:hover, &:focus, &:focus-within": {
+      backgroundColor: "black !important",
     },
+  },
 
-    "input, textarea": {
-      border: 0,
-      paddingLeft: 0,
-      color: "white", // Ensuring input text is white
+  ".MuiInputBase-input": {
+    color: "white !important", // Keep text color white
+    backgroundColor: "black !important", // Prevent selection background change
+    "-webkit-text-fill-color": "white !important", // Fix autofill background issue
+  },
+
+  ".MuiOutlinedInput-notchedOutline": {
+    borderColor: "white !important", // Keep the border white
+  },
+
+  // Fix dropdown option background
+  ".MuiAutocomplete-popper, .MuiAutocomplete-listbox, .MuiAutocomplete-option": {
+    backgroundColor: "black !important",
+    color: "white !important",
+  },
+
+  "input, textarea": {
+    border: 0,
+    paddingLeft: 0,
+    color: "white",
+    backgroundColor: "transparent !important", // Ensure no override
+    "&::placeholder": {
+      color: "rgba(255, 255, 255, 0.6)",
+      opacity: 1,
+    },
+    "&:focus": {
+      backgroundColor: "transparent !important",
+    },
+  },
+
+  // Ensure autocomplete dropdown does not change background color
+  ".MuiAutocomplete-inputRoot": {
+    backgroundColor: "black !important",
+  },
+
+  // Fix autofill background color
+  "input:-webkit-autofill": {
+    backgroundColor: "black !important",
+    "-webkit-box-shadow": "0 0 0px 1000px black inset !important",
+    "-webkit-text-fill-color": "white !important",
+  },
+
+  button: {
+    backgroundColor: "transparent",
+    padding: 0,
+    "&:focus, &:hover": {
       backgroundColor: "transparent",
-      "&::placeholder": {
-        color: "rgba(255, 255, 255, 0.6)", // Placeholder in dim white
-        opacity: 1
-      },
-      "&:focus": {
-        border: 0,
-        background: "transparent"
-      }
     },
-
-    textarea: {
-      height: "125px !important",
-      padding: "20px 10px 20px 51px",
-      "@media (max-width: 600px)": {
-        padding: "20px 10px 20px 30px"
-      }
-    },
-
-    "&.Mui-error": {
-      "input, textarea": {
-        color: "white"
-      }
-    },
-
-    ".MuiOutlinedInput-notchedOutline": {
-      border: "1px solid white" // White border on focus
-    },
-
-    "#outlined-adornment-password": {
-      border: 0,
-      padding: 0,
-      height: "39px",
-      fontSize: "16px"
-    },
-
-    button: {
-      backgroundColor: "transparent",
-      padding: 0,
-      "&:focus, &:hover": {
-        backgroundColor: "transparent"
-      },
-      InputAdornment: {
-        fontSize: "20px",
-        color: "white" // Icon color white for visibility
-      }
-    }
-  }
+  },
 }));
+
 
 type InputFieldCommonProps = StandardTextFieldProps & {
   isPassword?: boolean;
@@ -109,12 +103,12 @@ const InputFieldCommon = forwardRef<HTMLInputElement, InputFieldCommonProps>(
                 onMouseDown={handleMouseDownPassword}
                 disableRipple
               >
-                {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                {showPassword ? <VisibilityIcon style={{ color: "white" }} /> : <VisibilityOffIcon style={{ color: "white" }}/>}
               </IconButton>
             </InputAdornment>
           ) : (
             <InputAdornment position="end">
-              <IconButton disableRipple>{adorMentIcon}</IconButton>
+              <IconButton disableRipple style={{ color: "white" }}>{adorMentIcon}</IconButton>
             </InputAdornment>
           )
         }}

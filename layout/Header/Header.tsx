@@ -118,21 +118,15 @@ export default function Header() {
               <Image src={assest.logo_img} width={250} height={38} alt="Logo" />
             </Link> */}
             <Box>
-              <Box sx={{ display: { xs: "none", sm: "block" } }}>
+              <Box sx={{ marginRight:"20px" }}>
                 <InputFieldCommon
                   placeholder="Search a song"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchOutlinedIcon />
-                      </InputAdornment>
-                    )
-                  }}
+                  adorMentIcon={<SearchOutlinedIcon />}
                 />
               </Box>
             </Box>
             <Box
-              sx={{ display: { xs: "none", md: "block" } }}
+              sx={{ display: { xs: "none", lg: "block" } }}
               className="navbar"
             >
               {navItems.map((item) => (
@@ -168,11 +162,15 @@ export default function Header() {
                   </CustomButtonPrimary> */}
               </Box>
             ) : (
-              <Box>
-                <CustomButtonPrimary variant="outlined" color="primary">
+              <Box sx={{ display: { xs: "none", md: "block" } }}>
+                <CustomButtonPrimary
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => router.push("/auth/sign-in")}
+                >
                   Login
                 </CustomButtonPrimary>
-                <CustomButtonPrimary variant="contained" color="primary">
+                <CustomButtonPrimary variant="contained" color="primary"  onClick={() => router.push("/auth/sign-up")}>
                   Sign up
                 </CustomButtonPrimary>
               </Box>

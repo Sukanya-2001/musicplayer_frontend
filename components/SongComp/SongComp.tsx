@@ -1,3 +1,4 @@
+import { useWindowSize } from "@/hooks/utils/commonUtils";
 import assest from "@/json/assest";
 import AddIcon from "@mui/icons-material/Add";
 import {
@@ -10,10 +11,11 @@ import {
   Typography
 } from "@mui/material";
 import { useRouter } from "next/router";
+import { useMemo } from "react";
 
 const songs = [
   {
-    title: "Whatever It Takes",
+    title: "Whatever It Takes very important",
     artist: "Imagine Dragons",
     img: assest?.music
   },
@@ -35,8 +37,31 @@ export type SongProps = {
   title: string;
   subTitle: string;
 };
+
+const getCharacterLimit = (windowSize: string) => {
+  switch (windowSize) {
+    case "xxs":
+      return 6;
+    case "xs":
+      return 9;
+    case "sm":
+      return 20;
+    case "smm":
+      return 18;
+    case "md":
+      return 25;
+    default:
+      return 10;
+  }
+};
+
 export const SongComp = ({ title, subTitle }: SongProps) => {
   const router = useRouter();
+  const windowSize = useWindowSize();
+  const characterLimit = useMemo(
+    () => getCharacterLimit(windowSize),
+    [windowSize]
+  );
 
   return (
     <Box>
@@ -59,7 +84,8 @@ export const SongComp = ({ title, subTitle }: SongProps) => {
                   backgroundColor: "#1e1e1e",
                   color: "white",
                   borderRadius: 2,
-                  boxShadow: "none"
+                  boxShadow: "none",
+                  cursor: "pointer"
                 }}
               >
                 <CardMedia
@@ -81,7 +107,9 @@ export const SongComp = ({ title, subTitle }: SongProps) => {
                       }
                     }}
                   >
-                    {song.title}
+                    {song?.title?.length < characterLimit
+                      ? song?.title
+                      : `${song?.title?.slice(0, characterLimit)}...`}
                   </Typography>
                   <Typography variant="body2" color="gray">
                     {song.artist}

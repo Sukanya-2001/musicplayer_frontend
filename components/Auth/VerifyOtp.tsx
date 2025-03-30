@@ -1,9 +1,42 @@
+import { useAuthOtpValidateHook } from "@/api/functions/user.api";
+import { otpPayload, otpSchema } from "@/hooks/Schema/auth.schema";
 import InputFieldCommon from "@/ui/CommonInput/CommonInput";
 import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
-import { Box, Divider, Grid, Typography } from "@mui/material";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Box, CircularProgress, Divider, Grid, Typography } from "@mui/material";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
 
-const VerifyOtp = () => {
+type Props = {
+  email: string;
+  handleResetPassword: () => void;
+};
+
+const VerifyOtp = ({ email, handleResetPassword }: Props) => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors }
+  } = useForm<otpPayload>({
+    resolver: yupResolver(otpSchema)
+  });
+  console.log(email);
+
+  const { isPending: otpPending } = useAuthOtpValidateHook();
+
+  const onSubmit = (data: otpPayload) => {
+    const payload = {
+      email: email,
+      otp: data?.otp
+    };
+    console.log(payload);
+    reset();
+    handleResetPassword();
+
+    // otpMutate(payload);
+  };
+
   return (
     <Box
       sx={{
@@ -15,53 +48,73 @@ const VerifyOtp = () => {
         py: 6
       }}
     >
-      <Grid container spacing={2} sx={{ maxWidth: "800px"}}>
-        {/* Title with Centered Text & Line */}
-        <Grid item xs={12} sx={{ textAlign: "center" }}>
-          <Typography variant="h5" color="white" gutterBottom fontSize={25}>
-          Your email holds the key!
-          </Typography>
-          <Typography variant="h5" color="white" gutterBottom fontSize={20}>
-          Enter the OTP and let's go
-          </Typography>
-          <Divider
-            sx={{ backgroundColor: "white", width: "50%", mx: "auto" }}
-          />
-        </Grid>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Grid container spacing={2} sx={{ maxWidth: "800px" }}>
+          {/* Title with Centered Text & Line */}
+          <Grid item xs={12} sx={{ textAlign: "center" }}>
+            <Typography
+              variant="h2"
+              color="white"
+              gutterBottom
+              sx={{ fontSize: "25px" }}
+            >
+              Your email holds the key!
+            </Typography>
+            <Typography
+              variant="h2"
+              color="white"
+              gutterBottom
+              sx={{ fontSize: "20px" }}
+            >
+              Enter the OTP and let's go
+            </Typography>
+            <Divider
+              sx={{ backgroundColor: "white", width: "50%", mx: "auto" }}
+            />
+          </Grid>
 
-        {/* Email Field */}
-        <Grid item xs={12}>
-        <label style={{ color: "white" }}>OTP</label>
-          <InputFieldCommon
-            sx={{
-              input: { color: "white" },
-              fieldset: { borderColor: "white" },
-              mt: 2
-            }}
-          />
-        </Grid>
+          {/* Email Field */}
+          <Grid item xs={12}>
+            <label style={{ color: "white" }}>OTP</label>
+            <InputFieldCommon
+              {...register("otp")}
+              error={!!errors?.otp}
+              helperText={errors?.otp?.message}
+              sx={{
+                input: { color: "white" },
+                fieldset: { borderColor: "white" },
+                mt: 2
+              }}
+            />
+          </Grid>
 
-        <Grid item xs={12} md={6}>
-          <Typography variant="body1" color="white" gutterBottom>
-            Back to login? <Link href="/auth/sign-in" style={{color:"rgb(255 14 188)"}}>Sign in</Link>
-          </Typography>
-        </Grid>
+          <Grid item xs={12} md={6}>
+            <Typography variant="body1" color="white" gutterBottom>
+              Back to login?{" "}
+              <Link href="/auth/sign-in" style={{ color: "rgb(255 14 188)" }}>
+                Sign in
+              </Link>
+            </Typography>
+          </Grid>
 
-        {/* Centered Sign-In Button */}
-        <Grid
-          item
-          xs={12}
-          sx={{ display: "flex", justifyContent: "center"}}
-        >
-          <CustomButtonPrimary
-            variant="contained"
-            color="primary"
-            sx={{ px: 8 }}
-          >
-            Continue
-          </CustomButtonPrimary>
+          {/* Centered Sign-In Button */}
+          <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
+            <CustomButtonPrimary
+              variant="contained"
+              color="primary"
+              type="submit"
+              disabled={otpPending}
+              sx={{ px: 8 }}
+            >
+              {otpPending ? (
+                                <CircularProgress size={28} sx={{ color: "white" }} />
+                              ) : (
+                                "Continue"
+                              )}
+            </CustomButtonPrimary>
+          </Grid>
         </Grid>
-      </Grid>
+      </form>
     </Box>
   );
 };

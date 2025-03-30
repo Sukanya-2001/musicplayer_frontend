@@ -1,5 +1,4 @@
 import Feedback from "@/components/Feedback/Feedback";
-import { Album } from "@/components/HomeSec/Album";
 import { Artists } from "@/components/HomeSec/Artists";
 import Banner from "@/components/HomeSec/Banner";
 import ResponsiveDrawer from "@/components/ResponsiveDrawer/ResponsiveDrawer";
@@ -13,7 +12,9 @@ export default function Home() {
       <SongComp title="New Release" subTitle="Songs" />
       <SongComp title="Trending" subTitle="Songs" />
       <Artists />
-      <Album />
+
+      {/* <Album /> */}
+      <SongComp title="Top" subTitle="Albums" />
       <SongComp title="You also may" subTitle="Like" />
       <Feedback />
     </ResponsiveDrawer>

@@ -1,3 +1,5 @@
+// useAudioPlayer.ts
+
 import {
   next,
   pause,
@@ -9,6 +11,7 @@ import { Howl } from "howler";
 import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../redux/useAppSelector";
+import { generatePlaylistWithMeta } from "./commonUtils";
 import { useAutoNextAudio } from "./useAutoNextAudio";
 import { useSongApiByType } from "./useSongApiByType";
 
@@ -23,15 +26,18 @@ export const useAudioPlayer = () => {
 
   const soundRef = useRef<Howl | null>(null);
 
+  // ⬇️ Setup sound only when song (src) changes
   useEffect(() => {
-    if (!playlist[currentIndex]) return;
+    const currentSong = playlist[currentIndex];
+    if (!currentSong) return;
 
     if (soundRef.current) {
       soundRef.current.stop();
+      soundRef.current.unload(); // Clean up old Howl
     }
 
     soundRef.current = new Howl({
-      src: [playlist[currentIndex]],
+      src: [currentSong.src],
       html5: true,
       onend: () => onSongEnd()
     });
@@ -43,7 +49,7 @@ export const useAudioPlayer = () => {
     return () => {
       soundRef.current?.stop();
     };
-  }, [currentIndex, playlist]);
+  }, [currentIndex]);
 
   const handlePlayPause = () => {
     if (!soundRef.current) return;
@@ -52,32 +58,26 @@ export const useAudioPlayer = () => {
       soundRef.current.pause();
       dispatch(pause());
     } else {
-      soundRef.current.play();
+      soundRef.current.play(); // Will resume from current time
       dispatch(play());
     }
   };
 
   const handleNext = async () => {
-
     if (currentIndex < playlist.length - 1) {
       dispatch(next());
     } else if (hasNextPage && !isFetchingNextPage) {
       const res = await fetchNextPage();
 
       const newSongs = res?.data?.pages?.flatMap((page) => {
-        if ("songs" in page) {
-          return page?.songs;
-        } else if ("data" in page) {
-          return page?.data;
-        } else {
-          return [];
-        }
+        if ("songs" in page) return page?.songs;
+        if ("data" in page) return page?.data;
+        return [];
       });
-      const newUrls = newSongs?.map((song) => song.audioFile);
-      console.log(newUrls, "newUrls");
 
-      if (!!newUrls && newUrls.length > 0) {
-        dispatch(setPlaylist(newUrls));
+      const playList = await generatePlaylistWithMeta(newSongs!);
+      if (playList?.length) {
+        dispatch(setPlaylist(playList));
         dispatch(next());
       }
     }

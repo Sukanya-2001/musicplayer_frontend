@@ -1,4 +1,5 @@
 import { ISongsRes, useGetSongsHook } from "@/api/functions/songs.api";
+import { generatePlaylistWithMeta } from "@/hooks/utils/commonUtils";
 import assest from "@/json/assest";
 import {
   play,
@@ -47,9 +48,8 @@ export const SongsSec = ({ title, subTitle, songType }: SongSecProps) => {
     return [];
   }, [JSON.stringify(songsData)]);
 
-  const playList = songList.map((item) => item?.audioFile);
-
-  const handleSongClick = (index: number) => {
+  const handleSongClick = async (index: number) => {
+    const playList = await generatePlaylistWithMeta(songList);
     dispatch(setPlaylist(playList)); // save all 3 songs
     dispatch(setCurrentIndex(index));
     dispatch(setActiveSongSource("recommended")); //for api call

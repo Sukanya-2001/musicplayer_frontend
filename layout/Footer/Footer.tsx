@@ -125,7 +125,7 @@ const Footer = () => {
         <Container fixed>
           <Box className="ftr-wrapper">
             <Link href="/" className="ftr-logo">
-              <Image src={assest.logo_img} alt="" width={210} height={34} />
+              <Image src={assest.musicGirl} alt="" width={210} height={34} />
             </Link>
 
             <List className="ftr-list">
@@ -135,7 +135,7 @@ const Footer = () => {
                     href={item?.route}
                     key={item.name}
                     className={router.pathname === item.route ? "active" : ""}
-                    style={{color:'rgb(255 14 188)'}}
+                    style={{ color: "rgb(255 14 188)" }}
                   >
                     {item?.name}
                   </Link>
@@ -144,7 +144,11 @@ const Footer = () => {
             </List>
 
             <Box className="copy">
-              © 2025 <Link href="/" style={{color:"rgb(255 14 188)"}}>Music Player.</Link> All Rights Reserved.
+              © 2025{" "}
+              <Link href="/" style={{ color: "rgb(255 14 188)" }}>
+                Music Player.
+              </Link>{" "}
+              All Rights Reserved.
             </Box>
           </Box>
         </Container>

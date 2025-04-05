@@ -1,3 +1,4 @@
+import { ISongsRes } from "@/api/functions/songs.api";
 import { useEffect, useState } from "react";
 
 export const getRedirectUrl = (redirect?: string): string => {
@@ -51,4 +52,22 @@ export const formatDuration = (duration: number): string => {
   const minutes = Math.floor(duration / 60);
   const seconds = Math.floor(duration % 60);
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+};
+
+export const generatePlaylistWithMeta = async (songs: ISongsRes[]) => {
+  const playlist = await Promise.all(
+    songs.map(async (song) => {
+      const durationInSeconds = await getAudioDuration(song.audioFile);
+
+      return {
+        src: song.audioFile,
+        title: song.title,
+        image: song.imageFile,
+        artist: song.selectArtist?.map((a) => a.title).join(", "),
+        duration: formatDuration(durationInSeconds)
+      };
+    })
+  );
+
+  return playlist;
 };

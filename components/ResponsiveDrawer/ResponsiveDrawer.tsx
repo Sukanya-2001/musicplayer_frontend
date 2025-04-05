@@ -10,7 +10,7 @@ import {
   sideSecondItems
 } from "@/lib/static/Demo";
 import MenuIcon from "@mui/icons-material/Menu";
-import { createTheme, ThemeProvider, Typography } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -283,7 +283,6 @@ export default function ResponsiveDrawer(props: Props) {
       >
         <Toolbar />
         <Box sx={{ marginTop: "30px", minHeight: "80vh" }}>{children}</Box>
-        <Typography>HERE</Typography>
         {!noFooter && <Footer />}
       </Box>
     </Box>

@@ -7,3 +7,4 @@ export const USER_CHANGEPASS = "user_change_Password";
 
 export const HOME_PAGE_DETAILS = "home_page_details";
 export const SONGS_BY_TYPE = "songs_by_type";
+export const ALL_SONGS = "all_songs"

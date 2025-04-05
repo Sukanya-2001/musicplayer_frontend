@@ -1,12 +1,16 @@
-import { Box, Skeleton } from "@mui/material"
+import { Box, Skeleton } from "@mui/material";
 
 export const SongSection = () => {
-    return (
-        <Box>
-            <Skeleton width={600} height={50} variant="rounded"/>
-            <Skeleton width={600} height={50} variant="rounded"/>
-            <Skeleton width={600} height={50} variant="rounded"/>
-        </Box>
-
-    )
-}
+  return (
+    <Box>
+      {Array.from({ length: 3 }).map((_, index) => (
+        <Skeleton
+          key={index}
+          height={80}
+          variant="rounded"
+          sx={{ bgcolor: "grey.800", margin: "20px" }}
+        />
+      ))}
+    </Box>
+  );
+};

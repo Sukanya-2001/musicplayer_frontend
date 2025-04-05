@@ -10,7 +10,7 @@ export const TopSec = () => {
         margin: { xs: "20px", md: "30px 50px" },
         padding: "30px 0 30px 0",
         backgroundColor: "#1e1e1e",
-        borderRadius:"20px"
+        borderRadius: "20px"
       }}
     >
       <Grid container spacing={2} justifyContent="center" alignItems="center">
@@ -36,7 +36,7 @@ export const TopSec = () => {
               fontSize={{ xs: 24, md: 30 }}
               color="white"
             >
-              Top weekly songs
+              Top songs
             </Typography>
             <Typography variant="body1" color="gray" sx={{ mt: 1 }}>
               On our website, you can access an amazing collection of popular

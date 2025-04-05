@@ -23,7 +23,8 @@ export const endpoints = {
     getHomePageDetails: "user/home/get-home-details"
   },
   songs:{
-    songsByType: ''
+    songsByType: 'user/home/get-all-details',
+    allSongs: 'admin/song/get-songs'
   },
   cms: {
     about: "aboutpolicy/details",

@@ -12,6 +12,7 @@ export const getRedirectUrl = (redirect?: string): string => {
 };
 
 export const getWindowSize = () => {
+  if (typeof window === "undefined") return "lg";
   const width = window.innerWidth;
   if (width < 364) return "xxs";
   if (width < 565) return "xs";
@@ -32,4 +33,22 @@ export const useWindowSize = () => {
   }, []);
 
   return windowSize;
+};
+
+export const getAudioDuration = (url: string): Promise<number> => {
+  return new Promise((resolve, reject) => {
+    const audio = new Audio(url);
+    audio.addEventListener("loadedmetadata", () => {
+      resolve(audio.duration); // duration in seconds
+    });
+    audio.addEventListener("error", (e) => {
+      reject("Failed to load audio");
+    });
+  });
+};
+
+export const formatDuration = (duration: number): string => {
+  const minutes = Math.floor(duration / 60);
+  const seconds = Math.floor(duration % 60);
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 };

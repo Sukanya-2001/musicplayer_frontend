@@ -52,6 +52,14 @@ export const SongComp = ({
     [windowSize]
   );
 
+  const handleRoute = () => {
+    if (title === "Recomended") {
+      router.push("/recomended-songs");
+    } else {
+      router.push(`/songs?${title}`);
+    }
+  };
+
   return (
     <Box>
       <Typography
@@ -133,7 +141,7 @@ export const SongComp = ({
               </Box>
             )}
 
-            {!!details && details?.length > 5 && (
+            {!!details && details?.length > 0 && (
               <Grid2
                 size={{ xs: 4, sm: 6, md: 4, lg: 2 }}
                 display="flex"
@@ -141,7 +149,7 @@ export const SongComp = ({
                 alignItems="center"
               >
                 <IconButton
-                  onClick={() => router.push(`/songs?${title}`)}
+                  onClick={handleRoute}
                   sx={{
                     color: "rgb(255 14 188)",
                     display: "flex",

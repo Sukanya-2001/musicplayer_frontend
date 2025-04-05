@@ -1,25 +1,39 @@
-import { useState, useEffect, useRef } from "react";
+import {
+  next,
+  pause,
+  play,
+  prev,
+  setPlaylist
+} from "@/reduxtoolkit/slices/playerSlice";
 import { Howl } from "howler";
+import { useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../redux/useAppSelector";
+import { useAutoNextAudio } from "./useAutoNextAudio";
+import { useSongApiByType } from "./useSongApiByType";
 
-interface Song {
-  src: string;
-  title: string;
-}
+export const useAudioPlayer = () => {
+  const { activeSongSource, playlist, currentIndex, isPlaying } =
+    useAppSelector((s) => s.audio);
+  const dispatch = useDispatch();
+  const { onSongEnd } = useAutoNextAudio();
 
-export const useAudioPlayer = (playlist: Song[]) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const { fetchNextPage, hasNextPage, isFetchingNextPage, data } =
+    useSongApiByType(activeSongSource);
+
   const soundRef = useRef<Howl | null>(null);
 
   useEffect(() => {
+    if (!playlist[currentIndex]) return;
+
     if (soundRef.current) {
       soundRef.current.stop();
     }
 
     soundRef.current = new Howl({
-      src: [playlist[currentIndex].src],
+      src: [playlist[currentIndex]],
       html5: true,
-      onend: () => handleNext(),
+      onend: () => onSongEnd()
     });
 
     if (isPlaying) {
@@ -29,32 +43,62 @@ export const useAudioPlayer = (playlist: Song[]) => {
     return () => {
       soundRef.current?.stop();
     };
-  }, [currentIndex]);
+  }, [currentIndex, playlist]);
 
   const handlePlayPause = () => {
     if (!soundRef.current) return;
+
     if (isPlaying) {
       soundRef.current.pause();
+      dispatch(pause());
     } else {
       soundRef.current.play();
+      dispatch(play());
     }
-    setIsPlaying(!isPlaying);
   };
 
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % playlist.length);
+  const handleNext = async () => {
+
+    if (currentIndex < playlist.length - 1) {
+      dispatch(next());
+    } else if (hasNextPage && !isFetchingNextPage) {
+      const res = await fetchNextPage();
+
+      const newSongs = res?.data?.pages?.flatMap((page) => {
+        if ("songs" in page) {
+          return page?.songs;
+        } else if ("data" in page) {
+          return page?.data;
+        } else {
+          return [];
+        }
+      });
+      const newUrls = newSongs?.map((song) => song.audioFile);
+      console.log(newUrls, "newUrls");
+
+      if (!!newUrls && newUrls.length > 0) {
+        dispatch(setPlaylist(newUrls));
+        dispatch(next());
+      }
+    }
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + playlist.length) % playlist.length);
+    dispatch(prev());
   };
 
   const skipForward = () => {
-    soundRef.current?.seek(soundRef.current.seek() + 10);
+    if (soundRef.current) {
+      const current = soundRef.current.seek() as number;
+      soundRef.current.seek(current + 10);
+    }
   };
 
   const skipBackward = () => {
-    soundRef.current?.seek(Math.max(0, soundRef.current.seek() - 10));
+    if (soundRef.current) {
+      const current = soundRef.current.seek() as number;
+      soundRef.current.seek(Math.max(0, current - 10));
+    }
   };
 
   return {
@@ -64,6 +108,6 @@ export const useAudioPlayer = (playlist: Song[]) => {
     handlePrev,
     skipForward,
     skipBackward,
-    currentSong: playlist[currentIndex],
+    currentSong: playlist[currentIndex]
   };
 };

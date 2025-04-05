@@ -1,4 +1,7 @@
-import { ISongsRes, useGetSongsHook } from "@/api/functions/songs.api";
+import {
+  ISongsRes,
+  useGetRecomendedSongsHook
+} from "@/api/functions/songs.api";
 import assest from "@/json/assest";
 import {
   play,
@@ -15,20 +18,12 @@ import { useDispatch } from "react-redux";
 import { SongSection } from "../Skeleton/SongSection";
 import { SongDuration } from "./SongDuration";
 
-export type Isongs = {
-  img: string;
-  title: string;
-  desc: string;
-  time: string;
-};
-
 type SongSecProps = {
   title: string;
   subTitle: string;
-  songType: "the2000ssongs" | "90s" | "nrs";
 };
 
-export const SongsSec = ({ title, subTitle, songType }: SongSecProps) => {
+export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
   const dispatch = useDispatch();
 
   const {
@@ -37,16 +32,15 @@ export const SongsSec = ({ title, subTitle, songType }: SongSecProps) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage
-  } = useGetSongsHook(songType);
+  } = useGetRecomendedSongsHook();
 
   const songList: ISongsRes[] = useMemo(() => {
     if (songsData) {
-      return songsData?.pages?.flatMap((s) => s?.data || []);
+      return songsData?.pages?.flatMap((s) => s?.songs || []);
     }
 
     return [];
   }, [JSON.stringify(songsData)]);
-
   const playList = songList.map((item) => item?.audioFile);
 
   const handleSongClick = (index: number) => {
@@ -124,7 +118,6 @@ export const SongsSec = ({ title, subTitle, songType }: SongSecProps) => {
                   >
                     {song?.title}
                   </Typography>
-
                   <Typography
                     variant="body2"
                     color="gray"

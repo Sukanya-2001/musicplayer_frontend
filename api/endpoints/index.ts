@@ -19,6 +19,12 @@ export const endpoints = {
     profileDetails: "user/profile/get",
     profileUpdate: "user/profile/update"
   },
+  home: {
+    getHomePageDetails: "user/home/get-home-details"
+  },
+  songs:{
+    songsByType: ''
+  },
   cms: {
     about: "aboutpolicy/details",
     faq: "faq/all"

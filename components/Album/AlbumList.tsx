@@ -1,9 +1,12 @@
 import { AlbumListData } from "@/lib/static/Demo";
 import { Box, Grid, Typography } from "@mui/material";
 import Image from "next/image";
-import { SongProps } from "../SongComp/SongComp";
 
-export const AlbumList = ({ title, subTitle }: SongProps) => {
+type AlbumProps = {
+  title: string;
+  subTitle: string;
+};
+export const AlbumList = ({ title, subTitle }: AlbumProps) => {
   return (
     <Box>
       {/* Title */}

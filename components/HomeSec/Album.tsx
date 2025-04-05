@@ -1,4 +1,4 @@
-import assest from "@/json/assest";
+import { LimitedAlbum } from "@/api/functions/home.api";
 import AddIcon from "@mui/icons-material/Add";
 import {
   Box,
@@ -9,27 +9,14 @@ import {
   IconButton,
   Typography
 } from "@mui/material";
+import { AlbumHomeSkeleton } from "../Skeleton/AlbumHomeSkeleton";
 
-const songs = [
-  {
-    title: "Whatever It Takes",
-    artist: "Imagine Dragons",
-    img: assest?.music
-  },
-  { title: "Skyfall", artist: "Adele", img: assest?.music },
-  { title: "Superman", artist: "Eminem", img: assest?.music },
-  {
-    title: "Softcore",
-    artist: "The Neighbourhood",
-    img: assest?.music
-  },
-  {
-    title: "The Loneliest",
-    artist: "Måneskin",
-    img: assest?.music
-  }
-];
-export const Album = () => {
+type AlbumProps = {
+  details: LimitedAlbum[];
+  isPending: boolean;
+};
+
+export const Album = ({ details, isPending }: AlbumProps) => {
   return (
     <Box>
       <Typography
@@ -42,61 +29,99 @@ export const Album = () => {
           Albums
         </Box>{" "}
       </Typography>
-      <Box sx={{ padding: "10px 5px 10px 5px" }}>
-        <Grid2 container spacing={2} justifyContent="center">
-          {songs.map((song, index) => (
-            <Grid2 size={{ xs: 4, sm: 6, md: 4, lg: 2 }} key={index}>
-              <Card
-                sx={{
-                  backgroundColor: "#1e1e1e",
-                  color: "white",
-                  borderRadius: 2,
-                  boxShadow: "none",
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  height="120"
-                  image={song.img}
-                  alt={song.title}
-                  sx={{padding:"15px 15px 0 15px"}}
-                />
-                <CardContent>
-                  <Typography
-                    variant="body1"
-                    fontWeight="bold"
+
+      <Box sx={{ padding: "10px 5px" }}>
+        {isPending ? (
+          <AlbumHomeSkeleton />
+        ) : (
+          <Grid2 container spacing={2} justifyContent="flex-start">
+            {!!details && details?.length > 0 ? (
+              details?.map((album, index) => (
+                <Grid2
+                  key={index}
+                  size={{ xs: 6, sm: 6, md: 3, lg: 2 }}
+                  display="flex"
+                  justifyContent="center"
+                >
+                  <Card
                     sx={{
-                      fontSize: {
-                        xs: "0.875rem",
-                        sm: "1rem",
-                        md: "1.125rem",
-                        lg: "1.25rem"
-                      }
+                      backgroundColor: "#1e1e1e",
+                      color: "white",
+                      borderRadius: 4,
+                      boxShadow: "none",
+                      textAlign: "center",
+                      padding: 2,
+                      width: "100%",
+                      maxWidth: 200
                     }}
                   >
-                    {song.title}
+                    <CardMedia
+                      component="img"
+                      image={album?.file}
+                      alt={album?.title}
+                      sx={{
+                        width: 150,
+                        height: 150,
+                        borderRadius: "50%",
+                        objectFit: "cover",
+                        margin: "0 auto",
+                        mb: 2
+                      }}
+                    />
+                    <CardContent sx={{ padding: 0 }}>
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        sx={{ fontSize: "1rem", mb: 0.5 }}
+                      >
+                        {album?.title}
+                      </Typography>
+                      <Typography variant="body2" color="gray">
+                        {album?.description}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid2>
+              ))
+            ) : (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  textAlign: "center",
+                  width: "100%"
+                }}
+              >
+                <Typography variant="body2" color="gray">
+                  No Album found
+                </Typography>
+              </Box>
+            )}
+
+            {!!details && details?.length > 5 && (
+              <Grid2
+                size={{ xs: 6, sm: 4, md: 3, lg: 2 }}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <IconButton
+                  sx={{
+                    color: "rgb(255 14 188)",
+                    display: "flex",
+                    flexDirection: "column"
+                  }}
+                >
+                  <AddIcon fontSize="large" />
+                  <Typography variant="body2" sx={{ color: "rgb(255 14 188)" }}>
+                    View All
                   </Typography>
-                  <Typography variant="body2" color="gray">
-                    {song.artist}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid2>
-          ))}
-          <Grid2
-            size={{ xs: 4, sm: 6, md: 4, lg: 2 }}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <IconButton
-              sx={{ color: "rgb(255 14 188)", display: "flex", flexDirection: "column" }}
-            >
-              <AddIcon fontSize="large" />
-              <Typography variant="body2" sx={{color:"rgb(255 14 188)"}}>View All</Typography>
-            </IconButton>
+                </IconButton>
+              </Grid2>
+            )}
           </Grid2>
-        </Grid2>
+        )}
       </Box>
     </Box>
   );

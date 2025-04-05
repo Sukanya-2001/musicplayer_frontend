@@ -1,10 +1,11 @@
+import { useGetSongsHook } from "@/api/functions/songs.api";
 import assest from "@/json/assest";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import { useState } from "react";
 import { MusicPlayer } from "../MusicPlayer/MusicPlayer";
-import { SongProps } from "../SongComp/SongComp";
+import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
 
 export type Isongs = {
   img: string;
@@ -40,9 +41,21 @@ const songs: Isongs[] = [
   }
 ];
 
-export const SongsSec = ({ title, subTitle }: SongProps) => {
+type SongSecProps = {
+  title: string;
+  subTitle: string;
+  songType: string;
+};
+
+export const SongsSec = ({ title, subTitle, songType }: SongSecProps) => {
   const [isPlayerOpen, setIsPlayerOpen] = useState(false);
   const [currentSong, setCurrentSong] = useState<Isongs | null>(null);
+
+  const {
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage
+  } = useGetSongsHook(songType);
 
   const handleSongClick = (song: Isongs) => {
     setCurrentSong(song);
@@ -138,6 +151,34 @@ export const SongsSec = ({ title, subTitle }: SongProps) => {
             </Grid>
           </Grid>
         ))}
+
+        {!!hasNextPage && (
+          <Box
+            p={2}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            {" "}
+            <CustomButtonPrimary
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                fetchNextPage();
+              }}
+              type="button"
+              disabled={isFetchingNextPage}
+            >
+              {isFetchingNextPage ? (
+                <CircularProgress size={28} sx={{ color: "white" }} />
+              ) : (
+                "Load more"
+              )}
+            </CustomButtonPrimary>
+          </Box>
+        )}
       </Box>
 
       {/* Bottom Music Player */}

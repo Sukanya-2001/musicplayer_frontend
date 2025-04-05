@@ -1,3 +1,4 @@
+import { ISongs } from "@/api/functions/home.api";
 import { useWindowSize } from "@/hooks/utils/commonUtils";
 import assest from "@/json/assest";
 import AddIcon from "@mui/icons-material/Add";
@@ -12,30 +13,13 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
-
-const songs = [
-  {
-    title: "Whatever It Takes very important",
-    artist: "Imagine Dragons",
-    img: assest?.music
-  },
-  { title: "Skyfall", artist: "Adele", img: assest?.music },
-  { title: "Superman", artist: "Eminem", img: assest?.music },
-  {
-    title: "Softcore",
-    artist: "The Neighbourhood",
-    img: assest?.music
-  },
-  {
-    title: "The Loneliest",
-    artist: "Måneskin",
-    img: assest?.music
-  }
-];
+import { SongsHomeCard } from "../Skeleton/SongsHomeCard";
 
 export type SongProps = {
   title: string;
   subTitle: string;
+  details: ISongs[];
+  isPending: boolean;
 };
 
 const getCharacterLimit = (windowSize: string) => {
@@ -55,7 +39,12 @@ const getCharacterLimit = (windowSize: string) => {
   }
 };
 
-export const SongComp = ({ title, subTitle }: SongProps) => {
+export const SongComp = ({
+  title,
+  subTitle,
+  details,
+  isPending
+}: SongProps) => {
   const router = useRouter();
   const windowSize = useWindowSize();
   const characterLimit = useMemo(
@@ -76,69 +65,98 @@ export const SongComp = ({ title, subTitle }: SongProps) => {
         </Box>{" "}
       </Typography>
       <Box sx={{ padding: "10px 5px 10px 5px" }}>
-        <Grid2 container spacing={2} justifyContent="center">
-          {songs.map((song, index) => (
-            <Grid2 size={{ xs: 4, sm: 6, md: 4, lg: 2 }} key={index}>
-              <Card
-                sx={{
-                  backgroundColor: "#1e1e1e",
-                  color: "white",
-                  borderRadius: 2,
-                  boxShadow: "none",
-                  cursor: "pointer"
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={song.img}
-                  alt={song.title}
-                />
-                <CardContent>
-                  <Typography
-                    variant="body1"
-                    fontWeight="bold"
+        {isPending ? (
+          <SongsHomeCard />
+        ) : (
+          <Grid2 container spacing={2} justifyContent="flex-start">
+            {!!details && details?.length > 0 ? (
+              details?.map((song, index) => (
+                <Grid2 size={{ xs: 4, sm: 6, md: 4, lg: 2 }} key={index}>
+                  <Card
                     sx={{
-                      fontSize: {
-                        xs: "0.875rem",
-                        sm: "1rem",
-                        md: "1.125rem",
-                        lg: "1.25rem"
-                      }
+                      backgroundColor: "#1e1e1e",
+                      color: "white",
+                      borderRadius: 2,
+                      boxShadow: "none",
+                      cursor: "pointer"
                     }}
                   >
-                    {song?.title?.length < characterLimit
-                      ? song?.title
-                      : `${song?.title?.slice(0, characterLimit)}...`}
+                    <CardMedia
+                      component="img"
+                      height="140"
+                      image={
+                        !!song?.imageFile ? song?.imageFile : assest?.music
+                      }
+                      alt={song.title}
+                      sx={{
+                        maxHeight: { xs: "100px", sm: "140px" },
+                        minHeight: { xs: "100px", sm: "140px" }
+                      }}
+                    />
+                    <CardContent>
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        sx={{
+                          fontSize: {
+                            xs: "0.875rem",
+                            sm: "1rem",
+                            md: "1.125rem",
+                            lg: "1.25rem"
+                          }
+                        }}
+                      >
+                        {song?.title?.length < characterLimit
+                          ? song?.title
+                          : `${song?.title?.slice(0, characterLimit)}...`}
+                      </Typography>
+                      <Typography variant="body2" color="gray">
+                        {song?.subtitle}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid2>
+              ))
+            ) : (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  textAlign: "center",
+                  width: "100%"
+                }}
+              >
+                <Typography variant="body2" color="gray">
+                  No songs found
+                </Typography>
+              </Box>
+            )}
+
+            {!!details && details?.length > 5 && (
+              <Grid2
+                size={{ xs: 4, sm: 6, md: 4, lg: 2 }}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <IconButton
+                  onClick={() => router.push(`/songs?${title}`)}
+                  sx={{
+                    color: "rgb(255 14 188)",
+                    display: "flex",
+                    flexDirection: "column"
+                  }}
+                >
+                  <AddIcon fontSize="large" />
+                  <Typography variant="body2" sx={{ color: "rgb(255 14 188)" }}>
+                    View All
                   </Typography>
-                  <Typography variant="body2" color="gray">
-                    {song.artist}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid2>
-          ))}
-          <Grid2
-            size={{ xs: 4, sm: 6, md: 4, lg: 2 }}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <IconButton
-              onClick={() => router.push("/songs")}
-              sx={{
-                color: "rgb(255 14 188)",
-                display: "flex",
-                flexDirection: "column"
-              }}
-            >
-              <AddIcon fontSize="large" />
-              <Typography variant="body2" sx={{ color: "rgb(255 14 188)" }}>
-                View All
-              </Typography>
-            </IconButton>
+                </IconButton>
+              </Grid2>
+            )}
           </Grid2>
-        </Grid2>
+        )}
       </Box>
     </Box>
   );

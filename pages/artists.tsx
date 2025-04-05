@@ -1,6 +1,5 @@
 import { TopBanner } from "@/components/Artists/TopBanner";
 import ResponsiveDrawer from "@/components/ResponsiveDrawer/ResponsiveDrawer";
-import { SongComp } from "@/components/SongComp/SongComp";
 import assest from "@/json/assest";
 
 const artistList = [
@@ -29,9 +28,15 @@ const artists = () => {
   return (
     <ResponsiveDrawer>
       {artistList.map((item, index) => (
-        <TopBanner key={index} name={item?.name} desc={item?.desc} img={item?.img} />
+        <TopBanner
+          key={index}
+          name={item?.name}
+          desc={item?.desc}
+          img={item?.img}
+        />
       ))}
-      <SongComp title="You also may" subTitle="Like" />
+
+      {/* <SongComp title="You also may" subTitle="Like" /> */}
     </ResponsiveDrawer>
   );
 };

@@ -8,7 +8,7 @@ export const useGetRecomendedSongsHook = () => {
     queryKey: [ALL_SONGS],
     queryFn: async ({ pageParam = 1 }) => {
       const res = await axiosInstance.get<RecomendedResponseRoot>(
-        `${endpoints.songs.allSongs}?page=${pageParam}&limit=1`
+        `${endpoints.songs.allSongs}?page=${pageParam}&limit=3`
       );
 
       return res?.data;

@@ -89,17 +89,17 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
                 {/* Image Section */}
                 <Grid
                   item
-                  xs={3}
+                  xs={2}
                   sm={2}
-                  md={2}
+                  md={1}
                   display="flex"
                   justifyContent="center"
                 >
                   <Image
                     src={!!song?.imageFile ? song?.imageFile : assest?.music}
                     alt={song?.title}
-                    width={150}
-                    height={150}
+                    width={70}
+                    height={70}
                     style={{
                       // borderRadius: "10px",
                       maxWidth: "100%",
@@ -116,6 +116,12 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
                     fontWeight="bold"
                     noWrap
                     color="white"
+                    sx={{
+                      maxWidth: "100%",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap"
+                    }}
                   >
                     {song?.title}
                   </Typography>

@@ -42,7 +42,7 @@ export const PlayMusic = () => {
 
         width: { xs: "100vw", sm: "65vw", md: "50vw", lg: "30vw" },
         backgroundColor: "#1e1e1e",
-        padding: "15px",
+        padding: "15px 5px 15px 5px",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
@@ -50,7 +50,7 @@ export const PlayMusic = () => {
       }}
     >
       <Grid container alignItems="center">
-        <Grid item xs={2}>
+        <Grid item xs={2} sx={{ paddingRight: "4px !important" }}>
           <Image
             src={currentSong.image}
             alt={currentSong.title}
@@ -60,31 +60,85 @@ export const PlayMusic = () => {
           />
         </Grid>
 
-        <Grid item xs={8}>
-          <Typography variant="body2" fontWeight="bold" color="white">
+        <Grid
+          item
+          xs={8}
+          sx={{
+            overflow: "hidden"
+          }}
+        >
+          <Typography
+            variant="body2"
+            fontWeight="bold"
+            color="white"
+            noWrap
+            sx={{
+              maxWidth: { xs: "55%", sm: "70%" },
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap"
+            }}
+          >
             {currentSong.title}
           </Typography>
-          <Typography variant="body2" color="gray">
+          <Typography
+            variant="body2"
+            color="gray"
+            noWrap
+            sx={{
+              maxWidth: { xs: "55%", sm: "70%" },
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap"
+            }}
+          >
             {currentSong.artist}
           </Typography>
         </Grid>
 
         <Grid item xs={2} display="flex" justifyContent="flex-end">
-          <IconButton color="primary" onClick={handlePrev}>
-            <SkipPreviousIcon />
-          </IconButton>
-          <IconButton color="primary" onClick={skipBackward}>
-            <FastRewindIcon />
-          </IconButton>
-          <IconButton color="primary" onClick={handlePlayPause}>
-            {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
-          </IconButton>
-          <IconButton color="primary" onClick={skipForward}>
-            <FastForwardIcon />
-          </IconButton>
-          <IconButton color="primary" onClick={handleNext}>
-            <SkipNextIcon />
-          </IconButton>
+          <Box display="flex" gap={0} p={0} m={0}>
+            <IconButton
+              color="primary"
+              onClick={handlePrev}
+              size="small"
+              sx={{ padding: "2px !important" }}
+            >
+              <SkipPreviousIcon />
+            </IconButton>
+            <IconButton
+              color="primary"
+              onClick={skipBackward}
+              size="small"
+              sx={{ padding: "2px !important" }}
+            >
+              <FastRewindIcon />
+            </IconButton>
+            <IconButton
+              color="primary"
+              onClick={handlePlayPause}
+              size="small"
+              sx={{ padding: "2px !important" }}
+            >
+              {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
+            </IconButton>
+            <IconButton
+              color="primary"
+              onClick={skipForward}
+              size="small"
+              sx={{ padding: "2px !important" }}
+            >
+              <FastForwardIcon />
+            </IconButton>
+            <IconButton
+              color="primary"
+              onClick={handleNext}
+              size="small"
+              sx={{ padding: "2px !important" }}
+            >
+              <SkipNextIcon />
+            </IconButton>
+          </Box>
         </Grid>
 
         {/* Close Button */}

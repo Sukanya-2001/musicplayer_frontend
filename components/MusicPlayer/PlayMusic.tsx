@@ -154,19 +154,19 @@ export const PlayMusic = () => {
 
         <Grid item xs={2} display="flex" justifyContent="flex-end">
           <Box display="flex" gap={0} p={0} m={0}>
-            <IconButton color="primary" onClick={handlePrev} size="small">
+            <IconButton color="primary" onClick={handlePrev} size="small" sx={{ padding: "2px !important" }}>
               <SkipPreviousIcon />
             </IconButton>
-            <IconButton color="primary" onClick={skipBackward} size="small">
+            <IconButton color="primary" onClick={skipBackward} size="small" sx={{ padding: "2px !important" }}>
               <FastRewindIcon />
             </IconButton>
-            <IconButton color="primary" onClick={handlePlayPause} size="small">
+            <IconButton color="primary" onClick={handlePlayPause} size="small" sx={{ padding: "2px !important" }}>
               {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
             </IconButton>
-            <IconButton color="primary" onClick={skipForward} size="small">
+            <IconButton color="primary" onClick={skipForward} size="small" sx={{ padding: "2px !important" }}>
               <FastForwardIcon />
             </IconButton>
-            <IconButton color="primary" onClick={handleNext} size="small">
+            <IconButton color="primary" onClick={handleNext} size="small" sx={{ padding: "2px !important" }}>
               <SkipNextIcon />
             </IconButton>
           </Box>

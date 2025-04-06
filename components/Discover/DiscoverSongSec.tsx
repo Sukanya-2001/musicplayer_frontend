@@ -15,7 +15,7 @@ import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import Image from "next/image";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { SongSection } from "../Skeleton/SongSection";
 import { SongDuration } from "../Songs/SongDuration";
@@ -26,6 +26,7 @@ type SongSecProps = {
 
 export const DiscoverSongSec = ({ type }: SongSecProps) => {
   const dispatch = useDispatch();
+  const [width, setWidth] = useState<number>(0);
 
   const {
     data: songsData,
@@ -34,6 +35,25 @@ export const DiscoverSongSec = ({ type }: SongSecProps) => {
     hasNextPage,
     isFetchingNextPage
   } = useGetRecomendedSongsHook();
+
+  useEffect(() => {
+    const resizeFunction = () => {
+      if (typeof window === "undefined") return "450px";
+      setWidth(window.innerWidth);
+      console.log(window.innerWidth);
+    };
+
+    // Add event listener
+    window.addEventListener("resize", resizeFunction);
+
+    // Initial call to set width
+    resizeFunction();
+
+    // Cleanup on unmount
+    return () => {
+      window.removeEventListener("resize", resizeFunction);
+    };
+  }, []);
 
   const songList: ISongsRes[] = useMemo(() => {
     if (songsData) {
@@ -69,51 +89,26 @@ export const DiscoverSongSec = ({ type }: SongSecProps) => {
         <SongSection />
       ) : (
         <Box
-        sx={{
-            overflowX: "auto", // [FIXED] Allow horizontal scroll
-            // whiteSpace: "nowrap", // [FIXED] Ensure children don’t wrap on xs
-            px: 1
+          sx={{
+            overflowX: "scroll",
+            width:{xs:`calc(${width}px - 10px)`,sm:`calc(${width}px - 250px)`,md:`calc(${width}px - 250px)` },
+          
           }}
         >
           {!!songList && songList.length > 0 ? (
-            <Box>
-                <Box
+            <Box
               sx={{
                 display: "flex",
-                flexDirection: "row",
-                gap: 2,
-                px: 2,
-                width: "fit-content",
+                gap: "40px",
+               
+                
+                padding:"20px"
+               
               }}
             >
               {songList.map((song, index) => (
-                <Box
-                  key={index}
-                  onClick={() => handleSongClick(index)}
-                  sx={{
-                    minWidth: { xs: "120px", sm: "150px" },
-                    width: {
-                    //   xs: "calc(50% / 4 - 16px)",
-                      md: "calc(90% / 3 - 16px)",
-                      lg: "calc(90% / 6  - 16px)"
-                    },
-                    cursor: "pointer",
-                    flex: { xs: "0 0 auto", md: "1 1 auto" },
-                    transition: "transform 0.3s",
-                    "&:hover": {
-                      transform: "scale(1.03)"
-                    },
-                    backgroundColor: "#2a2a2a",
-                    borderRadius: "12px",
-                    p: 1,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between"
-                  }}
-                >
-                  <Box
-                    sx={{ display: "flex", justifyContent: "center", mb: 1 }}
-                  >
+                <Box key={index} onClick={() => handleSongClick(index)}>
+                  <Box>
                     <Image
                       src={song?.imageFile || assest.music}
                       alt={song?.title}
@@ -122,8 +117,9 @@ export const DiscoverSongSec = ({ type }: SongSecProps) => {
                       style={{
                         borderRadius: "8px",
                         objectFit: "cover",
-                        width: "120px",
-                        height: "150px"
+                        minWidth:"200px",
+                        height:"200px",
+                       
                       }}
                     />
                   </Box>
@@ -159,7 +155,6 @@ export const DiscoverSongSec = ({ type }: SongSecProps) => {
                   </Box>
                 </Box>
               ))}
-            </Box>
             </Box>
           ) : (
             <Box

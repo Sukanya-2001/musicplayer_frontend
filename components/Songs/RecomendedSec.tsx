@@ -106,8 +106,8 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
                       // borderRadius: "10px",
                       maxWidth: "100%",
                       width: "80px",
-                      height: "70px",
-                      paddingRight: "10px"
+                      height: "50px",
+                      marginRight: "10px"
                     }}
                   />
                 </Grid>

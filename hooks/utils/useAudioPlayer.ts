@@ -8,7 +8,7 @@ import {
   setPlaylist
 } from "@/reduxtoolkit/slices/playerSlice";
 import { Howl } from "howler";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../redux/useAppSelector";
 import { generatePlaylistWithMeta } from "./commonUtils";
@@ -16,6 +16,9 @@ import { useAutoNextAudio } from "./useAutoNextAudio";
 import { useSongApiByType } from "./useSongApiByType";
 
 export const useAudioPlayer = () => {
+  const [progress, setProgress] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const { activeSongSource, playlist, currentIndex, isPlaying } =
     useAppSelector((s) => s.audio);
   const dispatch = useDispatch();
@@ -50,6 +53,30 @@ export const useAudioPlayer = () => {
       soundRef.current?.stop();
     };
   }, [currentIndex]);
+
+  //for progreebar and time
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const sound = soundRef.current;
+      if (sound && sound.playing()) {
+        const current = sound.seek() as number;
+        const total = sound.duration();
+        if (total > 0) {
+          setCurrentTime(current);
+          setDuration(total);
+          setProgress((current / total) * 100);
+        }
+      }
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+  };
 
   const handlePlayPause = () => {
     if (!soundRef.current) return;
@@ -90,15 +117,25 @@ export const useAudioPlayer = () => {
 
   const skipForward = () => {
     if (soundRef.current) {
+      const sound = soundRef.current;
+      const total = sound.duration();
       const current = soundRef.current.seek() as number;
-      soundRef.current.seek(current + 10);
+      const newTime = Math.min(soundRef.current.duration(), current + 10);
+      soundRef.current.seek(newTime);
+      setCurrentTime(newTime); // 🔥 Update state immediately
+      setProgress((newTime / total) * 100);
     }
   };
 
   const skipBackward = () => {
     if (soundRef.current) {
+      const sound = soundRef.current;
+      const total = sound.duration();
       const current = soundRef.current.seek() as number;
-      soundRef.current.seek(Math.max(0, current - 10));
+      const newTime = Math.max(0, current - 10);
+      soundRef.current.seek(newTime);
+      setCurrentTime(newTime); // 🔥 Update state immediately
+      setProgress((newTime / total) * 100);
     }
   };
 
@@ -109,6 +146,9 @@ export const useAudioPlayer = () => {
     handlePrev,
     skipForward,
     skipBackward,
-    currentSong: playlist[currentIndex]
+    currentSong: playlist[currentIndex],
+    progress,
+    currentTimeFormatted: formatTime(currentTime),
+    durationFormatted: formatTime(duration)
   };
 };

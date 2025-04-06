@@ -17,7 +17,10 @@ export const PlayMusic = () => {
     handlePrev,
     skipForward,
     skipBackward,
-    currentSong
+    currentSong,
+    progress,
+    currentTimeFormatted,
+    durationFormatted
   } = useAudioPlayer();
 
   if (!currentSong) return null;
@@ -39,16 +42,73 @@ export const PlayMusic = () => {
         position: "fixed",
         bottom: 0,
         right: 0,
-
         width: { xs: "100vw", sm: "65vw", md: "50vw", lg: "30vw" },
         backgroundColor: "#1e1e1e",
-        padding: "15px 5px 15px 5px",
+        paddingBottom: "8px",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        zIndex: 999
+        zIndex: 999,
+        flexDirection: "column"
       }}
     >
+      {/* Progress Bar */}
+      <Box
+        sx={{
+          width: "100%",
+          height: "6px",
+          backgroundColor: "#444",
+          borderRadius: "3px",
+          overflow: "hidden",
+          mb: "1px",
+          position: "relative"
+        }}
+      >
+        <Box
+          sx={{
+            height: "100%",
+            backgroundColor: "rgb(255 14 188)",
+            width: `${progress}%`,
+            transition: "width 0.2s linear"
+          }}
+        />
+        {/* Time Overlay */}
+        
+        {/* <Box
+          sx={{
+            // position: "relative",
+            // top: "100%",
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-between",
+            padding: "0 4px",
+            fontSize: "10px",
+            color: "#ccc",
+            mt: "2px"
+          }}
+        >
+          <Typography>{currentTimeFormatted}1236765734657647538765348</Typography>
+          <span>{durationFormatted}123</span>
+        </Box> */}
+      </Box>
+      <Box
+          sx={{
+            // position: "relative",
+            // top: "100%",
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-between",
+            padding: "0 8px",
+            fontSize: "12px",
+            color: "#ccc",
+            mt: "1px"
+          }}
+        >
+          <span>{currentTimeFormatted}</span>
+          <span>{durationFormatted}</span>
+        </Box>
+
+      {/* Main Controls & Info */}
       <Grid container alignItems="center">
         <Grid item xs={2} sx={{ paddingRight: "4px !important" }}>
           <Image
@@ -73,10 +133,8 @@ export const PlayMusic = () => {
             color="white"
             noWrap
             sx={{
-              maxWidth: { xs: "55%", sm: "70%" },
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap"
+              maxWidth: "100%",
+              textOverflow: "ellipsis"
             }}
           >
             {currentSong.title}
@@ -86,10 +144,8 @@ export const PlayMusic = () => {
             color="gray"
             noWrap
             sx={{
-              maxWidth: { xs: "55%", sm: "70%" },
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap"
+              maxWidth: "100%",
+              textOverflow: "ellipsis"
             }}
           >
             {currentSong.artist}
@@ -98,55 +154,23 @@ export const PlayMusic = () => {
 
         <Grid item xs={2} display="flex" justifyContent="flex-end">
           <Box display="flex" gap={0} p={0} m={0}>
-            <IconButton
-              color="primary"
-              onClick={handlePrev}
-              size="small"
-              sx={{ padding: "2px !important" }}
-            >
+            <IconButton color="primary" onClick={handlePrev} size="small">
               <SkipPreviousIcon />
             </IconButton>
-            <IconButton
-              color="primary"
-              onClick={skipBackward}
-              size="small"
-              sx={{ padding: "2px !important" }}
-            >
+            <IconButton color="primary" onClick={skipBackward} size="small">
               <FastRewindIcon />
             </IconButton>
-            <IconButton
-              color="primary"
-              onClick={handlePlayPause}
-              size="small"
-              sx={{ padding: "2px !important" }}
-            >
+            <IconButton color="primary" onClick={handlePlayPause} size="small">
               {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
             </IconButton>
-            <IconButton
-              color="primary"
-              onClick={skipForward}
-              size="small"
-              sx={{ padding: "2px !important" }}
-            >
+            <IconButton color="primary" onClick={skipForward} size="small">
               <FastForwardIcon />
             </IconButton>
-            <IconButton
-              color="primary"
-              onClick={handleNext}
-              size="small"
-              sx={{ padding: "2px !important" }}
-            >
+            <IconButton color="primary" onClick={handleNext} size="small">
               <SkipNextIcon />
             </IconButton>
           </Box>
         </Grid>
-
-        {/* Close Button */}
-        {/* <Grid item xs={2} display="flex" justifyContent="flex-end">
-          <IconButton color="primary">
-            <CloseIcon />
-          </IconButton>
-        </Grid> */}
       </Grid>
     </Box>
   );

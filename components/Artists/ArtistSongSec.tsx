@@ -111,8 +111,8 @@ export const ArtistSongSec = ({ id }: SongSecProps) => {
                     style={{
                       // borderRadius: "10px",
                       maxWidth: "100%",
-                      width: "80px",
-                      height: "70px",
+                      width: "90px",
+                      height: "60px",
                       paddingRight: "10px"
                     }}
                   />

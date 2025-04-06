@@ -51,7 +51,7 @@ export const AlbumList = ({ title, subTitle }: AlbumProps) => {
             albumList?.map((item, index) => (
               <Grid
                 item
-                xs={4}
+                xs={6}
                 sm={4}
                 md={3}
                 lg={2}
@@ -63,10 +63,10 @@ export const AlbumList = ({ title, subTitle }: AlbumProps) => {
                   {/* Album Image */}
                   <Image
                     src={item?.file}
-                    width={180}
+                    width={200}
                     height={250}
                     alt={item?.title}
-                    style={{ borderRadius: "10px", height: "150px" }}
+                    style={{ borderRadius: "10px", height: "150px"}}
                   />
 
                   {/* Album Title */}

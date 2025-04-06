@@ -22,9 +22,19 @@ export const endpoints = {
   home: {
     getHomePageDetails: "user/home/get-home-details"
   },
-  songs:{
-    songsByType: 'user/home/get-all-details',
-    allSongs: 'admin/song/get-songs'
+  songs: {
+    songsByType: "user/home/get-all-details",
+    allSongs: "admin/song/get-songs"
+  },
+  artist: {
+    artistInfo: "admin/artist/get-artist-info",
+    allArtists: "admin/artist/get-artists",
+    songsByArtist: "admin/song/get-songs-of-artist"
+  },
+  album: {
+    albumInfo: "admin/album/get-album-info",
+    allAlbums: "admin/album/get-albums",
+    songsByAlbum: "admin/song/get-songs-of-album"
   },
   cms: {
     about: "aboutpolicy/details",

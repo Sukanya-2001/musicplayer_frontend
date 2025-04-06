@@ -1,8 +1,8 @@
 import { next, setPlaylist } from "@/reduxtoolkit/slices/playerSlice";
 import { RootState } from "@/reduxtoolkit/store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { useSongApiByType } from "./useSongApiByType";
 import { generatePlaylistWithMeta } from "./commonUtils";
+import { useSongApiByType } from "./useSongApiByType";
 
 export const useAutoNextAudio = () => {
   const dispatch = useDispatch();
@@ -25,6 +25,8 @@ export const useAutoNextAudio = () => {
           return page?.songs;
         } else if ("data" in page) {
           return page?.data;
+        } else if ("filteredSongs" in page) {
+          return page?.filteredSongs;
         } else {
           return [];
         }

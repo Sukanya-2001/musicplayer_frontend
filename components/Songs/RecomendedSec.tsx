@@ -6,6 +6,7 @@ import { generatePlaylistWithMeta } from "@/hooks/utils/commonUtils";
 import assest from "@/json/assest";
 import {
   play,
+  resetAll,
   setActiveSongSource,
   setCurrentIndex,
   setPlaylist
@@ -44,6 +45,7 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
   }, [JSON.stringify(songsData)]);
 
   const handleSongClick = async (index: number) => {
+    dispatch(resetAll());
     const playList = await generatePlaylistWithMeta(songList);
     dispatch(setPlaylist(playList)); // save all 3 songs
     dispatch(setCurrentIndex(index));
@@ -103,7 +105,8 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
                     style={{
                       // borderRadius: "10px",
                       maxWidth: "100%",
-                      height: "auto",
+                      width: "80px",
+                      height: "70px",
                       paddingRight: "10px"
                     }}
                   />
@@ -167,34 +170,34 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
               </Typography>
             </Box>
           )}
+        </Box>
+      )}
 
-          {!!hasNextPage && (
-            <Box
-              p={2}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center"
-              }}
-            >
-              {" "}
-              <CustomButtonPrimary
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  fetchNextPage();
-                }}
-                type="button"
-                disabled={isFetchingNextPage}
-              >
-                {isFetchingNextPage ? (
-                  <CircularProgress size={28} sx={{ color: "white" }} />
-                ) : (
-                  "Load more"
-                )}
-              </CustomButtonPrimary>
-            </Box>
-          )}
+      {!!hasNextPage && (
+        <Box
+          p={2}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          {" "}
+          <CustomButtonPrimary
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              fetchNextPage();
+            }}
+            type="button"
+            disabled={isFetchingNextPage}
+          >
+            {isFetchingNextPage ? (
+              <CircularProgress size={28} sx={{ color: "white" }} />
+            ) : (
+              "Load more"
+            )}
+          </CustomButtonPrimary>
         </Box>
       )}
 

@@ -7,4 +7,12 @@ export const USER_CHANGEPASS = "user_change_Password";
 
 export const HOME_PAGE_DETAILS = "home_page_details";
 export const SONGS_BY_TYPE = "songs_by_type";
-export const ALL_SONGS = "all_songs"
+export const ALL_SONGS = "all_songs";
+
+export const ARTIST_INFO = "artist_info";
+export const ALL_ARTIST = "all_artists";
+export const SONGS_BY_ARTIST = "songs_by_artist";
+
+export const ALL_ALBUM = "all_albums";
+export const ALBUM_INFO = "album_info";
+export const SONGS_BY_ALBUM = "songs_by_album";

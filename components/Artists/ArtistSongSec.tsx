@@ -1,4 +1,5 @@
-import { ISongsRes, useGetSongsHook } from "@/api/functions/songs.api";
+import { useGetSongsByArtist } from "@/api/functions/artist.api";
+import { ISongsRes } from "@/api/functions/songs.api";
 import { generatePlaylistWithMeta } from "@/hooks/utils/commonUtils";
 import assest from "@/json/assest";
 import {
@@ -15,7 +16,7 @@ import Image from "next/image";
 import { useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { SongSection } from "../Skeleton/SongSection";
-import { SongDuration } from "./SongDuration";
+import { SongDuration } from "../Songs/SongDuration";
 
 export type Isongs = {
   img: string;
@@ -25,12 +26,10 @@ export type Isongs = {
 };
 
 type SongSecProps = {
-  title: string;
-  subTitle: string;
-  songType: "the2000ssongs" | "90s" | "nrs";
+  id: string;
 };
 
-export const SongsSec = ({ title, subTitle, songType }: SongSecProps) => {
+export const ArtistSongSec = ({ id }: SongSecProps) => {
   const dispatch = useDispatch();
 
   const {
@@ -39,22 +38,24 @@ export const SongsSec = ({ title, subTitle, songType }: SongSecProps) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage
-  } = useGetSongsHook(songType);
+  } = useGetSongsByArtist(id);
 
   const songList: ISongsRes[] = useMemo(() => {
     if (songsData) {
-      return songsData?.pages?.flatMap((s) => s?.data || []);
+      return songsData?.pages?.flatMap((s) => s?.filteredSongs || []);
     }
 
     return [];
   }, [JSON.stringify(songsData)]);
+
+  console.log(songsData);
 
   const handleSongClick = async (index: number) => {
     dispatch(resetAll());
     const playList = await generatePlaylistWithMeta(songList);
     dispatch(setPlaylist(playList)); // save all 3 songs
     dispatch(setCurrentIndex(index));
-    dispatch(setActiveSongSource(title)); //for api call
+    dispatch(setActiveSongSource(`songByArtist-${id}`)); //for api call
     dispatch(play());
   };
 
@@ -65,9 +66,9 @@ export const SongsSec = ({ title, subTitle, songType }: SongSecProps) => {
         fontWeight="bold"
         sx={{ fontSize: "25px", padding: "30px", marginTop: "25px" }}
       >
-        {title}{" "}
+        {songsData?.pages?.[0]?.totalSongs}{" "}
         <Box component="span" color="rgb(255 14 188)">
-          {subTitle}
+          Songs
         </Box>{" "}
       </Typography>
       {isLoading ? (

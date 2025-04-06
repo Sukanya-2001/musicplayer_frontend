@@ -56,6 +56,9 @@ const playerSlice = createSlice({
     },
     setActiveSongSource(state, action: PayloadAction<string>) {
       state.activeSongSource = action.payload;
+    },
+    resetAll() {
+      return initialState;
     }
   }
 });
@@ -67,6 +70,7 @@ export const {
   next,
   prev,
   setCurrentIndex,
-  setActiveSongSource
+  setActiveSongSource,
+  resetAll
 } = playerSlice.actions;
 export default playerSlice.reducer;

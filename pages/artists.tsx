@@ -1,44 +1,89 @@
-import { TopBanner } from "@/components/Artists/TopBanner";
+import { Artist, useGetAllArtistHook } from "@/api/functions/artist.api";
+import { AllArtistCard } from "@/components/Artists/AllArtistCard";
+import { AllArtistSkeleton } from "@/components/Artists/AllArtistSkeleton";
 import ResponsiveDrawer from "@/components/ResponsiveDrawer/ResponsiveDrawer";
-import assest from "@/json/assest";
+import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
+import { Box, CircularProgress, Typography } from "@mui/material";
+import { useMemo } from "react";
 
-const artistList = [
-  {
-    name: "Arijit Singh",
-    desc: "On our website, you can access an amazing collection of popular and new songs. Stream your favorite tracks in high quality.",
-    img: assest?.singerBanner
-  },
-  {
-    name: "Shreya Ghosal",
-    desc: "On our website, you can access an amazing collection of popular and new songs. Stream your favorite tracks in high quality.",
-    img: assest?.singerBanner
-  },
-  {
-    name: "Arman Malik",
-    desc: "On our website, you can access an amazing collection of popular and new songs. Stream your favorite tracks in high quality.",
-    img: assest?.singerBanner
-  },
-  {
-    name: "Neha Kakkar",
-    desc: "On our website, you can access an amazing collection of popular and new songs. Stream your favorite tracks in high quality.",
-    img: assest?.singerBanner
-  }
-];
-const artists = () => {
+const Artists = () => {
+  const {
+    data: artistData,
+    isLoading: artistListPending,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage
+  } = useGetAllArtistHook();
+
+  const artistList: Artist[] = useMemo(() => {
+    if (artistData) {
+      return artistData?.pages?.flatMap((s) => s?.artists || []);
+    }
+
+    return [];
+  }, [JSON.stringify(artistData)]);
+
   return (
     <ResponsiveDrawer>
-      {artistList.map((item, index) => (
-        <TopBanner
-          key={index}
-          name={item?.name}
-          desc={item?.desc}
-          img={item?.img}
-        />
-      ))}
+      {artistListPending ? (
+        <AllArtistSkeleton />
+      ) : !!artistList && artistList?.length > 0 ? (
+        artistList?.map((item, index) => (
+          <AllArtistCard
+            key={index}
+            name={item?.title}
+            desc={item?.description}
+            img={item?.file}
+            id={item?._id}
+          />
+        ))
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+            width: "100%"
+          }}
+        >
+          <Typography variant="body2" color="gray">
+            No artists found
+          </Typography>
+        </Box>
+      )}
+
+      {!!hasNextPage && (
+        <Box
+          p={2}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          {" "}
+          <CustomButtonPrimary
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              fetchNextPage();
+            }}
+            type="button"
+            disabled={isFetchingNextPage}
+          >
+            {isFetchingNextPage ? (
+              <CircularProgress size={28} sx={{ color: "white" }} />
+            ) : (
+              "Load more"
+            )}
+          </CustomButtonPrimary>
+        </Box>
+      )}
 
       {/* <SongComp title="You also may" subTitle="Like" /> */}
     </ResponsiveDrawer>
   );
 };
 
-export default artists;
+export default Artists;

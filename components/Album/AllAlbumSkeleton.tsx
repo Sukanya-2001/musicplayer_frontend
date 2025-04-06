@@ -1,6 +1,6 @@
 import { Box, Grid2, Skeleton } from "@mui/material";
 
-export const AlbumHomeSkeleton = () => {
+export const AllAlbumSkeleton = () => {
   return (
     <Box>
       <Grid2 container spacing={2}>
@@ -18,7 +18,7 @@ export const AlbumHomeSkeleton = () => {
               }}
             >
               <Skeleton
-                variant="circular"
+                variant="rounded"
                 width={110}
                 height={110}
                 sx={{ bgcolor: "grey.800" }}

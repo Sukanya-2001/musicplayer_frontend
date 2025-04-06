@@ -9,6 +9,7 @@ import {
   IconButton,
   Typography
 } from "@mui/material";
+import { useRouter } from "next/router";
 import { AlbumHomeSkeleton } from "../Skeleton/AlbumHomeSkeleton";
 
 type AlbumProps = {
@@ -17,6 +18,8 @@ type AlbumProps = {
 };
 
 export const Album = ({ details, isPending }: AlbumProps) => {
+  const router = useRouter();
+
   return (
     <Box>
       <Typography
@@ -42,6 +45,8 @@ export const Album = ({ details, isPending }: AlbumProps) => {
                   size={{ xs: 6, sm: 6, md: 3, lg: 2 }}
                   display="flex"
                   justifyContent="center"
+                  sx={{ cursor: "pointer" }}
+                  onClick={() => router.push(`albumSongs/${album?._id}`)}
                 >
                   <Card
                     sx={{
@@ -76,9 +81,6 @@ export const Album = ({ details, isPending }: AlbumProps) => {
                       >
                         {album?.title}
                       </Typography>
-                      <Typography variant="body2" color="gray">
-                        {album?.description}
-                      </Typography>
                     </CardContent>
                   </Card>
                 </Grid2>
@@ -99,7 +101,7 @@ export const Album = ({ details, isPending }: AlbumProps) => {
               </Box>
             )}
 
-            {!!details && details?.length > 5 && (
+            {!!details && details?.length > 0 && (
               <Grid2
                 size={{ xs: 6, sm: 4, md: 3, lg: 2 }}
                 display="flex"
@@ -107,6 +109,7 @@ export const Album = ({ details, isPending }: AlbumProps) => {
                 alignItems="center"
               >
                 <IconButton
+                  onClick={() => router.push("/albums")}
                   sx={{
                     color: "rgb(255 14 188)",
                     display: "flex",

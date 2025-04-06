@@ -31,7 +31,7 @@ export const Artists = ({ details, isPending }: ArtistProps) => {
             Artists
           </Box>
         </Typography>
-        {!!details && details?.length > 8 && (
+        {!!details && details?.length > 0 && (
           <Typography
             variant="body1"
             color="rgb(255 14 188)"
@@ -51,7 +51,10 @@ export const Artists = ({ details, isPending }: ArtistProps) => {
             {!!details && details?.length > 0 ? (
               details?.map((artist, index) => (
                 <Grid2 size={{ xs: 4, sm: 4, md: 3, lg: 1.5 }} key={index}>
-                  <Box onClick={() => route.push("/artistsSongs")}>
+                  <Box
+                    onClick={() => route.push(`/artistsSongs/${artist?._id}`)}
+                    sx={{ cursor: "pointer" }}
+                  >
                     <Avatar
                       src={!!artist?.file ? artist?.file : assest?.singer}
                       sx={{ width: 100, height: 100, margin: "auto" }}

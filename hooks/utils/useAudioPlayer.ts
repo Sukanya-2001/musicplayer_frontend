@@ -72,6 +72,7 @@ export const useAudioPlayer = () => {
       const newSongs = res?.data?.pages?.flatMap((page) => {
         if ("songs" in page) return page?.songs;
         if ("data" in page) return page?.data;
+        if ("filteredSongs" in page) return page?.filteredSongs;
         return [];
       });
 

@@ -1,12 +1,12 @@
-import { Stack } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import dynamic from "next/dynamic";
+import ResponsiveDrawer from "@/components/ResponsiveDrawer/ResponsiveDrawer";
 import animationData from "@/json/lottie/404.json";
 import { checkWindow } from "@/lib/functions/_helpers.lib";
 import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
+import { Stack } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import dynamic from "next/dynamic";
 
 const Lottie = dynamic(() => import("lottie-react"));
-const Wrapper = dynamic(() => import("@/layout/wrapper/Wrapper"));
 
 const Index = () => {
   const reload = () => {
@@ -16,7 +16,7 @@ const Index = () => {
   };
 
   return (
-    <Wrapper>
+    <ResponsiveDrawer>
       <Stack direction="row" alignItems="center" justifyContent="center" p={2}>
         <div>
           <h1>Something Went wrong</h1>
@@ -40,7 +40,7 @@ const Index = () => {
           </CustomButtonPrimary>
         </div>
       </Stack>
-    </Wrapper>
+    </ResponsiveDrawer>
   );
 };
 

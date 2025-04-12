@@ -2,19 +2,14 @@ import {
   ISongsRes,
   useGetRecomendedSongsHook
 } from "@/api/functions/songs.api";
-import { generatePlaylistWithMeta } from "@/hooks/utils/commonUtils";
+import { useAppSelector } from "@/hooks/redux/useAppSelector";
+import { usePlaySongs } from "@/hooks/utils/useSongs";
 import assest from "@/json/assest";
-import {
-  play,
-  resetAll,
-  setActiveSongSource,
-  setCurrentIndex,
-  setPlaylist
-} from "@/reduxtoolkit/slices/playerSlice";
 import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { SongSection } from "../Skeleton/SongSection";
@@ -26,6 +21,8 @@ type SongSecProps = {
 
 export const DiscoverSongSec = ({ type }: SongSecProps) => {
   const dispatch = useDispatch();
+  const { isLoggedIn } = useAppSelector((s) => s.userSlice);
+  const router = useRouter();
   const [width, setWidth] = useState<number>(0);
 
   const {
@@ -64,26 +61,43 @@ export const DiscoverSongSec = ({ type }: SongSecProps) => {
   }, [JSON.stringify(songsData)]);
 
   const handleSongClick = async (index: number) => {
-    dispatch(resetAll());
-    const playList = await generatePlaylistWithMeta(songList);
-    dispatch(setPlaylist(playList));
-    dispatch(setCurrentIndex(index));
-    dispatch(setActiveSongSource(`discover-${type}`));
-    dispatch(play());
+    if (!isLoggedIn) {
+      router.push("/auth/sign-in");
+    } else {
+      usePlaySongs(index, songList, `discover-${type}`, dispatch);
+    }
   };
 
   return (
     <Box>
-      <Typography
-        variant="body1"
-        fontWeight="bold"
-        sx={{ fontSize: "25px", padding: "5px 20px" }}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center"
+        }}
       >
-        <Box component="span" color="rgb(255 14 188)">
-          {type}{" "}
-        </Box>
-        Songs
-      </Typography>
+        <Typography
+          variant="body1"
+          fontWeight="bold"
+          sx={{ fontSize: "25px", padding: "5px 20px" }}
+        >
+          <Box component="span" color="rgb(255 14 188)">
+            {type}{" "}
+          </Box>
+          Songs
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{
+            padding: "5px 20px",
+            color: "rgb(255 14 188)",
+            cursor: "pointer"
+          }}
+        >
+          View all
+        </Typography>
+      </Box>
 
       {isLoading ? (
         <SongSection />
@@ -91,8 +105,11 @@ export const DiscoverSongSec = ({ type }: SongSecProps) => {
         <Box
           sx={{
             overflowX: "scroll",
-            width:{xs:`calc(${width}px - 10px)`,sm:`calc(${width}px - 250px)`,md:`calc(${width}px - 250px)` },
-          
+            width: {
+              xs: `calc(${width}px - 10px)`,
+              sm: `calc(${width}px - 250px)`,
+              md: `calc(${width}px - 250px)`
+            }
           }}
         >
           {!!songList && songList.length > 0 ? (
@@ -100,10 +117,8 @@ export const DiscoverSongSec = ({ type }: SongSecProps) => {
               sx={{
                 display: "flex",
                 gap: "40px",
-               
-                
-                padding:"20px"
-               
+
+                padding: "20px"
               }}
             >
               {songList.map((song, index) => (
@@ -117,9 +132,8 @@ export const DiscoverSongSec = ({ type }: SongSecProps) => {
                       style={{
                         borderRadius: "8px",
                         objectFit: "cover",
-                        minWidth:"200px",
-                        height:"200px",
-                       
+                        minWidth: "200px",
+                        height: "200px"
                       }}
                     />
                   </Box>

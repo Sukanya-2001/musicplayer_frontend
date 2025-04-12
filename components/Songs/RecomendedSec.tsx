@@ -2,15 +2,9 @@ import {
   ISongsRes,
   useGetRecomendedSongsHook
 } from "@/api/functions/songs.api";
-import { generatePlaylistWithMeta } from "@/hooks/utils/commonUtils";
+import { useAppSelector } from "@/hooks/redux/useAppSelector";
+import { usePlaySongs } from "@/hooks/utils/useSongs";
 import assest from "@/json/assest";
-import {
-  play,
-  resetAll,
-  setActiveSongSource,
-  setCurrentIndex,
-  setPlaylist
-} from "@/reduxtoolkit/slices/playerSlice";
 import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
@@ -19,6 +13,7 @@ import { useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { SongSection } from "../Skeleton/SongSection";
 import { SongDuration } from "./SongDuration";
+import { useRouter } from "next/router";
 
 type SongSecProps = {
   title: string;
@@ -27,6 +22,8 @@ type SongSecProps = {
 
 export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const { isLoggedIn } = useAppSelector((s) => s.userSlice);
 
   const {
     data: songsData,
@@ -45,12 +42,11 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
   }, [JSON.stringify(songsData)]);
 
   const handleSongClick = async (index: number) => {
-    dispatch(resetAll());
-    const playList = await generatePlaylistWithMeta(songList);
-    dispatch(setPlaylist(playList)); // save all 3 songs
-    dispatch(setCurrentIndex(index));
-    dispatch(setActiveSongSource("recommended")); //for api call
-    dispatch(play());
+    if (!isLoggedIn) {
+      router.push("/auth/sign-in");
+    } else {
+    usePlaySongs(index, songList, "recommended", dispatch);
+    }
   };
 
   return (

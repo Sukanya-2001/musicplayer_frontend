@@ -1,9 +1,9 @@
 import dynamic from "next/dynamic";
 import offlineJson from "@/json/lottie/offline.json";
 import { checkWindow } from "@/lib/functions/_helpers.lib";
+import ResponsiveDrawer from "@/components/ResponsiveDrawer/ResponsiveDrawer";
 
 const Lottie = dynamic(() => import("lottie-react"));
-const Wrapper = dynamic(() => import("@/layout/wrapper/Wrapper"));
 const Container = dynamic(() => import("@mui/material/Container"));
 const Stack = dynamic(() => import("@mui/material/Stack"));
 const Button = dynamic(() => import("@mui/material/Button"));
@@ -16,7 +16,7 @@ const OfflinePage = () => {
   };
 
   return (
-    <Wrapper>
+    <ResponsiveDrawer>
       <Container sx={{ padding: 5 }}>
         <Lottie
           loop
@@ -42,7 +42,7 @@ const OfflinePage = () => {
           </Button>
         </Stack>
       </Container>
-    </Wrapper>
+    </ResponsiveDrawer>
   );
 };
 

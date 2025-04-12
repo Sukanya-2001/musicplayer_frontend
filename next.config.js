@@ -9,7 +9,10 @@ module.exports = {
     includePaths: [path.join(__dirname, "styles")]
   },
   images: {
-    domains: ["music-player-backend-eji6.onrender.com","d30454c5f9k748.cloudfront.net"]
+    domains: [
+      "music-player-backend-eji6.onrender.com",
+      "d30454c5f9k748.cloudfront.net"
+    ]
   },
   compress: true,
   devIndicators: {
@@ -21,6 +24,7 @@ module.exports = {
   },
   env: {
     NEXT_APP_BASE_URL: process.env.NEXT_APP_BASE_URL,
-    NEXT_APP_PROJECT_NAME: process.env.NEXT_APP_PROJECT_NAME
+    NEXT_APP_PROJECT_NAME: process.env.NEXT_APP_PROJECT_NAME,
+    NEXT_APP_TOKEN_NAME: process.env.NEXT_APP_TOKEN_NAME
   }
 };

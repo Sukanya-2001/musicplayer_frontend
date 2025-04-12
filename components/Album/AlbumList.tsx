@@ -63,10 +63,10 @@ export const AlbumList = ({ title, subTitle }: AlbumProps) => {
                   {/* Album Image */}
                   <Image
                     src={item?.file}
-                    width={200}
-                    height={250}
+                    width={180}
+                    height={220}
                     alt={item?.title}
-                    style={{ borderRadius: "10px", height: "150px"}}
+                    style={{ borderRadius: "10px", height: "220px"}}
                   />
 
                   {/* Album Title */}

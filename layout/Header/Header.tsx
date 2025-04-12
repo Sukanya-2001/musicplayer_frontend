@@ -2,12 +2,12 @@
 
 import { useAppDispatch } from "@/hooks/redux/useAppDispatch";
 import { useAppSelector } from "@/hooks/redux/useAppSelector";
+import useAlertConfirmation from "@/hooks/utils/useAlertConfirmation";
 import { logout } from "@/reduxtoolkit/slices/userSlice";
 import { HeaderWrap } from "@/styles/StyledComponents/HeaderWrapper";
 import InputFieldCommon from "@/ui/CommonInput/CommonInput";
 import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import { InputAdornment } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -22,6 +22,7 @@ import { Container } from "@mui/system";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import * as React from "react";
+import toast from "react-hot-toast";
 
 // const CustomButton = dynamic(() => import("@/ui/Buttons/CustomButton"));
 
@@ -47,15 +48,23 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const { userData, isLoggedIn } = useAppSelector((state) => state.userSlice);
   const dispatch = useAppDispatch();
+  const { confirmAction } = useAlertConfirmation();
   const router = useRouter();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    const { isConfirmed } = await confirmAction({
+      title: "Logout",
+      text: "Are you sure you want to logout?",
+      confirmButtonText: "Yes, Logout"
+    });
+    if (!isConfirmed) return;
     dispatch(logout());
-    router.push("/login");
+    toast.success("Logout successfully.");
+    router.push("/");
   };
 
   const drawer = (
@@ -118,7 +127,7 @@ export default function Header() {
               <Image src={assest.logo_img} width={250} height={38} alt="Logo" />
             </Link> */}
             <Box>
-              <Box sx={{ marginRight:"20px" }}>
+              <Box sx={{ marginRight: "20px" }}>
                 <InputFieldCommon
                   placeholder="Search a song"
                   adorMentIcon={<SearchOutlinedIcon />}
@@ -170,7 +179,11 @@ export default function Header() {
                 >
                   Login
                 </CustomButtonPrimary>
-                <CustomButtonPrimary variant="contained" color="primary"  onClick={() => router.push("/auth/sign-up")}>
+                <CustomButtonPrimary
+                  variant="contained"
+                  color="primary"
+                  onClick={() => router.push("/auth/sign-up")}
+                >
                   Sign up
                 </CustomButtonPrimary>
               </Box>

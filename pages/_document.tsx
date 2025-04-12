@@ -2,6 +2,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 
 // import theme from "@/themes/theme";
+import createEmotionCache from "@/themes/createEmotionCache";
 import createEmotionServer from "@emotion/server/create-instance";
 import { AppType } from "next/app";
 import Document, {
@@ -14,7 +15,6 @@ import Document, {
 } from "next/document";
 import * as React from "react";
 import { CustomAppProps } from "./_app";
-import createEmotionCache from "@/themes/createEmotionCache";
 
 interface MyDocumentProps extends DocumentProps {
   emotionStyleTags: JSX.Element[];
@@ -22,7 +22,7 @@ interface MyDocumentProps extends DocumentProps {
 
 export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
   return (
-    <Html lang="en">
+    <Html lang="en" style={{ backgroundColor: "black" }}>
       <Head>
         {/* PWA primary color */}
 

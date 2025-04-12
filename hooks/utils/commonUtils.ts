@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 export const getRedirectUrl = (redirect?: string): string => {
   // Get the dashboard route or fallback to login
-  const userDashboard = "/dashboard";
+  const userDashboard = "/";
 
   if (redirect) {
     return redirect;

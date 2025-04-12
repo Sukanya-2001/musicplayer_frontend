@@ -1,4 +1,6 @@
+import { useAppDispatch } from "@/hooks/redux/useAppDispatch";
 import { useAppSelector } from "@/hooks/redux/useAppSelector";
+import useAlertConfirmation from "@/hooks/utils/useAlertConfirmation";
 import assest from "@/json/assest";
 import Footer from "@/layout/Footer/Footer";
 import Header from "@/layout/Header/Header";
@@ -9,6 +11,7 @@ import {
   sideFirstItems,
   sideSecondItems
 } from "@/lib/static/Demo";
+import { logout } from "@/reduxtoolkit/slices/userSlice";
 import MenuIcon from "@mui/icons-material/Menu";
 import { createTheme, ThemeProvider } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
@@ -27,6 +30,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import * as React from "react";
+import toast from "react-hot-toast";
 import styles from "../../styles/StyledComponents/sidebarStyles.module.css";
 
 const drawerWidth = 240;
@@ -60,6 +64,8 @@ export default function ResponsiveDrawer(props: Props) {
   const { children, noFooter } = props;
   const route = useRouter();
   const { isLoggedIn } = useAppSelector((s) => s?.userSlice);
+  const dispatch = useAppDispatch();
+  const { confirmAction } = useAlertConfirmation();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
 
@@ -76,6 +82,17 @@ export default function ResponsiveDrawer(props: Props) {
     if (!isClosing) {
       setMobileOpen(!mobileOpen);
     }
+  };
+  const handleLogout = async () => {
+    const { isConfirmed } = await confirmAction({
+      title: "Logout",
+      text: "Are you sure you want to logout?",
+      confirmButtonText: "Yes, Logout"
+    });
+    if (!isConfirmed) return;
+    dispatch(logout());
+    toast.success("Logout successfully.");
+    route.push("/");
   };
 
   const drawer = (
@@ -168,7 +185,13 @@ export default function ResponsiveDrawer(props: Props) {
               {authenticationItems.map((text) => (
                 <ListItem key={text?.name} disablePadding>
                   <ListItemButton
-                    onClick={() => route.push(`${text?.route}`)}
+                    onClick={() => {
+                      if (text?.name === "Logout") {
+                        handleLogout();
+                      } else {
+                        route.push(`${text?.route}`);
+                      }
+                    }}
                     className={
                       route?.pathname === text?.route
                         ? styles.active

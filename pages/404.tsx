@@ -1,13 +1,13 @@
+import ResponsiveDrawer from "@/components/ResponsiveDrawer/ResponsiveDrawer";
+import animationData from "@/json/lottie/404.json";
 import Stack from "@mui/material/Stack";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import animationData from "@/json/lottie/404.json";
 
 const Lottie = dynamic(() => import("lottie-react"));
-const Wrapper = dynamic(() => import("@/layout/wrapper/Wrapper"));
 
 const Index = () => (
-  <Wrapper>
+  <ResponsiveDrawer>
     <Stack direction="row" alignItems="center" justifyContent="center" p={2}>
       <div>
         <h1>Page not found</h1>
@@ -24,7 +24,7 @@ const Index = () => (
         <Link href="/">Back to home </Link>
       </div>
     </Stack>
-  </Wrapper>
+  </ResponsiveDrawer>
 );
 
 export default Index;

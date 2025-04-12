@@ -1,6 +1,6 @@
 import ResetNewPassword from "@/components/Auth/ResetNewPassword";
 import VerifyOtp from "@/components/Auth/VerifyOtp";
-import ResponsiveDrawer from "@/components/ResponsiveDrawer/ResponsiveDrawer";
+import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -13,13 +13,13 @@ const ResetPassword = () => {
   };
 
   return (
-    <ResponsiveDrawer noFooter>
+    <Box sx={{ minHeight: "100vh" }}>
       {restPss ? (
         <ResetNewPassword email={id ?? ""} />
       ) : (
         <VerifyOtp email={id ?? ""} handleResetPassword={handleResetPassword} />
       )}
-    </ResponsiveDrawer>
+    </Box>
   );
 };
 

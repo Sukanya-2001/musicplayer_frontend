@@ -45,7 +45,7 @@ export const authenticationItems: SidebarItem[] = [
   { name: "Favourite", route: "/favourite", icon: FavoriteOutlinedIcon },
   {
     name: "My Profile",
-    route: "javascript:void(0)",
+    route: "/dashboard",
     icon: AccountCircleOutlinedIcon
   },
   { name: "Logout", route: "javascript:void(0)", icon: LogoutOutlinedIcon }

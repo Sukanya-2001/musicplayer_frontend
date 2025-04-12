@@ -7,11 +7,12 @@ import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useMemo } from "react";
+import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { SongSection } from "../Skeleton/SongSection";
 import { SongDuration } from "../Songs/SongDuration";
-import { useRouter } from "next/router";
 
 export type Isongs = {
   img: string;
@@ -49,6 +50,7 @@ export const AlbumSongSec = ({ id }: SongSecProps) => {
 
   const handleSongClick = async (index: number) => {
     if (!isLoggedIn) {
+      toast.error("Please login to listen songs");
       router.push("/auth/sign-in");
     } else {
       usePlaySongs(index, songList, `songByAlbum-${id}`, dispatch);

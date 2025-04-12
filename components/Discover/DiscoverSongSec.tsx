@@ -11,6 +11,7 @@ import { Box, CircularProgress, Typography } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { SongSection } from "../Skeleton/SongSection";
 import { SongDuration } from "../Songs/SongDuration";
@@ -62,6 +63,7 @@ export const DiscoverSongSec = ({ type }: SongSecProps) => {
 
   const handleSongClick = async (index: number) => {
     if (!isLoggedIn) {
+      toast.error("Please login to listen songs");
       router.push("/auth/sign-in");
     } else {
       usePlaySongs(index, songList, `discover-${type}`, dispatch);

@@ -9,11 +9,12 @@ import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useMemo } from "react";
+import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { SongSection } from "../Skeleton/SongSection";
 import { SongDuration } from "./SongDuration";
-import { useRouter } from "next/router";
 
 type SongSecProps = {
   title: string;
@@ -43,9 +44,10 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
 
   const handleSongClick = async (index: number) => {
     if (!isLoggedIn) {
+      toast.error("Please login to listen songs");
       router.push("/auth/sign-in");
     } else {
-    usePlaySongs(index, songList, "recommended", dispatch);
+      usePlaySongs(index, songList, "recommended", dispatch);
     }
   };
 

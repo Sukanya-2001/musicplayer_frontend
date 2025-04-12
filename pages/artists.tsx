@@ -1,12 +1,20 @@
 import { Artist, useGetAllArtistHook } from "@/api/functions/artist.api";
-import { AllArtistCard } from "@/components/Artists/AllArtistCard";
-import { AllArtistSkeleton } from "@/components/Artists/AllArtistSkeleton";
 import ResponsiveDrawer from "@/components/ResponsiveDrawer/ResponsiveDrawer";
+import { ArtistHomeSkeleton } from "@/components/Skeleton/ArtistHomeSkeleton";
+import assest from "@/json/assest";
 import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  CircularProgress,
+  Grid2,
+  Typography
+} from "@mui/material";
+import { useRouter } from "next/router";
 import { useMemo } from "react";
 
 const Artists = () => {
+  const router = useRouter();
   const {
     data: artistData,
     isLoading: artistListPending,
@@ -25,7 +33,7 @@ const Artists = () => {
 
   return (
     <ResponsiveDrawer>
-      {artistListPending ? (
+      {/* {artistListPending ? (
         <AllArtistSkeleton />
       ) : !!artistList && artistList?.length > 0 ? (
         artistList?.map((item, index) => (
@@ -51,7 +59,66 @@ const Artists = () => {
             No artists found
           </Typography>
         </Box>
-      )}
+      )} */}
+
+      <Typography
+        variant="body1"
+        fontWeight="bold"
+        sx={{
+          fontSize: {
+            xs: "18px", // small devices
+            sm: "20px", // tablets
+            md: "25px" // desktops
+          },
+          padding: "20px"
+        }}
+      >
+        All <span style={{ color: "rgb(255 14 188)" }}>Artists</span>
+      </Typography>
+
+      <Box sx={{ padding: "10px 5px 10px 5px" }}>
+        {artistListPending ? (
+          <ArtistHomeSkeleton />
+        ) : (
+          <Grid2 container spacing={2} justifyContent="flex-start">
+            {!!artistList && artistList?.length > 0 ? (
+              artistList?.map((artist, index) => (
+                <Grid2 size={{ xs: 4, sm: 4, md: 3, lg: 1.5 }} key={index}>
+                  <Box
+                    onClick={() => router.push(`/artistsSongs/${artist?._id}`)}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    <Avatar
+                      src={!!artist?.file ? artist?.file : assest?.singer}
+                      sx={{ width: 100, height: 100, margin: "auto" }}
+                    />
+                    <Typography
+                      variant="body2"
+                      sx={{ marginTop: 1, color: "white", textAlign: "center" }}
+                    >
+                      {artist?.title}
+                    </Typography>
+                  </Box>
+                </Grid2>
+              ))
+            ) : (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  textAlign: "center",
+                  width: "100%"
+                }}
+              >
+                <Typography variant="body2" color="gray">
+                  No artist found
+                </Typography>
+              </Box>
+            )}
+          </Grid2>
+        )}
+      </Box>
 
       {!!hasNextPage && (
         <Box

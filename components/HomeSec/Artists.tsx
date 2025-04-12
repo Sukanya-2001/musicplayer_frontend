@@ -24,12 +24,16 @@ export const Artists = ({ details, isPending }: ArtistProps) => {
         <Typography
           variant="body1"
           fontWeight="bold"
-          sx={{ fontSize: "25px", padding: "30px" }}
+          sx={{
+            fontSize: {
+              xs: "18px", // small devices
+              sm: "20px", // tablets
+              md: "25px" // desktops
+            },
+            paddingLeft: "20px"
+          }}
         >
-          Recomended{" "}
-          <Box component="span" color="rgb(255 14 188)">
-            Artists
-          </Box>
+          Recomended <span style={{ color: "rgb(255 14 188)" }}>Artists</span>
         </Typography>
         {!!details && details?.length > 0 && (
           <Typography

@@ -46,7 +46,7 @@ export default function Header() {
 
   // const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const { userData, isLoggedIn } = useAppSelector((state) => state.userSlice);
+  const { isLoggedIn } = useAppSelector((state) => state.userSlice);
   const dispatch = useAppDispatch();
   const { confirmAction } = useAlertConfirmation();
   const router = useRouter();
@@ -64,7 +64,6 @@ export default function Header() {
     if (!isConfirmed) return;
     dispatch(logout());
     toast.success("Logout successfully.");
-    router.push("/");
   };
 
   const drawer = (
@@ -152,7 +151,10 @@ export default function Header() {
               ))}
             </Box>
             {isLoggedIn ? (
-              <Box className="hdr_rgt">
+              <Box
+                // className="hdr_rgt"
+                sx={{ display: { xs: "none", md: "block" } }}
+              >
                 <CustomButtonPrimary
                   onClick={handleLogout}
                   type="button"

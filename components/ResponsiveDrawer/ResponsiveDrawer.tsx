@@ -92,7 +92,6 @@ export default function ResponsiveDrawer(props: Props) {
     if (!isConfirmed) return;
     dispatch(logout());
     toast.success("Logout successfully.");
-    route.push("/");
   };
 
   const drawer = (

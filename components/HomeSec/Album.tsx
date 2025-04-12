@@ -1,12 +1,10 @@
 import { LimitedAlbum } from "@/api/functions/home.api";
-import AddIcon from "@mui/icons-material/Add";
 import {
   Box,
   Card,
   CardContent,
   CardMedia,
   Grid2,
-  IconButton,
   Typography
 } from "@mui/material";
 import { useRouter } from "next/router";
@@ -22,16 +20,39 @@ export const Album = ({ details, isPending }: AlbumProps) => {
 
   return (
     <Box>
-      <Typography
-        variant="body1"
-        fontWeight="bold"
-        sx={{ fontSize: "25px", padding: "30px" }}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center"
+        }}
       >
-        Top{" "}
-        <Box component="span" color="rgb(255 14 188)">
-          Albums
-        </Box>{" "}
-      </Typography>
+        <Typography
+          variant="body1"
+          fontWeight="bold"
+          sx={{
+            fontSize: {
+              xs: "18px", // small devices
+              sm: "20px", // tablets
+              md: "25px" // desktops
+            },
+            paddingLeft: "20px"
+          }}
+        >
+          Top <span style={{ color: "rgb(255 14 188)" }}>Albums</span>{" "}
+        </Typography>
+
+        {!!details && details?.length > 0 && (
+          <Typography
+            variant="body1"
+            color="rgb(255 14 188)"
+            sx={{ cursor: "pointer", padding: "30px" }}
+            onClick={() => router.push("/albums")}
+          >
+            + View all
+          </Typography>
+        )}
+      </Box>
 
       <Box sx={{ padding: "10px 5px" }}>
         {isPending ? (
@@ -74,12 +95,10 @@ export const Album = ({ details, isPending }: AlbumProps) => {
                       }}
                     />
                     <CardContent sx={{ padding: 0 }}>
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        sx={{ fontSize: "1rem", mb: 0.5 }}
-                      >
-                        {album?.title}
+                      <Typography variant="body1" fontWeight="bold">
+                        {album?.title?.length > 15
+                          ? album?.title?.slice(0,15) + "..."
+                          : album?.title}
                       </Typography>
                     </CardContent>
                   </Card>
@@ -101,7 +120,7 @@ export const Album = ({ details, isPending }: AlbumProps) => {
               </Box>
             )}
 
-            {!!details && details?.length > 0 && (
+            {/* {!!details && details?.length > 0 && (
               <Grid2
                 size={{ xs: 6, sm: 4, md: 3, lg: 2 }}
                 display="flex"
@@ -122,7 +141,7 @@ export const Album = ({ details, isPending }: AlbumProps) => {
                   </Typography>
                 </IconButton>
               </Grid2>
-            )}
+            )} */}
           </Grid2>
         )}
       </Box>

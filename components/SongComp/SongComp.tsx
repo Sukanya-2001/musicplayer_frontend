@@ -1,7 +1,6 @@
 import { ISongs } from "@/api/functions/home.api";
 import { useWindowSize } from "@/hooks/utils/commonUtils";
 import assest from "@/json/assest";
-import AddIcon from "@mui/icons-material/Add";
 import {
   Box,
   Card,
@@ -35,7 +34,7 @@ const getCharacterLimit = (windowSize: string) => {
     case "md":
       return 25;
     default:
-      return 10;
+      return 14;
   }
 };
 
@@ -61,17 +60,45 @@ export const SongComp = ({
   };
 
   return (
-    <Box>
-      <Typography
-        variant="body1"
-        fontWeight="bold"
-        sx={{ fontSize: "25px", padding: "30px" }}
+    <Box mt={2}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center"
+        }}
       >
-        {title}{" "}
-        <Box component="span" color="rgb(255 14 188)">
-          {subTitle}
-        </Box>{" "}
-      </Typography>
+        <Typography
+          variant="body1"
+          fontWeight="bold"
+          sx={{
+            fontSize: {
+              xs: "18px", // small devices
+              sm: "20px", // tablets
+              md: "25px" // desktops
+            },
+            paddingLeft: "20px"
+          }}
+        >
+          {title} <span style={{ color: "rgb(255 14 188)" }}>{subTitle}</span>{" "}
+        </Typography>
+        {!!details && details?.length > 0 && (
+          <IconButton
+            onClick={handleRoute}
+            sx={{
+              color: "rgb(255 14 188)",
+              display: "flex",
+              flexDirection: "column",
+              padding: "30px"
+            }}
+          >
+            <Typography variant="body1" color="rgb(255 14 188)">
+              + View all
+            </Typography>
+          </IconButton>
+        )}
+      </Box>
+
       <Box sx={{ padding: "10px 5px 10px 5px" }}>
         {isPending ? (
           <SongsHomeCard />
@@ -141,7 +168,7 @@ export const SongComp = ({
               </Box>
             )}
 
-            {!!details && details?.length > 0 && (
+            {/* {!!details && details?.length > 0 && (
               <Grid2
                 size={{ xs: 4, sm: 6, md: 4, lg: 2 }}
                 display="flex"
@@ -162,7 +189,7 @@ export const SongComp = ({
                   </Typography>
                 </IconButton>
               </Grid2>
-            )}
+            )} */}
           </Grid2>
         )}
       </Box>

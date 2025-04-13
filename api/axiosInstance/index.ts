@@ -11,7 +11,8 @@ import { baseUrlApi, sucessNotificationEndPoints } from "../endpoints";
 // import { refreshAccessToken } from "../functions/user.api";
 
 const axiosInstance = axios.create({
-  baseURL: baseUrlApi
+  baseURL: baseUrlApi,
+  withCredentials: true
 });
 
 axiosInstance.interceptors.request.use((config) => {

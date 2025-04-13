@@ -18,4 +18,7 @@ export const ALBUM_INFO = "album_info";
 export const SONGS_BY_ALBUM = "songs_by_album";
 
 export const ALL_DISCOVER_SONG = "ALL_DISCOVER_SONG";
-export const SONGS_BY_GENRE = "SONGS_BY_GENRE"
+export const SONGS_BY_GENRE = "SONGS_BY_GENRE";
+
+export const MAKE_FAVOURITE = "MAKE_FAVOURITE";
+export const ALL_FAVOURITE_SONGS = "ALL_FAVOURITE_SONGS";

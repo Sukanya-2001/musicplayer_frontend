@@ -1,13 +1,11 @@
-import { useMakeFavourite } from "@/api/functions/favourite.api";
-import {
-  ISongsRes,
-  useGetRecomendedSongsHook
-} from "@/api/functions/songs.api";
+import { useGetFavoriteSongsHook } from "@/api/functions/favourite.api";
+import { ISongsRes } from "@/api/functions/songs.api";
+import { SongSection } from "@/components/Skeleton/SongSection";
+import { SongDuration } from "@/components/Songs/SongDuration";
 import { useAppSelector } from "@/hooks/redux/useAppSelector";
 import { usePlaySongs } from "@/hooks/utils/useSongs";
 import assest from "@/json/assest";
 import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import Image from "next/image";
@@ -15,27 +13,19 @@ import { useRouter } from "next/router";
 import { useMemo } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { SongSection } from "../Skeleton/SongSection";
-import { SongDuration } from "./SongDuration";
 
-type SongSecProps = {
-  title: string;
-  subTitle: string;
-};
-
-export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
+export const FavouriteSongSec = () => {
+  const { isLoggedIn } = useAppSelector((s) => s.userSlice);
   const dispatch = useDispatch();
   const router = useRouter();
-  const { isLoggedIn } = useAppSelector((s) => s.userSlice);
 
   const {
     data: songsData,
     isLoading,
     fetchNextPage,
     hasNextPage,
-    isFetchingNextPage,
-    refetch
-  } = useGetRecomendedSongsHook();
+    isFetchingNextPage
+  } = useGetFavoriteSongsHook();
 
   const songList: ISongsRes[] = useMemo(() => {
     if (songsData) {
@@ -50,17 +40,7 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
       toast.error("Please login to listen songs");
       router.push("/auth/sign-in");
     } else {
-      usePlaySongs(index, songList, "recommended", dispatch);
-    }
-  };
-
-  const { mutateAsync: favMutate } = useMakeFavourite();
-
-  const handleFavourite = async (e: React.MouseEvent, songId: string) => {
-    e.stopPropagation();
-    const res = await favMutate(songId);
-    if (res === 200) {
-      refetch();
+      usePlaySongs(index, songList, "favourite", dispatch);
     }
   };
 
@@ -69,12 +49,17 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
       <Typography
         variant="body1"
         fontWeight="bold"
-        sx={{ fontSize: "25px", padding: "30px", marginTop: "25px" }}
+        sx={{
+          fontSize: {
+            xs: "18px", // small devices
+            sm: "20px", // tablets
+            md: "25px" // desktops
+          },
+          padding: "0 0 20px 20px"
+        }}
       >
-        {title}{" "}
-        <Box component="span" color="rgb(255 14 188)">
-          {subTitle}
-        </Box>{" "}
+        <span style={{ color: "rgb(255 14 188)" }}>Favourite</span>
+        {" Songs"}
       </Typography>
       {isLoading ? (
         <SongSection />
@@ -102,23 +87,23 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
                 {/* Image Section */}
                 <Grid
                   item
-                  xs={2}
+                  xs={3}
                   sm={2}
-                  md={1}
+                  md={2}
                   display="flex"
                   justifyContent="center"
                 >
                   <Image
                     src={!!song?.imageFile ? song?.imageFile : assest?.music}
                     alt={song?.title}
-                    width={70}
-                    height={70}
+                    width={150}
+                    height={150}
                     style={{
                       // borderRadius: "10px",
                       maxWidth: "100%",
                       width: "80px",
-                      height: "50px",
-                      marginRight: "10px"
+                      height: "70px",
+                      paddingRight: "10px"
                     }}
                   />
                 </Grid>
@@ -130,15 +115,10 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
                     fontWeight="bold"
                     noWrap
                     color="white"
-                    sx={{
-                      maxWidth: "100%",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap"
-                    }}
                   >
                     {song?.title}
                   </Typography>
+
                   <Typography
                     variant="body2"
                     color="gray"
@@ -162,15 +142,7 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
                   <Typography variant="body2" sx={{ mr: 1 }} color="white">
                     <SongDuration audioUrl={song?.audioFile} />
                   </Typography>
-                  {isLoggedIn && (
-                    <Box onClick={(e) => handleFavourite(e, song?._id)}>
-                      {song?.isFavorite ? (
-                        <FavoriteIcon />
-                      ) : (
-                        <FavoriteBorderIcon />
-                      )}
-                    </Box>
-                  )}
+                  <FavoriteBorderIcon />
                 </Grid>
               </Grid>
             ))
@@ -219,11 +191,6 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
           </CustomButtonPrimary>
         </Box>
       )}
-
-      {/* Bottom Music Player */}
-      {/* {isPlayerOpen && currentSong && (
-        <MusicPlayer currentSong={currentSong} stopSong={handleMusicPlayer} />
-      )} */}
     </Box>
   );
 };

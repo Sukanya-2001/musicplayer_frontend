@@ -63,6 +63,7 @@ export interface ISongsRes {
   imageFile: string;
   audioFile: string;
   language: string;
+  isFavorite: boolean;
   selectArtist: {
     title: string;
   }[];

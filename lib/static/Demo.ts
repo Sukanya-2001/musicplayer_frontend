@@ -42,7 +42,7 @@ export const othersItems: SidebarItem[] = [
 ];
 
 export const authenticationItems: SidebarItem[] = [
-  { name: "Favourite", route: "/favourite", icon: FavoriteOutlinedIcon },
+  { name: "Favourite", route: "/dashboard/favourite", icon: FavoriteOutlinedIcon },
   {
     name: "My Profile",
     route: "/dashboard",

@@ -43,6 +43,10 @@ export const endpoints = {
   discover: {
     allDetails: "admin/song/get-discover-genres",
     songsByGenre: "admin/song/get-genres-songs"
+  },
+  favoutite: {
+    makeFavourite: "",
+    getAllFavourite: ""
   }
 };
 
@@ -50,5 +54,6 @@ export const sucessNotificationEndPoints = [
   // endpoints.auth.signup,
   endpoints.auth.signUpProfile,
   endpoints.auth.login,
-  endpoints.auth.profileUpdate
+  endpoints.auth.profileUpdate,
+  endpoints.favoutite.makeFavourite
 ];

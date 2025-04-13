@@ -2,12 +2,13 @@
 import { useGetSongsByAlbum } from "@/api/functions/album.api";
 import { useGetSongsByArtist } from "@/api/functions/artist.api";
 import { useGetSongByGenreHook } from "@/api/functions/discover.api";
+import { useGetFavoriteSongsHook } from "@/api/functions/favourite.api";
 import {
   useGetRecomendedSongsHook,
   useGetSongsHook
 } from "@/api/functions/songs.api";
 
-export const useSongApiByType = (source: string | null) => {
+export const useSongApiByType = (source: string | null, userId: string) => {
   if (!source) {
     return {
       fetchNextPage: async () => null,
@@ -38,6 +39,10 @@ export const useSongApiByType = (source: string | null) => {
   if (source.startsWith("genre-")) {
     const genre = source.split("genre-")[1];
     return useGetSongByGenreHook(genre);
+  }
+
+  if (source === "favourite") {
+    return useGetFavoriteSongsHook(userId);
   }
 
   // Default fallback

@@ -1,11 +1,19 @@
-import { useGetFavoriteSongsHook } from "@/api/functions/favourite.api";
+import {
+  IWishListItem,
+  useGetAllIds,
+  useGetFavoriteSongsHook,
+  useMakeFavourite
+} from "@/api/functions/favourite.api";
 import { ISongsRes } from "@/api/functions/songs.api";
 import { SongSection } from "@/components/Skeleton/SongSection";
 import { SongDuration } from "@/components/Songs/SongDuration";
 import { useAppSelector } from "@/hooks/redux/useAppSelector";
+import { checkwistlist } from "@/hooks/utils/commonUtils";
+import { useMakeFavoriteSongs } from "@/hooks/utils/useMakeFavouriteSongs";
 import { usePlaySongs } from "@/hooks/utils/useSongs";
 import assest from "@/json/assest";
 import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import Image from "next/image";
@@ -14,8 +22,27 @@ import { useMemo } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
+export const mapWishListToSongsRes = (wishlist: IWishListItem[]): ISongsRes[] => {
+  return wishlist.map((item) => ({
+    _id: item.song._id,
+    title: item.song.title,
+    subtitle: item.song.subtitle,
+    publishYear: item.song.publishYear.toString(),
+    imageFile: item.song.imageFile,
+    audioFile: item.song.audioFile,
+    language: item.song.language,
+    selectAlbum: {
+      _id: item.song.selectAlbum,
+    },
+    selectArtist: item.artist.map((artist) => ({
+      _id: artist._id,
+      title: artist.title,
+    })),
+  }));
+};
+
 export const FavouriteSongSec = () => {
-  const { isLoggedIn } = useAppSelector((s) => s.userSlice);
+  const { isLoggedIn, userData } = useAppSelector((s) => s.userSlice);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -24,12 +51,14 @@ export const FavouriteSongSec = () => {
     isLoading,
     fetchNextPage,
     hasNextPage,
-    isFetchingNextPage
-  } = useGetFavoriteSongsHook();
+    isFetchingNextPage,
+    refetch
+  } = useGetFavoriteSongsHook(userData?._id ?? "");
 
-  const songList: ISongsRes[] = useMemo(() => {
+  const songList: IWishListItem[] = useMemo(() => {
     if (songsData) {
-      return songsData?.pages?.flatMap((s) => s?.songs || []);
+      
+      return songsData?.pages?.flatMap((s) => s?.wishList || []);
     }
 
     return [];
@@ -40,9 +69,19 @@ export const FavouriteSongSec = () => {
       toast.error("Please login to listen songs");
       router.push("/auth/sign-in");
     } else {
-      usePlaySongs(index, songList, "favourite", dispatch);
+      const convertedSongs = mapWishListToSongsRes(songList);
+      usePlaySongs(index, convertedSongs, "favourite", dispatch);
     }
   };
+  const { wishListIds } = useAppSelector((s) => s.wishlist);
+  const { mutateAsync: getAllFavIds } = useGetAllIds();
+  const { mutateAsync: favMutate } = useMakeFavourite();
+
+  const { handleFavourite, disabledFavs } = useMakeFavoriteSongs({
+    getAllFavIds,
+    favMutate,
+    refetch
+  });
 
   return (
     <Box>
@@ -55,7 +94,7 @@ export const FavouriteSongSec = () => {
             sm: "20px", // tablets
             md: "25px" // desktops
           },
-          padding: "0 0 20px 20px"
+          padding: "20px"
         }}
       >
         <span style={{ color: "rgb(255 14 188)" }}>Favourite</span>
@@ -94,8 +133,8 @@ export const FavouriteSongSec = () => {
                   justifyContent="center"
                 >
                   <Image
-                    src={!!song?.imageFile ? song?.imageFile : assest?.music}
-                    alt={song?.title}
+                    src={!!song?.song?.imageFile ? song?.song?.imageFile : assest?.music}
+                    alt={song?.song?.title}
                     width={150}
                     height={150}
                     style={{
@@ -116,7 +155,7 @@ export const FavouriteSongSec = () => {
                     noWrap
                     color="white"
                   >
-                    {song?.title}
+                    {song?.song?.title}
                   </Typography>
 
                   <Typography
@@ -125,7 +164,7 @@ export const FavouriteSongSec = () => {
                     noWrap
                     sx={{ maxWidth: "200px" }}
                   >
-                    {song?.selectArtist?.map((item) => item?.title).join(", ")}
+                    {song?.artist?.map((item) => item?.title).join(", ")}
                   </Typography>
                 </Grid>
 
@@ -140,9 +179,31 @@ export const FavouriteSongSec = () => {
                   alignItems={"center"}
                 >
                   <Typography variant="body2" sx={{ mr: 1 }} color="white">
-                    <SongDuration audioUrl={song?.audioFile} />
+                    <SongDuration audioUrl={song?.song?.audioFile} />
                   </Typography>
-                  <FavoriteBorderIcon />
+                  {isLoggedIn && (
+                    <Box
+                      onClick={(e) =>
+                        handleFavourite(
+                          e,
+                          song?.song?._id,
+                          song?.song?.selectAlbum,
+                          song?.song?.selectArtist?.map((item) => item)
+                        )
+                      }
+                    >
+                      <CustomButtonPrimary
+                        disabled={disabledFavs[song.song._id]}
+                        sx={{ marginLeft: "0px !important" }}
+                      >
+                        {checkwistlist(song?.song?._id, wishListIds) ? (
+                          <FavoriteIcon />
+                        ) : (
+                          <FavoriteBorderIcon />
+                        )}
+                      </CustomButtonPrimary>
+                    </Box>
+                  )}
                 </Grid>
               </Grid>
             ))
@@ -156,7 +217,18 @@ export const FavouriteSongSec = () => {
                 width: "100%"
               }}
             >
-              <Typography variant="body2" color="gray">
+              <Typography
+                variant="h3"
+                color="gray"
+                sx={{
+                  fontSize: {
+                    xs: "18px", // small devices
+                    sm: "20px", // tablets
+                    md: "25px" // desktops
+                  },
+                  padding: "30px"
+                }}
+              >
                 No songs found
               </Typography>
             </Box>

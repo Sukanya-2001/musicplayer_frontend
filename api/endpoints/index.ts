@@ -16,7 +16,7 @@ export const endpoints = {
     forgotEmail: "",
     otpValidation: "",
     resetPassword: "",
-    profileDetails: "user/profile/get",
+    profileDetails: "user/profile",
     profileUpdate: "user/profile/update"
   },
   home: {
@@ -45,8 +45,9 @@ export const endpoints = {
     songsByGenre: "admin/song/get-genres-songs"
   },
   favoutite: {
-    makeFavourite: "",
-    getAllFavourite: ""
+    getAllFavoriteIds: "user/wishlist/get-ids",
+    makeFavourite: "user/wishlist/add-favourite",
+    getAllFavourite: "user/wishlist/get-favourite"
   }
 };
 

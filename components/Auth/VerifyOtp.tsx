@@ -1,9 +1,17 @@
 import { useAuthOtpValidateHook } from "@/api/functions/user.api";
 import { otpPayload, otpSchema } from "@/hooks/Schema/auth.schema";
+import assest from "@/json/assest";
 import InputFieldCommon from "@/ui/CommonInput/CommonInput";
 import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Box, CircularProgress, Divider, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Divider,
+  Grid,
+  Typography
+} from "@mui/material";
+import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
@@ -52,6 +60,20 @@ const VerifyOtp = ({ email, handleResetPassword }: Props) => {
         <Grid container spacing={2} sx={{ maxWidth: "800px" }}>
           {/* Title with Centered Text & Line */}
           <Grid item xs={12} sx={{ textAlign: "center" }}>
+            <Link
+              href="/"
+              className="headerLogo"
+              style={{
+                margin: "20px 0 20px 0"
+              }}
+            >
+              <Image
+                src={assest.musicGirl}
+                width={200}
+                height={200}
+                alt="Logo"
+              />
+            </Link>
             <Typography
               variant="h2"
               color="white"
@@ -107,10 +129,10 @@ const VerifyOtp = ({ email, handleResetPassword }: Props) => {
               sx={{ px: 8 }}
             >
               {otpPending ? (
-                                <CircularProgress size={28} sx={{ color: "white" }} />
-                              ) : (
-                                "Continue"
-                              )}
+                <CircularProgress size={28} sx={{ color: "white" }} />
+              ) : (
+                "Continue"
+              )}
             </CustomButtonPrimary>
           </Grid>
         </Grid>

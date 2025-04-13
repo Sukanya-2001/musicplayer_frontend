@@ -1,3 +1,4 @@
+import { mapWishListToSongsRes } from "@/components/Favourite/FavouriteSongSec";
 import {
   next,
   pause,
@@ -21,8 +22,9 @@ export const useAudioPlayer = () => {
   const { activeSongSource, playlist, currentIndex, isPlaying } =
     useAppSelector((s) => s.audio);
   const dispatch = useDispatch();
+  const { userData } = useAppSelector((s) => s.userSlice);
   const { fetchNextPage, hasNextPage, isFetchingNextPage, data } =
-    useSongApiByType(activeSongSource);
+    useSongApiByType(activeSongSource, userData?._id!);
 
   const soundRef = useRef<Howl | null>(null);
 
@@ -106,6 +108,9 @@ export const useAudioPlayer = () => {
         if ("songs" in page) return page?.songs;
         if ("data" in page) return page?.data;
         if ("filteredSongs" in page) return page?.filteredSongs;
+        if ("wishList" in page) {
+          return mapWishListToSongsRes(page.wishList);
+        }
         return [];
       });
 

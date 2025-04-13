@@ -1,9 +1,15 @@
 "use client";
 
+import { useAppSelector } from "@/hooks/redux/useAppSelector";
 import EditIcon from "@mui/icons-material/Edit";
 import { Avatar, Box, Grid, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 
 export const Profile = () => {
+  const router = useRouter();
+  const { userData } = useAppSelector((s) => s.userSlice);
+  const { wishListIds } = useAppSelector((s) => s.wishlist);
+
   return (
     <Box sx={{ position: "relative" }}>
       {/* Gradient Top Background */}
@@ -71,23 +77,26 @@ export const Profile = () => {
           mt={4}
           sx={{ fontSize: "25px" }}
         >
-          Samantha Jones
+          {userData?.name ?? ""}
         </Typography>
-        <Typography variant="body1" mb={1} sx={{ fontSize: "18px" }}>
-          Username
+        <Typography variant="body1">
+          Email: {userData?.email ?? "Not Available"}
         </Typography>
-        <Typography variant="body1">Email: email@email.com</Typography>
         <Typography variant="body1" mb={3}>
-          Phone no.: 6251403025
+          Phone no.: {userData?.phone_number ?? "Not Available"}
         </Typography>
 
         {/* Stats */}
         <Grid container spacing={2} justifyContent="center" mb={3}>
-          <Grid item>
+          <Grid
+            item
+            onClick={() => router.push("/dashboard/favourite")}
+            sx={{ cursor: "pointer" }}
+          >
             <Typography fontWeight={600} sx={{ color: "rgb(255 14 188)" }}>
-              65
+              {wishListIds?.length ?? 0}
             </Typography>
-            <Typography variant="h5">Favourite</Typography>
+            <Typography variant="h5">Favourite Songs</Typography>
           </Grid>
         </Grid>
       </Box>

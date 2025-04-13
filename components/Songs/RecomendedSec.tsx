@@ -1,9 +1,10 @@
-import { useMakeFavourite } from "@/api/functions/favourite.api";
+import { useGetAllIds, useMakeFavourite } from "@/api/functions/favourite.api";
 import {
   ISongsRes,
   useGetRecomendedSongsHook
 } from "@/api/functions/songs.api";
 import { useAppSelector } from "@/hooks/redux/useAppSelector";
+import { useMakeFavoriteSongs } from "@/hooks/utils/useMakeFavouriteSongs";
 import { usePlaySongs } from "@/hooks/utils/useSongs";
 import assest from "@/json/assest";
 import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
@@ -17,6 +18,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { SongSection } from "../Skeleton/SongSection";
 import { SongDuration } from "./SongDuration";
+import { checkwistlist } from "@/hooks/utils/commonUtils";
 
 type SongSecProps = {
   title: string;
@@ -33,8 +35,7 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
     isLoading,
     fetchNextPage,
     hasNextPage,
-    isFetchingNextPage,
-    refetch
+    isFetchingNextPage
   } = useGetRecomendedSongsHook();
 
   const songList: ISongsRes[] = useMemo(() => {
@@ -53,16 +54,14 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
       usePlaySongs(index, songList, "recommended", dispatch);
     }
   };
-
+  const { wishListIds } = useAppSelector((s) => s.wishlist);
+  const { mutateAsync: getAllFavIds } = useGetAllIds();
   const { mutateAsync: favMutate } = useMakeFavourite();
 
-  const handleFavourite = async (e: React.MouseEvent, songId: string) => {
-    e.stopPropagation();
-    const res = await favMutate(songId);
-    if (res === 200) {
-      refetch();
-    }
-  };
+  const { handleFavourite, disabledFavs } = useMakeFavoriteSongs({
+    getAllFavIds,
+    favMutate
+  });
 
   return (
     <Box>
@@ -163,12 +162,26 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
                     <SongDuration audioUrl={song?.audioFile} />
                   </Typography>
                   {isLoggedIn && (
-                    <Box onClick={(e) => handleFavourite(e, song?._id)}>
-                      {song?.isFavorite ? (
-                        <FavoriteIcon />
-                      ) : (
-                        <FavoriteBorderIcon />
-                      )}
+                    <Box
+                      onClick={(e) =>
+                        handleFavourite(
+                          e,
+                          song?._id,
+                          song?.selectAlbum?._id,
+                          song?.selectArtist?.map((item) => item?._id)
+                        )
+                      }
+                    >
+                      <CustomButtonPrimary
+                        disabled={disabledFavs[song._id]}
+                        sx={{ marginLeft: "0px !important" }}
+                      >
+                        {checkwistlist(song?._id, wishListIds) ? (
+                          <FavoriteIcon />
+                        ) : (
+                          <FavoriteBorderIcon />
+                        )}
+                      </CustomButtonPrimary>
                     </Box>
                   )}
                 </Grid>
@@ -184,7 +197,18 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
                 width: "100%"
               }}
             >
-              <Typography variant="body2" color="gray">
+              <Typography
+                variant="h3"
+                color="gray"
+                sx={{
+                  fontSize: {
+                    xs: "18px", // small devices
+                    sm: "20px", // tablets
+                    md: "25px" // desktops
+                  },
+                  padding: "30px"
+                }}
+              >
                 No songs found
               </Typography>
             </Box>

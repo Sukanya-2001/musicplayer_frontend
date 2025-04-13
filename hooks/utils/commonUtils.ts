@@ -1,3 +1,4 @@
+import { WishListItem } from "@/api/functions/favourite.api";
 import { ISongsRes } from "@/api/functions/songs.api";
 import { useEffect, useState } from "react";
 
@@ -74,4 +75,9 @@ export const generatePlaylistWithMeta = async (songs: ISongsRes[]) => {
 
 export const capitalizeFirstLetter = (str: string): string => {
   return str.charAt(0).toUpperCase() + str.slice(1);
-}
+};
+
+export const checkwistlist = (id: string, wishListIds: WishListItem[]) => {
+  if (wishListIds.some((item) => item.song === id)) return true;
+  else return false;
+};

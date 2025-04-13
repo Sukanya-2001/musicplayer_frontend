@@ -1,22 +1,20 @@
 /* eslint-disable no-console */
+import { GetProfileDetails } from "@/api/functions/user.api";
+import { logout, setLoginData } from "@/reduxtoolkit/slices/userSlice";
 import { useQuery } from "@tanstack/react-query";
 import { parseCookies } from "nookies";
 import { useEffect } from "react";
 import { useAppDispatch } from "../redux/useAppDispatch";
-import { useAppSelector } from "../redux/useAppSelector";
-import { logout, setLoginData } from "@/reduxtoolkit/slices/userSlice";
-import { GetProfileDetails } from "@/api/functions/user.api";
 
 const useUser = () => {
   const cookies = parseCookies();
   const token: string = cookies[process.env.NEXT_APP_TOKEN_NAME!];
   const dispatch = useAppDispatch();
-  const { userData } = useAppSelector((s) => s.userSlice);
 
   const profileDetails = useQuery({
     queryKey: ["userdetails"],
     queryFn: GetProfileDetails,
-    enabled: !!token && userData === null
+    enabled: !!token
 
     // onSuccess(data) {
     //   if (data?.data?.status === 401) {
@@ -35,7 +33,7 @@ const useUser = () => {
       if (profileDetails?.data?.status === 401) {
         dispatch(logout());
       } else {
-        dispatch(setLoginData(profileDetails?.data?.data?.data));
+        dispatch(setLoginData(profileDetails?.data?.data?.result));
       }
     }
   }, [profileDetails?.status, profileDetails?.data]);

@@ -63,8 +63,11 @@ export interface ISongsRes {
   imageFile: string;
   audioFile: string;
   language: string;
-  isFavorite: boolean;
+  selectAlbum: {
+    _id: string;
+  };
   selectArtist: {
+    _id: string;
     title: string;
   }[];
 }

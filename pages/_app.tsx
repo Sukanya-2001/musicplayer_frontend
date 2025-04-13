@@ -1,4 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
+import ComponentHandler from "@/components/ComponentHandler/ComponentHandler";
 import EventListeners from "@/components/EventListener/EventListener";
 import { PlayMusic } from "@/components/MusicPlayer/PlayMusic";
 import { useAppSelector } from "@/hooks/redux/useAppSelector";
@@ -74,9 +75,10 @@ export default function CustomApp({
                 duration: 2000
               }}
             />
-
-            <EventListeners />
-            <Component {...pageProps} />
+            <ComponentHandler>
+              <EventListeners />
+              <Component {...pageProps} />
+            </ComponentHandler>
             <GlobalAudioPlayer />
           </MuiThemeProvider>
         </CacheProvider>

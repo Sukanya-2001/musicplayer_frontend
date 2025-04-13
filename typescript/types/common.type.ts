@@ -1,5 +1,8 @@
 export type userData = {
-  _id?: string;
+  _id: string;
+  email: string;
+  name: string;
+  phone_number: string;
   role: {
     _id?: string;
     role?: string;
@@ -10,7 +13,6 @@ export type userData = {
   fullName?: string;
   username?: string;
   phone?: string;
-  email?: string;
   bio?: string;
   otp?: string;
   profile_image?: string;

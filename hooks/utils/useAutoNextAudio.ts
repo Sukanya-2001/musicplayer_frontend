@@ -3,15 +3,17 @@ import { RootState } from "@/reduxtoolkit/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { generatePlaylistWithMeta } from "./commonUtils";
 import { useSongApiByType } from "./useSongApiByType";
+import { useAppSelector } from "../redux/useAppSelector";
 
 export const useAutoNextAudio = () => {
   const dispatch = useDispatch();
+  const {userData} = useAppSelector((s)=>s.userSlice)
   const { activeSongSource, currentIndex, playlist } = useSelector(
     (state: RootState) => state.audio
   );
 
   const { fetchNextPage, hasNextPage, isFetchingNextPage, data } =
-    useSongApiByType(activeSongSource);
+    useSongApiByType(activeSongSource, userData?._id!);
 
   const onSongEnd = async () => {
     const isLastSong = currentIndex === playlist.length - 1;

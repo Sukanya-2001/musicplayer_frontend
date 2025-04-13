@@ -1,5 +1,6 @@
 import { useAuthSignUpHook } from "@/api/functions/user.api";
 import { signUpPayload, signUpSchema } from "@/hooks/Schema/auth.schema";
+import assest from "@/json/assest";
 import InputFieldCommon from "@/ui/CommonInput/CommonInput";
 import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -10,6 +11,7 @@ import {
   Grid,
   Typography
 } from "@mui/material";
+import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
@@ -51,6 +53,20 @@ const SignUp = () => {
         <Grid container spacing={2} sx={{ maxWidth: "800px" }}>
           {/* Title with Centered Text & Line */}
           <Grid item xs={12} sx={{ textAlign: "center" }}>
+            <Link
+              href="/"
+              className="headerLogo"
+              style={{
+                margin: "20px 0 20px 0"
+              }}
+            >
+              <Image
+                src={assest.musicGirl}
+                width={200}
+                height={200}
+                alt="Logo"
+              />
+            </Link>
             <Typography
               variant="h2"
               color="white"

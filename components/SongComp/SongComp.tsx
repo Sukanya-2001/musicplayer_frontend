@@ -162,7 +162,18 @@ export const SongComp = ({
                   width: "100%"
                 }}
               >
-                <Typography variant="body2" color="gray">
+                <Typography
+                  variant="h3"
+                  color="gray"
+                  sx={{
+                    fontSize: {
+                      xs: "18px", // small devices
+                      sm: "20px", // tablets
+                      md: "25px" // desktops
+                    },
+                    padding: "30px"
+                  }}
+                >
                   No songs found
                 </Typography>
               </Box>

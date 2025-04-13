@@ -1,8 +1,12 @@
+import { useGetAllIds, useMakeFavourite } from "@/api/functions/favourite.api";
 import { ISongsRes, useGetSongsHook } from "@/api/functions/songs.api";
 import { useAppSelector } from "@/hooks/redux/useAppSelector";
+import { checkwistlist } from "@/hooks/utils/commonUtils";
+import { useMakeFavoriteSongs } from "@/hooks/utils/useMakeFavouriteSongs";
 import { usePlaySongs } from "@/hooks/utils/useSongs";
 import assest from "@/json/assest";
 import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import Image from "next/image";
@@ -55,6 +59,14 @@ export const SongsSec = ({ title, subTitle, songType }: SongSecProps) => {
       usePlaySongs(index, songList, title, dispatch);
     }
   };
+  const { wishListIds } = useAppSelector((s) => s.wishlist);
+  const { mutateAsync: getAllFavIds } = useGetAllIds();
+  const { mutateAsync: favMutate } = useMakeFavourite();
+
+  const { handleFavourite, disabledFavs } = useMakeFavoriteSongs({
+    getAllFavIds,
+    favMutate
+  });
 
   return (
     <Box>
@@ -149,7 +161,29 @@ export const SongsSec = ({ title, subTitle, songType }: SongSecProps) => {
                   <Typography variant="body2" sx={{ mr: 1 }} color="white">
                     <SongDuration audioUrl={song?.audioFile} />
                   </Typography>
-                  <FavoriteBorderIcon />
+                  {isLoggedIn && (
+                    <Box
+                      onClick={(e) =>
+                        handleFavourite(
+                          e,
+                          song?._id,
+                          song?.selectAlbum?._id,
+                          song?.selectArtist?.map((item) => item?._id)
+                        )
+                      }
+                    >
+                      <CustomButtonPrimary
+                        disabled={disabledFavs[song._id]}
+                        sx={{ marginLeft: "0px !important" }}
+                      >
+                        {checkwistlist(song?._id, wishListIds) ? (
+                          <FavoriteIcon />
+                        ) : (
+                          <FavoriteBorderIcon />
+                        )}
+                      </CustomButtonPrimary>
+                    </Box>
+                  )}
                 </Grid>
               </Grid>
             ))
@@ -163,7 +197,18 @@ export const SongsSec = ({ title, subTitle, songType }: SongSecProps) => {
                 width: "100%"
               }}
             >
-              <Typography variant="body2" color="gray">
+              <Typography
+                variant="h3"
+                color="gray"
+                sx={{
+                  fontSize: {
+                    xs: "18px", // small devices
+                    sm: "20px", // tablets
+                    md: "25px" // desktops
+                  },
+                  padding: "30px"
+                }}
+              >
                 No songs found
               </Typography>
             </Box>

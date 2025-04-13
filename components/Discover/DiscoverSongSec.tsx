@@ -1,44 +1,32 @@
-import {
-  ISongsRes,
-  useGetRecomendedSongsHook
-} from "@/api/functions/songs.api";
+import { ISongsRes } from "@/api/functions/songs.api";
 import { useAppSelector } from "@/hooks/redux/useAppSelector";
+import { capitalizeFirstLetter } from "@/hooks/utils/commonUtils";
 import { usePlaySongs } from "@/hooks/utils/useSongs";
 import assest from "@/json/assest";
-import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { SongSection } from "../Skeleton/SongSection";
 import { SongDuration } from "../Songs/SongDuration";
 
 type SongSecProps = {
   type: string;
+  songs: ISongsRes[];
 };
 
-export const DiscoverSongSec = ({ type }: SongSecProps) => {
+export const DiscoverSongSec = ({ type, songs }: SongSecProps) => {
   const dispatch = useDispatch();
   const { isLoggedIn } = useAppSelector((s) => s.userSlice);
   const router = useRouter();
   const [width, setWidth] = useState<number>(0);
 
-  const {
-    data: songsData,
-    isLoading,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage
-  } = useGetRecomendedSongsHook();
-
   useEffect(() => {
     const resizeFunction = () => {
       if (typeof window === "undefined") return "450px";
       setWidth(window.innerWidth);
-      console.log(window.innerWidth);
     };
 
     // Add event listener
@@ -53,20 +41,12 @@ export const DiscoverSongSec = ({ type }: SongSecProps) => {
     };
   }, []);
 
-  const songList: ISongsRes[] = useMemo(() => {
-    if (songsData) {
-      return songsData?.pages?.flatMap((s) => s?.songs || []);
-    }
-
-    return [];
-  }, [JSON.stringify(songsData)]);
-
   const handleSongClick = async (index: number) => {
     if (!isLoggedIn) {
       toast.error("Please login to listen songs");
       router.push("/auth/sign-in");
     } else {
-      usePlaySongs(index, songList, `discover-${type}`, dispatch);
+      usePlaySongs(index, songs, `discover-${type}`, dispatch);
     }
   };
 
@@ -82,15 +62,23 @@ export const DiscoverSongSec = ({ type }: SongSecProps) => {
         <Typography
           variant="body1"
           fontWeight="bold"
-          sx={{ fontSize: "25px", padding: "5px 20px" }}
+          sx={{
+            fontSize: {
+              xs: "18px", // small devices
+              sm: "20px", // tablets
+              md: "25px" // desktops
+            },
+            padding: "10px 20px"
+          }}
         >
           <Box component="span" color="rgb(255 14 188)">
-            {type}{" "}
+            {capitalizeFirstLetter(type)}{" "}
           </Box>
           Songs
         </Typography>
         <Typography
           variant="body1"
+          onClick={() => router.push(`/discover-songs?${type}`)}
           sx={{
             padding: "5px 20px",
             color: "rgb(255 14 188)",
@@ -101,96 +89,92 @@ export const DiscoverSongSec = ({ type }: SongSecProps) => {
         </Typography>
       </Box>
 
-      {isLoading ? (
-        <SongSection />
-      ) : (
-        <Box
-          sx={{
-            overflowX: "scroll",
-            width: {
-              xs: `calc(${width}px - 10px)`,
-              sm: `calc(${width}px - 250px)`,
-              md: `calc(${width}px - 250px)`
-            }
-          }}
-        >
-          {!!songList && songList.length > 0 ? (
-            <Box
-              sx={{
-                display: "flex",
-                gap: "40px",
+      <Box
+        sx={{
+          overflowX: "scroll",
+          width: {
+            xs: `calc(${width}px - 10px)`,
+            sm: `calc(${width}px - 250px)`,
+            md: `calc(${width}px - 250px)`
+          }
+        }}
+      >
+        {!!songs && songs.length > 0 ? (
+          <Box
+            sx={{
+              display: "flex",
+              gap: "40px",
 
-                padding: "20px"
-              }}
-            >
-              {songList.map((song, index) => (
-                <Box key={index} onClick={() => handleSongClick(index)}>
-                  <Box>
-                    <Image
-                      src={song?.imageFile || assest.music}
-                      alt={song?.title}
-                      width={120}
-                      height={150}
-                      style={{
-                        borderRadius: "8px",
-                        objectFit: "cover",
-                        minWidth: "200px",
-                        height: "200px"
-                      }}
-                    />
-                  </Box>
-                  <Typography
-                    variant="body1"
-                    fontWeight="bold"
-                    color="white"
-                    noWrap
-                    textAlign="center"
-                  >
-                    {song?.title}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="gray"
-                    noWrap
-                    textAlign="center"
-                  >
-                    {song?.selectArtist?.map((item) => item?.title).join(", ")}
-                  </Typography>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      mt: 1
+              padding: "20px"
+            }}
+          >
+            {songs.map((song, index) => (
+              <Box key={index} onClick={() => handleSongClick(index)}>
+                <Box>
+                  <Image
+                    src={song?.imageFile || assest.music}
+                    alt={song?.title}
+                    width={120}
+                    height={150}
+                    style={{
+                      borderRadius: "8px",
+                      objectFit: "cover",
+                      minWidth: "150px",
+                      height: "180px"
                     }}
-                  >
-                    <Typography variant="body2" color="white">
-                      <SongDuration audioUrl={song?.audioFile} />
-                    </Typography>
-                    <FavoriteBorderIcon sx={{ color: "white" }} />
-                  </Box>
+                  />
                 </Box>
-              ))}
-            </Box>
-          ) : (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                textAlign: "center",
-                width: "100%"
-              }}
-            >
-              <Typography variant="body2" color="gray">
-                No songs found
-              </Typography>
-            </Box>
-          )}
-        </Box>
-      )}
+                <Typography
+                  variant="body1"
+                  fontWeight="bold"
+                  color="white"
+                  noWrap
+                  textAlign="center"
+                >
+                  {song?.title}
+                </Typography>
+                {/* <Typography
+                  variant="body2"
+                  color="gray"
+                  noWrap
+                  textAlign="center"
+                >
+                  {song?.selectArtist?.map((item) => item?.title).join(", ")}
+                </Typography> */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    mt: 1
+                  }}
+                >
+                  <Typography variant="body2" color="white">
+                    <SongDuration audioUrl={song?.audioFile} />
+                  </Typography>
+                  <FavoriteBorderIcon sx={{ color: "white" }} />
+                </Box>
+              </Box>
+            ))}
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+              width: "100%"
+            }}
+          >
+            <Typography variant="body2" color="gray">
+              No songs found
+            </Typography>
+          </Box>
+        )}
+      </Box>
 
-      {!!hasNextPage && (
+      {/* {!!hasNextPage && (
         <Box
           p={2}
           sx={{
@@ -215,7 +199,7 @@ export const DiscoverSongSec = ({ type }: SongSecProps) => {
             )}
           </CustomButtonPrimary>
         </Box>
-      )}
+      )} */}
     </Box>
   );
 };

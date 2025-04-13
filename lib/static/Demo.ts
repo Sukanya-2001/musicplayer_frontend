@@ -4,7 +4,6 @@ import CollectionsOutlinedIcon from "@mui/icons-material/CollectionsOutlined";
 import ExploreIcon from "@mui/icons-material/Explore";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import HomeIcon from "@mui/icons-material/Home";
-import LanguageIcon from "@mui/icons-material/Language";
 import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import PersonSearchOutlinedIcon from "@mui/icons-material/PersonSearchOutlined";
@@ -22,8 +21,9 @@ export const sideFirstItems: SidebarItem[] = [
   { name: "Home", route: "/", icon: HomeIcon },
   { name: "Albums", route: "/albums", icon: CollectionsOutlinedIcon },
   { name: "Artists", route: "/artists", icon: PersonSearchOutlinedIcon },
-  { name: "Discover", route: "/discover", icon: ExploreIcon },
-  { name: "More", route: "/language", icon: LanguageIcon }
+  { name: "Discover", route: "/discover", icon: ExploreIcon }
+  
+  // { name: "More", route: "/language", icon: LanguageIcon }
 ];
 
 export const sideSecondItems: SidebarItem[] = [

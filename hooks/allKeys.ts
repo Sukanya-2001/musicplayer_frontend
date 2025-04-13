@@ -16,3 +16,6 @@ export const SONGS_BY_ARTIST = "songs_by_artist";
 export const ALL_ALBUM = "all_albums";
 export const ALBUM_INFO = "album_info";
 export const SONGS_BY_ALBUM = "songs_by_album";
+
+export const ALL_DISCOVER_SONG = "ALL_DISCOVER_SONG";
+export const SONGS_BY_GENRE = "SONGS_BY_GENRE"

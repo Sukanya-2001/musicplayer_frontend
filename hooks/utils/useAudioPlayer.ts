@@ -1,5 +1,3 @@
-// useAudioPlayer.ts
-
 import {
   next,
   pause,
@@ -12,37 +10,45 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../redux/useAppSelector";
 import { generatePlaylistWithMeta } from "./commonUtils";
-import { useAutoNextAudio } from "./useAutoNextAudio";
 import { useSongApiByType } from "./useSongApiByType";
 
 export const useAudioPlayer = () => {
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [noMoreSongs, setNoMoreSongs] = useState(false);
+
   const { activeSongSource, playlist, currentIndex, isPlaying } =
     useAppSelector((s) => s.audio);
   const dispatch = useDispatch();
-  const { onSongEnd } = useAutoNextAudio();
-
   const { fetchNextPage, hasNextPage, isFetchingNextPage, data } =
     useSongApiByType(activeSongSource);
 
   const soundRef = useRef<Howl | null>(null);
 
-  // ⬇️ Setup sound only when song (src) changes
+  const currentSong = playlist[currentIndex];
+  const isFirstSong = currentIndex <= 0;
+  const isLastSong = currentIndex === playlist.length - 1 && noMoreSongs;
+
+  // Setup sound when current song changes
   useEffect(() => {
-    const currentSong = playlist[currentIndex];
     if (!currentSong) return;
 
     if (soundRef.current) {
       soundRef.current.stop();
-      soundRef.current.unload(); // Clean up old Howl
+      soundRef.current.unload();
     }
 
     soundRef.current = new Howl({
       src: [currentSong.src],
       html5: true,
-      onend: () => onSongEnd()
+      onend: () => {
+        if (isLastSong) {
+          dispatch(pause()); // auto-pause at end of playlist
+        } else {
+          handleNext(); // auto-play next song
+        }
+      }
     });
 
     if (isPlaying) {
@@ -54,7 +60,7 @@ export const useAudioPlayer = () => {
     };
   }, [currentIndex]);
 
-  //for progreebar and time
+  // Track progress
   useEffect(() => {
     const interval = setInterval(() => {
       const sound = soundRef.current;
@@ -85,7 +91,7 @@ export const useAudioPlayer = () => {
       soundRef.current.pause();
       dispatch(pause());
     } else {
-      soundRef.current.play(); // Will resume from current time
+      soundRef.current.play();
       dispatch(play());
     }
   };
@@ -107,34 +113,39 @@ export const useAudioPlayer = () => {
       if (playList?.length) {
         dispatch(setPlaylist(playList));
         dispatch(next());
+        setNoMoreSongs(false); // More songs found
+      } else {
+        setNoMoreSongs(true); // ✅ No more songs
       }
+    } else {
+      setNoMoreSongs(true); // ✅ No more pages
     }
   };
 
   const handlePrev = () => {
-    dispatch(prev());
+    if (currentIndex > 0) {
+      dispatch(prev());
+    }
   };
 
   const skipForward = () => {
     if (soundRef.current) {
-      const sound = soundRef.current;
-      const total = sound.duration();
+      const total = soundRef.current.duration();
       const current = soundRef.current.seek() as number;
-      const newTime = Math.min(soundRef.current.duration(), current + 10);
+      const newTime = Math.min(total, current + 10);
       soundRef.current.seek(newTime);
-      setCurrentTime(newTime); // 🔥 Update state immediately
+      setCurrentTime(newTime);
       setProgress((newTime / total) * 100);
     }
   };
 
   const skipBackward = () => {
     if (soundRef.current) {
-      const sound = soundRef.current;
-      const total = sound.duration();
+      const total = soundRef.current.duration();
       const current = soundRef.current.seek() as number;
       const newTime = Math.max(0, current - 10);
       soundRef.current.seek(newTime);
-      setCurrentTime(newTime); // 🔥 Update state immediately
+      setCurrentTime(newTime);
       setProgress((newTime / total) * 100);
     }
   };
@@ -146,9 +157,11 @@ export const useAudioPlayer = () => {
     handlePrev,
     skipForward,
     skipBackward,
-    currentSong: playlist[currentIndex],
+    currentSong,
     progress,
     currentTimeFormatted: formatTime(currentTime),
-    durationFormatted: formatTime(duration)
+    durationFormatted: formatTime(duration),
+    isFirstSong,
+    isLastSong
   };
 };

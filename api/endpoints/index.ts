@@ -39,6 +39,10 @@ export const endpoints = {
   cms: {
     about: "aboutpolicy/details",
     faq: "faq/all"
+  },
+  discover: {
+    allDetails: "admin/song/get-discover-genres",
+    songsByGenre: "admin/song/get-genres-songs"
   }
 };
 

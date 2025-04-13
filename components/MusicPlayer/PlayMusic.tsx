@@ -23,7 +23,9 @@ export const PlayMusic = () => {
     currentSong,
     progress,
     currentTimeFormatted,
-    durationFormatted
+    durationFormatted,
+    isFirstSong,
+    isLastSong
   } = useAudioPlayer();
 
   const dispatch = useAppDispatch();
@@ -35,17 +37,6 @@ export const PlayMusic = () => {
   };
 
   return (
-    
-    // <Box className="p-4 border rounded-lg" sx={{display:"flex", justifyContent:"flex-end"}}>
-    //   {/* <h2>{currentSong.title}</h2> */}
-    //   <button onClick={handlePrev}>⏮️ Prev</button>
-    //   <button onClick={skipBackward}>⏪ -10s</button>
-    //   <button onClick={handlePlayPause}>
-    //     {isPlaying ? "⏸️ Pause" : "▶️ Play"}
-    //   </button>
-    //   <button onClick={skipForward}>⏩ +10s</button>
-    //   <button onClick={handleNext}>⏭️ Next</button>
-    // </Box>
     <Box
       sx={{
         position: "fixed",
@@ -81,24 +72,6 @@ export const PlayMusic = () => {
             transition: "width 0.2s linear"
           }}
         />
-        {/* Time Overlay */}
-
-        {/* <Box
-          sx={{
-            // position: "relative",
-            // top: "100%",
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            padding: "0 4px",
-            fontSize: "10px",
-            color: "#ccc",
-            mt: "2px"
-          }}
-        >
-          <Typography>{currentTimeFormatted}1236765734657647538765348</Typography>
-          <span>{durationFormatted}123</span>
-        </Box> */}
       </Box>
       <Box
         sx={{
@@ -167,6 +140,7 @@ export const PlayMusic = () => {
               color="primary"
               onClick={handlePrev}
               size="small"
+              disabled={isFirstSong}
               sx={{ padding: "2px !important" }}
             >
               <SkipPreviousIcon />
@@ -199,6 +173,7 @@ export const PlayMusic = () => {
               color="primary"
               onClick={handleNext}
               size="small"
+              disabled={isLastSong}
               sx={{ padding: "2px !important" }}
             >
               <SkipNextIcon />

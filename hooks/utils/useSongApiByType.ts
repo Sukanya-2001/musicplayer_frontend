@@ -1,6 +1,7 @@
 // hooks/useSongSourceApi.ts
 import { useGetSongsByAlbum } from "@/api/functions/album.api";
 import { useGetSongsByArtist } from "@/api/functions/artist.api";
+import { useGetSongByGenreHook } from "@/api/functions/discover.api";
 import {
   useGetRecomendedSongsHook,
   useGetSongsHook
@@ -32,6 +33,11 @@ export const useSongApiByType = (source: string | null) => {
   if (source.startsWith("songByArtist-")) {
     const artistId = source.split("songByArtist-")[1];
     return useGetSongsByArtist(artistId);
+  }
+
+  if (source.startsWith("genre-")) {
+    const genre = source.split("genre-")[1];
+    return useGetSongByGenreHook(genre);
   }
 
   // Default fallback

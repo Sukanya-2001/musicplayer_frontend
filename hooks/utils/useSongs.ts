@@ -18,6 +18,6 @@ export const usePlaySongs = async (
   const playList = await generatePlaylistWithMeta(songList);
   dispatch(setPlaylist(playList));
   dispatch(setCurrentIndex(index));
-  dispatch(setActiveSongSource(`discover-${type}`));
+  dispatch(setActiveSongSource(`${type}`));
   dispatch(play());
 };

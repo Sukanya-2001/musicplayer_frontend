@@ -1,5 +1,8 @@
 import { ISongs } from "@/api/functions/home.api";
+import { ISongsRes } from "@/api/functions/songs.api";
+import { useAppSelector } from "@/hooks/redux/useAppSelector";
 import { useWindowSize } from "@/hooks/utils/commonUtils";
+import { usePlaySongs } from "@/hooks/utils/useSongs";
 import assest from "@/json/assest";
 import {
   Box,
@@ -12,6 +15,8 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
 import { SongsHomeCard } from "../Skeleton/SongsHomeCard";
 
 export type SongProps = {
@@ -45,7 +50,9 @@ export const SongComp = ({
   isPending
 }: SongProps) => {
   const router = useRouter();
+  const { isLoggedIn } = useAppSelector((s) => s.userSlice);
   const windowSize = useWindowSize();
+  const dispatch = useDispatch();
   const characterLimit = useMemo(
     () => getCharacterLimit(windowSize),
     [windowSize]
@@ -56,6 +63,34 @@ export const SongComp = ({
       router.push("/recomended-songs");
     } else {
       router.push(`/songs?${title}`);
+    }
+  };
+
+  const songsList: ISongsRes[] =
+    details?.map(
+      (item): ISongsRes => ({
+        _id: item._id,
+        title: item.title,
+        subtitle: item.subtitle,
+        imageFile: item.imageFile,
+        audioFile:
+          "https://d30454c5f9k748.cloudfront.net/songs/1743874651790_Thodi%20Jagah%20-%20Marjaavaan%20%28128%20kbps%29.mp3",
+        publishYear: "",
+        language: "",
+        selectAlbum: {
+          _id: ""
+        },
+        selectArtist: [] // empty array
+      })
+    ) ?? [];
+
+  const handleSongClick = async (index: number) => {
+    if (!isLoggedIn) {
+      toast.error("Please login to listen songs");
+      router.push("/auth/sign-in");
+    } else {
+      // const convertedSongs = mapWishListToSongsRes(songList);
+      usePlaySongs(index, songsList, "", dispatch);
     }
   };
 
@@ -108,6 +143,7 @@ export const SongComp = ({
               details?.map((song, index) => (
                 <Grid2 size={{ xs: 4, sm: 6, md: 4, lg: 2 }} key={index}>
                   <Card
+                    onClick={() => handleSongClick(index)}
                     sx={{
                       backgroundColor: "#1e1e1e",
                       color: "white",

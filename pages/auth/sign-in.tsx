@@ -71,6 +71,9 @@ const SignIn = () => {
       <Box
         sx={{
           backgroundColor: "black",
+          backgroundImage: `url(${assest?.violin})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -80,7 +83,7 @@ const SignIn = () => {
         }}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid container spacing={2} sx={{ maxWidth: "800px" }}>
+          <Grid container spacing={2} sx={{ maxWidth: "800px", backgroundColor: "rgba(0, 0, 0, 0.6)", }}>
             {/* Title with Centered Text & Line */}
             <Grid item xs={12} sx={{ textAlign: "center" }}>
               <Link

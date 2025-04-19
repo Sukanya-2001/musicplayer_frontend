@@ -10,5 +10,8 @@ export default {
   singerBanner: "/assets/images/arijit.jpg",
   album_img: "/assets/images/album.jpeg",
   musicGirl: "/assets/images/musicGirl.png",
-  feedback: "/assets/images/feedback.png"
+  feedback: "/assets/images/feedback.png",
+  add_song: "/assets/images/addSong.jpeg",
+  violin: "/assets/images/violin.jpg",
+  violin2: "/assets/images/violin2.jpg"
 };

@@ -2,6 +2,7 @@
 import ComponentHandler from "@/components/ComponentHandler/ComponentHandler";
 import EventListeners from "@/components/EventListener/EventListener";
 import { PlayMusic } from "@/components/MusicPlayer/PlayMusic";
+import { AuthChecker } from "@/hooks/react-query/AuthChecker";
 import { useAppSelector } from "@/hooks/redux/useAppSelector";
 import { checkWindow } from "@/lib/functions/_helpers.lib";
 import { store } from "@/reduxtoolkit/store/store";
@@ -75,6 +76,7 @@ export default function CustomApp({
                 duration: 2000
               }}
             />
+            <AuthChecker />
             <ComponentHandler>
               <EventListeners />
               <Component {...pageProps} />

@@ -1,7 +1,7 @@
+import { userData } from "@/types/common.type";
 import { createSlice } from "@reduxjs/toolkit";
 import { destroyCookie } from "nookies";
 import { userSliceData } from "../interfaces/interfaces";
-import { userData } from "@/types/common.type";
 
 const initialState: userSliceData = {
   isLoggedIn: false,
@@ -34,10 +34,14 @@ export const userSlice = createSlice({
       destroyCookie(null, process.env.NEXT_APP_TOKEN_NAME!, { path: "/" });
 
       window.location.href = "/";
+    },
+    removeUserData: (state) => {
+      state.isLoggedIn = false;
+      state.userData = null;
     }
   }
 });
 
-export const { setLoginData, checkLoggedInServer, logout } = userSlice.actions;
+export const { setLoginData, checkLoggedInServer, logout, removeUserData } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -38,6 +38,12 @@ const useUser = () => {
     }
   }, [profileDetails?.status, profileDetails?.data]);
 
+  // useEffect(() => {
+  //   if (!token) {
+  //     dispatch(logout());
+  //   }
+  // }, [token]);
+
   return { ...profileDetails };
 };
 

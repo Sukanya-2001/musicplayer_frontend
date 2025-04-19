@@ -13,7 +13,7 @@ import {
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 
-const Artists = () => {
+const FindPeople = () => {
   const router = useRouter();
   const {
     data: artistData,
@@ -33,7 +33,7 @@ const Artists = () => {
 
   return (
     <ResponsiveDrawer>
-      <Typography
+      {/* <Typography
         variant="body1"
         fontWeight="bold"
         sx={{
@@ -46,9 +46,9 @@ const Artists = () => {
         }}
       >
         All <span style={{ color: "rgb(255 14 188)" }}>Artists</span>
-      </Typography>
+      </Typography> */}
 
-      <Box sx={{ padding: "10px 5px 10px 5px" }}>
+      <Box sx={{ padding: "20px 5px 10px 5px" }}>
         {artistListPending ? (
           <ArtistHomeSkeleton />
         ) : (
@@ -123,4 +123,4 @@ const Artists = () => {
   );
 };
 
-export default Artists;
+export default FindPeople;

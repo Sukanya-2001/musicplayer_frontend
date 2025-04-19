@@ -6,6 +6,7 @@ import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import HomeIcon from "@mui/icons-material/Home";
 import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 import PersonSearchOutlinedIcon from "@mui/icons-material/PersonSearchOutlined";
 import PlaylistPlayOutlinedIcon from "@mui/icons-material/PlaylistPlayOutlined";
 import React from "react";
@@ -21,14 +22,19 @@ export const sideFirstItems: SidebarItem[] = [
   { name: "Home", route: "/", icon: HomeIcon },
   { name: "Albums", route: "/albums", icon: CollectionsOutlinedIcon },
   { name: "Artists", route: "/artists", icon: PersonSearchOutlinedIcon },
-  { name: "Discover", route: "/discover", icon: ExploreIcon }
-  
-  // { name: "More", route: "/language", icon: LanguageIcon }
+  { name: "Discover", route: "/discover", icon: PlaylistPlayOutlinedIcon }
+
+  // { name: "More", route: "/language", icon: PlaylistPlayOutlinedIcon }
 ];
 
 export const sideSecondItems: SidebarItem[] = [
-  { name: "Recently Added", route: "/recent", icon: LibraryAddOutlinedIcon },
-  { name: "Most Played", route: "/most-played", icon: PlaylistPlayOutlinedIcon }
+  { name: "Add Songs", route: "/add-songs", icon: LibraryAddOutlinedIcon },
+  {
+    name: "Find People",
+    route: "/find-people",
+    icon: ManageSearchIcon
+  },
+  { name: "Explore", route: "/explore", icon: ExploreIcon }
 ];
 
 export const othersItems: SidebarItem[] = [
@@ -42,7 +48,11 @@ export const othersItems: SidebarItem[] = [
 ];
 
 export const authenticationItems: SidebarItem[] = [
-  { name: "Favourite", route: "/dashboard/favourite", icon: FavoriteOutlinedIcon },
+  {
+    name: "Favourite",
+    route: "/dashboard/favourite",
+    icon: FavoriteOutlinedIcon
+  },
   {
     name: "My Profile",
     route: "/dashboard",

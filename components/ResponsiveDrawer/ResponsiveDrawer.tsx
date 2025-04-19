@@ -8,7 +8,8 @@ import {
   authenticationItems,
   authItems,
   othersItems,
-  sideFirstItems
+  sideFirstItems,
+  sideSecondItems
 } from "@/lib/static/Demo";
 import { logout } from "@/reduxtoolkit/slices/userSlice";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -129,7 +130,7 @@ export default function ResponsiveDrawer(props: Props) {
           ))}
         </List>
       </ThemeProvider>
-      {/* <Divider sx={{ borderColor: "rgb(90, 87, 89)" }} />
+      <Divider sx={{ borderColor: "rgb(90, 87, 89)" }} />
       <ThemeProvider theme={theme}>
         <List>
           {sideSecondItems.map((text) => (
@@ -150,7 +151,7 @@ export default function ResponsiveDrawer(props: Props) {
             </ListItem>
           ))}
         </List>
-      </ThemeProvider> */}
+      </ThemeProvider>
       <Box sx={{ display: { xs: "block", lg: "none" } }}>
         <Divider sx={{ borderColor: "rgb(90, 87, 89)" }} />
         <ThemeProvider theme={theme}>

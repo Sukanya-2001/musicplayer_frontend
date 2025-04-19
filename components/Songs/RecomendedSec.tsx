@@ -4,12 +4,14 @@ import {
   useGetRecomendedSongsHook
 } from "@/api/functions/songs.api";
 import { useAppSelector } from "@/hooks/redux/useAppSelector";
+import { checkwistlist } from "@/hooks/utils/commonUtils";
 import { useMakeFavoriteSongs } from "@/hooks/utils/useMakeFavouriteSongs";
 import { usePlaySongs } from "@/hooks/utils/useSongs";
 import assest from "@/json/assest";
 import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -18,7 +20,6 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { SongSection } from "../Skeleton/SongSection";
 import { SongDuration } from "./SongDuration";
-import { checkwistlist } from "@/hooks/utils/commonUtils";
 
 type SongSecProps = {
   title: string;
@@ -45,15 +46,33 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
 
     return [];
   }, [JSON.stringify(songsData)]);
+  const currentUrl = typeof window !== "undefined" ? window.location.href : "";
 
   const handleSongClick = async (index: number) => {
     if (!isLoggedIn) {
       toast.error("Please login to listen songs");
-      router.push("/auth/sign-in");
+      router.push(`/auth/sign-in?${currentUrl}`);
     } else {
       usePlaySongs(index, songList, "recommended", dispatch);
     }
   };
+
+  const handleSongDownload = (
+    e: React.MouseEvent,
+    audioUrl: string,
+    title: string
+  ) => {
+    e.stopPropagation();
+
+    const a = document.createElement("a");
+    const proxyUrl = `/api/download-song?url=${encodeURIComponent(audioUrl)}&title=${encodeURIComponent(title || "song")}`;
+    a.href = proxyUrl;
+    a.download = `${title || "song"}.mp3`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
   const { wishListIds } = useAppSelector((s) => s.wishlist);
   const { mutateAsync: getAllFavIds } = useGetAllIds();
   const { mutateAsync: favMutate } = useMakeFavourite();
@@ -184,6 +203,17 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
                       </CustomButtonPrimary>
                     </Box>
                   )}
+                  <Box
+                    onClick={(e) =>
+                      handleSongDownload(e, song?.audioFile, "Song")
+                    }
+                  >
+                    <CustomButtonPrimary
+                      sx={{ marginLeft: "0px !important" }}
+                    >
+                      <FileDownloadOutlinedIcon />
+                    </CustomButtonPrimary>
+                  </Box>
                 </Grid>
               </Grid>
             ))

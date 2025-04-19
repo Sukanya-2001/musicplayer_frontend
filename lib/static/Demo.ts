@@ -64,7 +64,7 @@ export const authenticationItems: SidebarItem[] = [
 export const authItems: SidebarItem[] = [
   {
     name: "Sign in",
-    route: "javascript:void(0)",
+    route: "/auth/sign-in",
     icon: AccountCircleOutlinedIcon
   }
 ];

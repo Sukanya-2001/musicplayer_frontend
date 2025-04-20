@@ -3,13 +3,13 @@ import assest from "@/json/assest";
 import InputFieldCommon from "@/ui/CommonInput/CommonInput";
 import CustomButtonPrimary from "@/ui/CustomButtons/CustomButtonPrimary";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { Box, Button, Divider, Stack, Typography } from "@mui/material";
+import { Box, Button, Divider, Grid2, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 
 const AddSongs = () => {
   const [title, setTitle] = useState("");
-  const [subtitle, setSubtitle] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -17,10 +17,16 @@ const AddSongs = () => {
     }
   };
 
+  const handleImageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setImageFile(e.target.files[0]);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!file) return;
-    console.log({ title, subtitle, file });
+    if (!file || !imageFile) return;
+    console.log({ title, file });
   };
 
   return (
@@ -66,11 +72,13 @@ const AddSongs = () => {
                   variant="h2"
                   color="white"
                   gutterBottom
-                  sx={{ fontSize: {
-                    xs: "18px", // small devices
-                    sm: "20px", // tablets
-                    md: "25px" // desktops
-                  }, }}
+                  sx={{
+                    fontSize: {
+                      xs: "18px", // small devices
+                      sm: "20px", // tablets
+                      md: "25px" // desktops
+                    }
+                  }}
                 >
                   Skip the silence, play your part
                 </Typography>
@@ -78,11 +86,13 @@ const AddSongs = () => {
                   variant="h2"
                   color="white"
                   gutterBottom
-                  sx={{ fontSize: {
-                    xs: "15px", // small devices
-                    sm: "16px", // tablets
-                    md: "20px" // desktops
-                  }, }}
+                  sx={{
+                    fontSize: {
+                      xs: "15px", // small devices
+                      sm: "16px", // tablets
+                      md: "20px" // desktops
+                    }
+                  }}
                 >
                   Upload your fire, straight from the heart!
                 </Typography>
@@ -91,43 +101,50 @@ const AddSongs = () => {
                 />
               </>
             </Box>
-
+            <label>Song Title</label>
             <InputFieldCommon
               fullWidth
-              label="Song Title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               InputLabelProps={{ style: { color: "white" } }}
               InputProps={{ style: { color: "white" } }}
             />
 
-            <InputFieldCommon
-              fullWidth
-              label="Song Subtitle"
-              value={subtitle}
-              onChange={(e) => setSubtitle(e.target.value)}
-              InputLabelProps={{ style: { color: "white" } }}
-              InputProps={{ style: { color: "white" } }}
-            />
+            <Grid2 container spacing={2}>
+              <Grid2 size={{ xs: 12, sm: 6, md: 6, lg: 6 }}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  component="label"
+                  startIcon={<CloudUploadIcon />}
+                >
+                  {imageFile ? imageFile.name.slice(0,10) : "Song Image"}
+                  <input
+                    type="file"
+                    hidden
+                    onChange={handleImageFileChange}
+                  />
+                </Button>
+              </Grid2>
+              <Grid2 size={{ xs: 12, sm: 6, md: 6, lg: 6 }}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  component="label"
+                  startIcon={<CloudUploadIcon />}
+                >
+                  {file ? file.name : "Audio File"}
+                  <input
+                    type="file"
+                    accept="audio/*"
+                    hidden
+                    onChange={handleFileChange}
+                  />
+                </Button>
+              </Grid2>
+            </Grid2>
 
-            <Button
-              variant="contained"
-              component="label"
-              startIcon={<CloudUploadIcon />}
-            >
-              {file ? file.name : "Upload Song File"}
-              <input
-                type="file"
-                accept="audio/*"
-                hidden
-                onChange={handleFileChange}
-              />
-            </Button>
-
-            <CustomButtonPrimary
-              type="submit"
-              variant="contained"
-            >
+            <CustomButtonPrimary type="submit" variant="contained">
               Submit
             </CustomButtonPrimary>
           </Stack>

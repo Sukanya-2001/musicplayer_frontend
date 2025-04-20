@@ -36,7 +36,7 @@ export default function Header() {
     },
     {
       name: "Contact us",
-      route: "javascript:void(0)"
+      route: "/contact-us"
     },
     {
       name: "Premium",

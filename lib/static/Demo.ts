@@ -43,7 +43,7 @@ export const othersItems: SidebarItem[] = [
     route: "javascript:void(0)",
     icon: AccountCircleOutlinedIcon
   },
-  { name: "Contact us", route: "javascript:void(0)", icon: LogoutOutlinedIcon },
+  { name: "Contact us", route: "/contact-us", icon: LogoutOutlinedIcon },
   { name: "Premium", route: "javascript:void(0)", icon: LogoutOutlinedIcon }
 ];
 

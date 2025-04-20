@@ -20,7 +20,8 @@ export const endpoints = {
     profileUpdate: "user/profile/update"
   },
   home: {
-    getHomePageDetails: "user/home/get-home-details"
+    getHomePageDetails: "user/home/get-home-details",
+    support: ""
   },
   songs: {
     songsByType: "user/home/get-all-details",

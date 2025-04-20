@@ -51,7 +51,8 @@ export const endpoints = {
     getAllFavourite: "user/wishlist/get-favourite"
   },
   userManage: {
-    addSong: "user/add-song"
+    addSong: "user/add-song",
+    allUser: "user/explore-songs"
   }
 };
 

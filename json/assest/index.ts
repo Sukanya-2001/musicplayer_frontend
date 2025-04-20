@@ -13,5 +13,6 @@ export default {
   feedback: "/assets/images/feedback.png",
   add_song: "/assets/images/addSong.jpeg",
   violin: "/assets/images/violin.jpg",
-  violin2: "/assets/images/violin2.jpg"
+  violin2: "/assets/images/violin2.jpg",
+  userImage: "/assets/images/userImage.png",
 };

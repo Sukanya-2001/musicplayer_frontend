@@ -2,7 +2,7 @@ import ResponsiveDrawer from "@/components/ResponsiveDrawer/ResponsiveDrawer";
 import SupportMain from "@/components/SupportMain/SupportMain";
 import { Container } from "@mui/material";
 
-export default function Contact() {
+const Contact = () => {
   return (
     <ResponsiveDrawer>
       <Container fixed>
@@ -10,4 +10,6 @@ export default function Contact() {
       </Container>
     </ResponsiveDrawer>
   );
-}
+};
+
+export default Contact;

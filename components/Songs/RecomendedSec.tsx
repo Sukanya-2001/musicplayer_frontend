@@ -65,12 +65,14 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
     e.stopPropagation();
 
     const a = document.createElement("a");
-    const proxyUrl = `/api/download-song?url=${encodeURIComponent(audioUrl)}&title=${encodeURIComponent(title || "song")}`;
-    a.href = proxyUrl;
-    a.download = `${title || "song"}.mp3`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+
+    // const proxyUrl = `/api/download-song?url=${encodeURIComponent(audioUrl)}&title=${encodeURIComponent(title || "song")}`;
+    // a.href = proxyUrl;
+    a.download = `${title || audioUrl || "song"}.mp3`;
+    
+    // document.body.appendChild(a);
+    // a.click();
+    // document.body.removeChild(a);
   };
 
   const { wishListIds } = useAppSelector((s) => s.wishlist);
@@ -208,9 +210,7 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
                       handleSongDownload(e, song?.audioFile, "Song")
                     }
                   >
-                    <CustomButtonPrimary
-                      sx={{ marginLeft: "0px !important" }}
-                    >
+                    <CustomButtonPrimary sx={{ marginLeft: "0px !important" }}>
                       <FileDownloadOutlinedIcon />
                     </CustomButtonPrimary>
                   </Box>

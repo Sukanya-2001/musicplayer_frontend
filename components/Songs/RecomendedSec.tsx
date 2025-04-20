@@ -46,12 +46,13 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
 
     return [];
   }, [JSON.stringify(songsData)]);
-  const currentUrl = typeof window !== "undefined" ? window.location.href : "";
 
   const handleSongClick = async (index: number) => {
     if (!isLoggedIn) {
+      const currentUrl =
+        typeof window !== "undefined" ? window.location.href : "";
       toast.error("Please login to listen songs");
-      router.push(`/auth/sign-in?${currentUrl}`);
+      router.push(`/auth/sign-in?redirect=${currentUrl}`);
     } else {
       usePlaySongs(index, songList, "recommended", dispatch);
     }
@@ -69,7 +70,7 @@ export const RecomendedSec = ({ title, subTitle }: SongSecProps) => {
     // const proxyUrl = `/api/download-song?url=${encodeURIComponent(audioUrl)}&title=${encodeURIComponent(title || "song")}`;
     // a.href = proxyUrl;
     a.download = `${title || audioUrl || "song"}.mp3`;
-    
+
     // document.body.appendChild(a);
     // a.click();
     // document.body.removeChild(a);

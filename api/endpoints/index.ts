@@ -49,6 +49,9 @@ export const endpoints = {
     getAllFavoriteIds: "user/wishlist/get-ids",
     makeFavourite: "user/wishlist/add-favourite",
     getAllFavourite: "user/wishlist/get-favourite"
+  },
+  userManage: {
+    addSong: "user/add-song"
   }
 };
 
@@ -57,5 +60,7 @@ export const sucessNotificationEndPoints = [
   endpoints.auth.signUpProfile,
   endpoints.auth.login,
   endpoints.auth.profileUpdate,
-  endpoints.favoutite.makeFavourite
+  endpoints.favoutite.makeFavourite,
+
+  endpoints.userManage.addSong
 ];

@@ -66,6 +66,8 @@ const SignIn = () => {
     });
   };
 
+  console.log(redirect);
+
   return (
     <>
       <Box
@@ -83,7 +85,11 @@ const SignIn = () => {
         }}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid container spacing={2} sx={{ maxWidth: "800px", backgroundColor: "rgba(0, 0, 0, 0.6)", }}>
+          <Grid
+            container
+            spacing={2}
+            sx={{ maxWidth: "800px", backgroundColor: "rgba(0, 0, 0, 0.6)" }}
+          >
             {/* Title with Centered Text & Line */}
             <Grid item xs={12} sx={{ textAlign: "center" }}>
               <Link

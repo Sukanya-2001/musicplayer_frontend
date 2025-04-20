@@ -25,3 +25,5 @@ export const SONGS_BY_GENRE = "SONGS_BY_GENRE";
 export const MAKE_FAVOURITE = "MAKE_FAVOURITE";
 export const ALL_FAVOURITE_SONGS = "ALL_FAVOURITE_SONGS";
 export const ALL_FAV_IDS = "ALL_FAV_IDS";
+
+export const UPLOAD_SONG = "UPLOAD_SONG";
